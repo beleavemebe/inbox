@@ -19,29 +19,34 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTaskListBinding.bind(view)
+
         setupRecyclerView()
         initAddButton()
+        setLiveDataObserver()
+    }
+
+    private fun setupRecyclerView() = with (binding.tasksRv) {
+        layoutManager = LinearLayoutManager(context)
+        adapter = TaskAdapter()
+    }
+
+    private fun initAddButton() = with (binding.addTaskFab) {
+        setOnClickListener {
+            navToTaskFragment()
+        }
+    }
+
+    private fun setLiveDataObserver() {
         taskListViewModel.taskListLiveData.observe(viewLifecycleOwner) { taskList ->
             val adapter = binding.tasksRv.adapter as TaskAdapter
             adapter.submitList(taskList)
         }
     }
 
-    private fun initAddButton() = with (binding.addTaskFab) {
-        setOnClickListener { navToTaskFragment() }
-    }
-
     private fun navToTaskFragment() {
         findNavController().navigate(
             TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(null)
         )
-    }
-
-    private fun setupRecyclerView() {
-        binding.tasksRv.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = TaskAdapter()
-        }
     }
 
     override fun onDestroyView() {

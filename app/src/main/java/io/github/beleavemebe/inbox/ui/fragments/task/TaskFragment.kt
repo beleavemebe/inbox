@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -40,28 +41,25 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTaskBinding.bind(view)
+
         setupUI()
+        setTaskLiveDataObserver()
+    }
+
+    private fun setTaskLiveDataObserver() {
         taskViewModel.taskLiveData.observe(viewLifecycleOwner) { task : Task? ->
             this.task = task ?: throw IllegalArgumentException("Impossible wrong id")
             updateUI(task)
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun setupUI() {
         addTextWatchers()
         addListeners()
         addCheckboxListener()
+        disableCheckbox()
         hideTimestamp()
-        binding.taskTv.text = getString(R.string.new_task)
-    }
-
-    private fun hideTimestamp() = with (binding) {
-        taskTimestampTv.visibility = View.INVISIBLE
+        setHeaderText(R.string.new_task)
     }
 
     private fun updateUI(task: Task) = with (binding) {
@@ -75,7 +73,12 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             isChecked = task.isCompleted
             jumpDrawablesToCurrentState()
         }
-        taskTv.text = getString(R.string.task)
+        setHeaderText(R.string.task)
+    }
+
+
+    private fun setHeaderText(@StringRes res : Int) = with (binding) {
+        taskHeaderTv.text = getString(res)
     }
 
     private fun getFormattedTimestamp() =
@@ -103,14 +106,13 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun addTextWatchers() = with (binding) {
-        val titleWatcher = TextWatcherImpl.newInstance { sequence ->
+        TextWatcherImpl.newWatcher { sequence ->
             task.title = sequence.toString()
-        }
-        titleTi.addTextChangedListener(titleWatcher)
-        val noteWatcher = TextWatcherImpl.newInstance { sequence ->
+        }.also { titleTi.addTextChangedListener(it) }
+
+        TextWatcherImpl.newWatcher { sequence ->
             task.note = sequence.toString()
-        }
-        taskNoteTi.addTextChangedListener(noteWatcher)
+        }.also { taskNoteTi.addTextChangedListener(it) }
     }
 
     private fun addListeners() = with (binding) {
@@ -125,21 +127,32 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         }
     }
 
+    private fun disableCheckbox() = with (binding) {
+        doneCb.isEnabled = false
+    }
 
-    private fun Task.isBlank() : Boolean = title == ""
+    private fun hideTimestamp() = with (binding) {
+        taskTimestampTv.visibility = View.INVISIBLE
+    }
 
-    private class TextWatcherImpl(private val onTextChangedAction: (CharSequence) -> Unit)
-        : TextWatcher
-    {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun Task.isBlank() : Boolean {
+        return title == ""
+    }
+
+    private class TextWatcherImpl(private val onTextChangedAction: (CharSequence) -> Unit) : TextWatcher {
         companion object {
-            fun newInstance(onTextChangedAction: (CharSequence) -> Unit) =
+            fun newWatcher(onTextChangedAction: (CharSequence) -> Unit) =
                 TextWatcherImpl(onTextChangedAction)
         }
 
         override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) =
             onTextChangedAction.invoke(sequence ?: "")
 
-        // unused methods
         override fun beforeTextChanged(sequence: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun afterTextChanged(sequence: Editable?) {}
     } // lord forgive me

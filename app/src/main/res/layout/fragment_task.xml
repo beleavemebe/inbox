@@ -31,7 +31,7 @@
             app:tint="@color/accent" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/task_tv"
+            android:id="@+id/task_header_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
@@ -50,9 +50,9 @@
             android:scaleX="1.25"
             android:scaleY="1.25"
             android:src="@drawable/ic_baseline_done_24"
-            app:layout_constraintBottom_toBottomOf="@id/task_tv"
+            app:layout_constraintBottom_toBottomOf="@id/task_header_tv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/task_tv"
+            app:layout_constraintTop_toTopOf="@id/task_header_tv"
             app:tint="@color/accent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

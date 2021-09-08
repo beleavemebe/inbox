@@ -38,7 +38,6 @@ class TaskViewHolder(taskView: View) :
         completedCb.apply {
             isChecked = task.isCompleted
             jumpDrawablesToCurrentState()
-
             setOnCheckedChangeListener { _, isChecked ->
                 Log.d(TAG, "task checked")
                 task.isCompleted = isChecked
@@ -49,15 +48,15 @@ class TaskViewHolder(taskView: View) :
     }
 
     private fun alterViewIfTaskIsCompleted() = with (binding.taskTitleTv) {
-        val color : Int
+        val textColor : Int
         if (task.isCompleted) {
-            color = resources.getColor(R.color.secondary_text)
+            textColor = resources.getColor(R.color.secondary_text)
             paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
-            color = resources.getColor(R.color.primary_text)
+            textColor = resources.getColor(R.color.primary_text)
             paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
-        setTextColor(color)
+        setTextColor(textColor)
     }
 
     private fun initDeleteIb(task: Task) = with (binding) {

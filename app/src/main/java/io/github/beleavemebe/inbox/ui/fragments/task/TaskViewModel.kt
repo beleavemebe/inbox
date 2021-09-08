@@ -17,9 +17,8 @@ class TaskViewModel : ViewModel() {
             taskRepository.getTask(id)
         }
 
-    // Saving or updating task depending on whether was the task id passed as an argument or not
+    // Add or update task depending on whether or not the task id is passed as an argument
     private lateinit var taskHandleAction : (Task) -> Unit
-
     fun onExitFragment(task: Task) = taskHandleAction(task)
 
     fun onNoTaskIdGiven() {
