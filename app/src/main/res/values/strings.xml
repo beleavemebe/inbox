@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">inbox</string>
+    <string name="app_name">Inbox</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="task">Задача</string>
+    <string name="new_task">Новая задача</string>
+    <string name="tasks">Задачи</string>
+    <string name="task_title_hint">Добавить задачу…</string>
+    <string name="task_attach_note_hint">Добавить заметку…</string>
+    <string name="task_timestamp">Задача добавлена %1$s</string>
+    <string name="task_is_blank">Задача пустая</string>
+    <string name="projects">Проекты</string>
+    <string name="information">Информация</string>
+    <string name="meetings">Встречи</string>
 </resources>

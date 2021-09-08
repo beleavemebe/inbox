@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    tools:context=".ui.fragments.task.TaskFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:viewBindingIgnore="true">
+
+        <ImageButton
+            android:id="@+id/back_ib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/accent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/task_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:textColor="@color/primary_text"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/back_ib"
+            app:layout_constraintStart_toEndOf="@id/back_ib"
+            app:layout_constraintTop_toTopOf="@id/back_ib"
+            tools:text="@string/task" />
+
+        <ImageButton
+            android:id="@+id/save_ib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:src="@drawable/ic_baseline_done_24"
+            app:layout_constraintBottom_toBottomOf="@id/task_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/task_tv"
+            app:tint="@color/accent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/title_ti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:ellipsize="end"
+        android:hint="@string/task_title_hint"
+        android:inputType="textMultiLine"
+        android:maxWidth="256dp"
+        android:maxLength="65"
+        android:textColor="@color/primary_text"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        tools:text="Turquoise Hexagon Sun - make a cool remix" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/done_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:buttonTint="@color/accent"
+        app:layout_constraintBottom_toBottomOf="@id/title_ti"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title_ti"
+        tools:checked="false" />
+
+    <LinearLayout
+        android:id="@+id/note_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/title_ti"
+        tools:viewBindingIgnore="true">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_baseline_edit_note_24" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/task_note_ti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/white"
+            android:ellipsize="end"
+            android:hint="@string/task_attach_note_hint"
+            android:inputType="textMultiLine"
+            android:maxLength="180"
+            android:textColor="@color/secondary_text"
+            app:boxBackgroundMode="outline"
+            app:layout_constraintTop_toBottomOf="@+id/title_ti"
+            tools:text="Make something like Boredom (Death Note) but way crazier " />
+
+    </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/task_timestamp_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/task_timestamp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Задача добавлена 29.07.2021 15:41" />
+
+    <LinearLayout
+        android:id="@+id/deadline_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/note_bar"
+        tools:viewBindingIgnore="true">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_baseline_calendar_today_24"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/repeat_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/deadline_bar"
+        tools:viewBindingIgnore="true">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_baseline_repeat_24"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

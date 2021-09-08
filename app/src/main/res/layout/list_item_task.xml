@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/task_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="16dp"
+            android:layout_marginHorizontal="64dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/completed_cb"
+            app:layout_constraintStart_toEndOf="@id/completed_cb"
+            app:layout_constraintTop_toTopOf="@id/completed_cb"
+            tools:text="Sample text" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/completed_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:buttonTint="@color/primary_dark"
+            android:text=""
+            app:buttonTint="@color/accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/delete_ib"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/ic_baseline_delete_24"
+            app:layout_constraintBottom_toBottomOf="@id/task_title_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/task_title_tv"
+            android:backgroundTint="@color/white"
+            app:tint="@color/accent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
