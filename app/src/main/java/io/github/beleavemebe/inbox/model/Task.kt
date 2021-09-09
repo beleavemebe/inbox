@@ -9,14 +9,14 @@ import java.util.*
 
 @Entity
 data class Task(
-    @PrimaryKey val id: UUID = UUID.randomUUID(),
-    val timestamp: Date = Date(),
-    var title: String = "",
-    @ColumnInfo(name = "is_completed") var isCompleted: Boolean = false,
-    var note: String? = null,
-    var deadline: Date? = null,
-    @Embedded(prefix = "rep_freq") var repeatFrequency: TaskRepeatFrequency? = null,
-    var repetitionReferenceTimestamp: Date? = null
+    @PrimaryKey @ColumnInfo(name="id")     val id: UUID = UUID.randomUUID(),
+    @ColumnInfo(name="timestamp")          val timestamp: Date = Date(),
+    @ColumnInfo(name="title")              var title: String = "",
+    @ColumnInfo(name="is_completed")       var isCompleted: Boolean = false,
+    @ColumnInfo(name="note")               var note: String? = null,
+    @ColumnInfo(name="deadline")           var deadline: Date? = null,
+    @Embedded(prefix="rep_freq")           var repeatFrequency: TaskRepeatFrequency? = null,
+    @ColumnInfo(name="rep_ref_timestamp")  var repetitionReferenceTimestamp: Date? = null
 ) {
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {
