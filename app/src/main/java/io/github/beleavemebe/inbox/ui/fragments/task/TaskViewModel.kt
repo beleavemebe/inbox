@@ -25,9 +25,9 @@ class TaskViewModel : ViewModel() {
         taskHandleAction = ::addTask
     }
 
-    fun loadTask(taskId: UUID) {
-        taskIdMutableLiveData.value = taskId
+    fun onTaskIdGiven(taskId: UUID) {
         taskHandleAction = ::updateTask
+        taskIdMutableLiveData.value = taskId
     }
 
     private fun addTask(task: Task) {

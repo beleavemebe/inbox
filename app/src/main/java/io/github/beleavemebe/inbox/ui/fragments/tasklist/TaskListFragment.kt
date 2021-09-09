@@ -3,6 +3,7 @@ package io.github.beleavemebe.inbox.ui.fragments.tasklist
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +12,7 @@ import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
 import io.github.beleavemebe.inbox.ui.adapters.TaskAdapter
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
-    private val taskListViewModel by lazy { ViewModelProvider(this).get(TaskListViewModel::class.java) }
+    private val taskListViewModel: TaskListViewModel by viewModels()
 
     private var _binding : FragmentTaskListBinding? = null
     private val binding get() = _binding!!
@@ -22,7 +23,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
         setupRecyclerView()
         initAddButton()
-        setLiveDataObserver()
+        setTaskListLiveDataObserver()
     }
 
     private fun setupRecyclerView() = with (binding.tasksRv) {
@@ -36,7 +37,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         }
     }
 
-    private fun setLiveDataObserver() {
+    private fun setTaskListLiveDataObserver() {
         taskListViewModel.taskListLiveData.observe(viewLifecycleOwner) { taskList ->
             val adapter = binding.tasksRv.adapter as TaskAdapter
             adapter.submitList(taskList)
