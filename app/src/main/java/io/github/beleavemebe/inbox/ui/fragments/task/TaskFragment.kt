@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.model.Task
+import io.github.beleavemebe.inbox.util.Toaster
 import java.lang.IllegalArgumentException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -86,11 +87,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun saveTask(view: View) {
         if (task.isBlank()) {
-            Toast.makeText(
-                context,
-                getString(R.string.task_is_blank),
-                Toast.LENGTH_SHORT
-            ).show()
+            Toaster.get().toast(R.string.task_is_blank)
         } else {
             taskViewModel.onExitFragment(task)
             navToTaskListFragment(view)
