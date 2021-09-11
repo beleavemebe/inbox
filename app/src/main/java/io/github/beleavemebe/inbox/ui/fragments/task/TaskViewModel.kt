@@ -18,17 +18,20 @@ class TaskViewModel : ViewModel() {
         }
 
     // Add or update task depending on whether or not the task id is passed as an argument
-    private lateinit var taskHandleAction : (Task) -> Unit
-    fun onExitFragment(task: Task) = taskHandleAction(task)
+    private var isTaskIdGiven: Boolean = false
+    private val taskHandleAction : (Task) -> Unit
+        get() = if (isTaskIdGiven) ::updateTask else ::addTask
 
     fun onNoTaskIdGiven() {
-        taskHandleAction = ::addTask
+        isTaskIdGiven = false
     }
 
     fun onTaskIdGiven(taskId: UUID) {
-        taskHandleAction = ::updateTask
+        isTaskIdGiven = true
         taskIdMutableLiveData.value = taskId
     }
+
+    fun onExitFragment(task: Task) = taskHandleAction(task)
 
     private fun addTask(task: Task) {
         taskRepository.addTask(task)
