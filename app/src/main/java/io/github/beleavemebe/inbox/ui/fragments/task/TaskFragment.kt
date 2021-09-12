@@ -14,6 +14,8 @@ import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.util.Toaster
+import io.github.beleavemebe.inbox.util.hideBottomNavMenu
+import io.github.beleavemebe.inbox.util.revealBottomNavMenu
 import java.lang.IllegalArgumentException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -43,6 +45,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTaskBinding.bind(view)
 
+        hideBottomNavMenu()
         setupUI()
         setTaskLiveDataObserver()
     }
@@ -134,6 +137,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        revealBottomNavMenu()
         _binding = null
     }
 
