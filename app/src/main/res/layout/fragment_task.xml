@@ -111,6 +111,7 @@
             android:ellipsize="end"
             android:hint="@string/task_attach_note_hint"
             android:inputType="textMultiLine"
+            android:maxLines="8"
             android:textColor="@color/secondary_text"
             app:boxBackgroundMode="outline"
             app:layout_constraintTop_toBottomOf="@+id/title_ti"
@@ -127,7 +128,7 @@
         tools:viewBindingIgnore="true">
 
         <ImageView
-            android:id="@+id/calendar_iv"
+            android:id="@+id/date_iv"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:padding="2dp"
@@ -138,17 +139,39 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/date_tv"
-            android:layout_width="256dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:hint="@string/task_add_date_hint"
             android:inputType="date"
             android:textColor="@color/secondary_text"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@id/calendar_iv"
-            app:layout_constraintStart_toEndOf="@id/calendar_iv"
-            app:layout_constraintTop_toTopOf="@+id/calendar_iv"
-            tools:text="Вс, 12 сент 2021 0:48"/>
+            app:layout_constraintBottom_toBottomOf="@id/date_iv"
+            app:layout_constraintStart_toEndOf="@id/date_iv"
+            app:layout_constraintTop_toTopOf="@+id/date_iv"
+            tools:text="Пн, 13 сент. 2021" />
+
+        <ImageView
+            android:id="@+id/time_iv"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="24dp"
+            android:src="@drawable/ic_baseline_timer_24"
+            app:layout_constraintBottom_toBottomOf="@id/date_tv"
+            app:layout_constraintStart_toEndOf="@id/date_tv"
+            app:layout_constraintTop_toTopOf="@id/date_tv" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="@string/task_add_time_hint"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/time_iv"
+            app:layout_constraintStart_toEndOf="@id/time_iv"
+            app:layout_constraintTop_toTopOf="@id/time_iv"
+            tools:text="0:38" />
 
         <ImageView
             android:id="@+id/frequency_iv"
@@ -179,7 +202,7 @@
             android:layout_marginTop="12dp"
             android:src="@drawable/ic_baseline_hourglass_bottom_24"
             app:layout_constraintEnd_toStartOf="@id/deadline_tv"
-            app:layout_constraintTop_toBottomOf="@id/calendar_iv"
+            app:layout_constraintTop_toBottomOf="@id/date_iv"
             app:tint="@color/primary_dark" />
 
         <com.google.android.material.textview.MaterialTextView

@@ -59,10 +59,11 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         addCheckboxListener()
         hideTimestamp()
         setHeaderText(R.string.new_task)
-        initDateTimePicker()
+        initDatePicker()
+        initTimePicker()
     }
 
-    private fun initDateTimePicker() {
+    private fun initDatePicker() {
         binding.dateTv.setOnClickListener { showDatePicker() }
     }
 
@@ -78,7 +79,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
                 addOnPositiveButtonClickListener { ms ->
                     val pickedDate = Date(ms)
                     updateDate(pickedDate)
-                    showTimePicker()
                 }
             }.show(childFragmentManager, "MaterialDatePicker")
 
@@ -92,6 +92,10 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     private fun clearDateTv() {
         task.date = null
         binding.dateTv.text = ""
+    }
+
+    private fun initTimePicker() {
+        binding.timeTv.setOnClickListener { showTimePicker() }
     }
 
     private fun showTimePicker() {
@@ -111,7 +115,11 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     private fun updateTime(pickedHour: Int, pickedMinute: Int) {
         task.date?.hours = pickedHour
         task.date?.minutes = pickedMinute
-        updateDateTv()
+        updateTimeTv()
+    }
+
+    private fun updateTimeTv() = with (binding) {
+        timeTv.text = task.date?.run { "${hours}:${ if (minutes >= 10) "$minutes" else "0$minutes" }" }
     }
 
     private fun updateUI() = with (binding) {
@@ -129,6 +137,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             visibility = View.VISIBLE
         }
         updateDateTv()
+        updateTimeTv()
     }
 
     private fun updateDateTv() = with (binding) {

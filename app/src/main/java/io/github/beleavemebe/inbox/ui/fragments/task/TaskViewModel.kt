@@ -35,7 +35,7 @@ class TaskViewModel : ViewModel() {
     fun onExitFragment(task: Task) = taskHandleAction(task)
 
     fun getFormattedDate(d : Date) =
-        SimpleDateFormat("EEE, dd MMM yyyy H:mm", Locale("ru"))
+        SimpleDateFormat("EEE, dd MMM yyyy", Locale("ru"))
             .format(d)
             .replaceFirstChar { it.uppercase() }
 
