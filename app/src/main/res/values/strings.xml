@@ -6,9 +6,15 @@
     <string name="tasks">Задачи</string>
     <string name="task_title_hint">Добавить задачу…</string>
     <string name="task_attach_note_hint">Добавить заметку…</string>
+    <string name="task_add_frequency_hint">Добавить периодичность…</string>
+    <string name="task_add_deadline_hint">Добавить дедлайн…</string>
+    <string name="task_add_date_hint">Добавить дату…</string>
+    <string name="task_add_duration_hint">Добавить длительность…</string>
     <string name="task_timestamp">Задача добавлена %1$s</string>
     <string name="task_is_blank">Задача пустая</string>
+    <string name="select_date">Выбрать дату</string>
     <string name="projects">Проекты</string>
     <string name="information">Информация</string>
     <string name="meetings">Встречи</string>
+    <string name="task_not_created">Задача не создана</string>
 </resources>

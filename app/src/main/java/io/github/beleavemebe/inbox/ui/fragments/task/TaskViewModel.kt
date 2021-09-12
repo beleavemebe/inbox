@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.repositories.TaskRepository
+import java.text.SimpleDateFormat
 import java.util.*
 
 class TaskViewModel : ViewModel() {
@@ -18,7 +19,7 @@ class TaskViewModel : ViewModel() {
         }
 
     // Add or update task depending on whether or not the task id is passed as an argument
-    private var isTaskIdGiven: Boolean = false
+    var isTaskIdGiven: Boolean = false
     private val taskHandleAction : (Task) -> Unit
         get() = if (isTaskIdGiven) ::updateTask else ::addTask
 
@@ -32,6 +33,15 @@ class TaskViewModel : ViewModel() {
     }
 
     fun onExitFragment(task: Task) = taskHandleAction(task)
+
+    fun getFormattedDate(d : Date) =
+        SimpleDateFormat("EEE, dd MMM yyyy H:mm", Locale("ru"))
+            .format(d)
+            .replaceFirstChar { it.uppercase() }
+
+    fun getFormattedTimestamp(d : Date) =
+        SimpleDateFormat("dd MMM `yy HH:mm", Locale("ru"))
+            .format(d) as String
 
     private fun addTask(task: Task) {
         taskRepository.addTask(task)

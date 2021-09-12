@@ -62,7 +62,7 @@ class TaskViewHolder(taskView: View) :
     private fun initDeleteIb(task: Task) = with (binding) {
         deleteIb.setOnClickListener {
             root.setOnClickListener(null)
-            repo.deleteTask(task.id)
+            repo.deleteTask(task)
         }
     }
 

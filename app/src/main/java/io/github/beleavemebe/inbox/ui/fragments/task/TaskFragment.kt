@@ -6,6 +6,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import com.google.android.material.datepicker.MaterialDatePicker
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.model.Task
@@ -14,10 +15,7 @@ import io.github.beleavemebe.inbox.util.Toaster
 import io.github.beleavemebe.inbox.util.hideBottomNavMenu
 import io.github.beleavemebe.inbox.util.revealBottomNavMenu
 import java.lang.IllegalArgumentException
-import java.text.SimpleDateFormat
 import java.util.*
-
-const val TAG = "TaskFragment"
 
 class TaskFragment : Fragment(R.layout.fragment_task) {
     private lateinit var task : Task
@@ -29,7 +27,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val taskId : UUID? = arguments?.get("taskId") as? UUID
-        Log.d(TAG, "got task id - $taskId")
         if (taskId == null) {
             task = Task()
             taskViewModel.onNoTaskIdGiven()
@@ -50,7 +47,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     private fun setTaskLiveDataObserver() {
         taskViewModel.taskLiveData.observe(viewLifecycleOwner) { task : Task? ->
             this.task = task ?: throw IllegalArgumentException("Impossible wrong id")
-            updateUI(task)
+            updateUI()
         }
     }
 
@@ -58,32 +55,66 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         addTextWatchers()
         addListeners()
         addCheckboxListener()
-        disableCheckbox()
         hideTimestamp()
         setHeaderText(R.string.new_task)
+        initDatePicker()
+        initTimePicker()
     }
 
-    private fun updateUI(task: Task) = with (binding) {
+    private fun initTimePicker() {
+
+    }
+
+    private fun initDatePicker() {
+        binding.dateTv.setOnClickListener { showDatePicker() }
+    }
+
+    private fun showDatePicker() {
+        MaterialDatePicker.Builder.datePicker()
+            .setTitleText(getString(R.string.select_date))
+            .setSelection(task.date?.time ?: System.currentTimeMillis())
+            .build()
+            .apply {
+                addOnNegativeButtonClickListener {
+                    clearDateTv()
+                }
+                addOnPositiveButtonClickListener { ms ->
+                    val pickedDate = Date(ms)
+                    updateDate(pickedDate)
+                }
+            }.show(childFragmentManager, "MaterialDatePicker")
+    }
+
+    private fun clearDateTv() {
+        task.date = null
+        binding.dateTv.text = ""
+    }
+
+    private fun updateDate(pickedDate: Date) {
+        task.date = pickedDate
+        binding.dateTv.text = taskViewModel.getFormattedDate(pickedDate)
+    }
+
+    private fun updateUI() = with (binding) {
         titleTi.setText(task.title)
-        taskNoteTi.setText(task.note)
-        taskTimestampTv.apply {
-            text = getString(R.string.task_timestamp, getFormattedTimestamp())
+        noteTi.setText(task.note)
+        dateTv.text = task.date?.let { taskViewModel.getFormattedDate(it) } ?: ""
+        timestampTv.apply {
+            text = getString(R.string.task_timestamp, taskViewModel.getFormattedTimestamp(task.timestamp))
             visibility = View.VISIBLE
         }
         doneCb.apply {
-            isChecked = task.isCompleted
+            isEnabled  = true
+            isSelected = true
+            isChecked  = task.isCompleted
             jumpDrawablesToCurrentState()
         }
         setHeaderText(R.string.task)
     }
 
-
-    private fun setHeaderText(@StringRes res : Int) = with (binding) {
+    private fun setHeaderText(@StringRes res: Int) = with (binding) {
         taskHeaderTv.text = getString(res)
     }
-
-    private fun getFormattedTimestamp() =
-        SimpleDateFormat("MMM dd `yy HH:mm", Locale.US).format(task.timestamp)
 
     private fun saveTask(view: View) {
         if (task.isBlank()) {
@@ -95,7 +126,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun navToTaskListFragment(view: View) {
-        Log.d(TAG, "navigating back from task $task")
         Navigation.findNavController(view)
             .navigate(
                 R.id.action_taskFragment_to_taskListFragment
@@ -109,7 +139,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
         TextWatcherImpl.newWatcher { sequence ->
             task.note = sequence.toString()
-        }.also { taskNoteTi.addTextChangedListener(it) }
+        }.also { noteTi.addTextChangedListener(it) }
     }
 
     private fun addListeners() = with (binding) {
@@ -119,17 +149,20 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun addCheckboxListener() = with (binding) {
         doneCb.setOnCheckedChangeListener { _, isChecked ->
-            Log.d(TAG, "checkbox pressed")
-            task.isCompleted = isChecked
+            if (taskViewModel.isTaskIdGiven) {
+                task.isCompleted = isChecked
+            } else {
+                Toaster.get().toast(R.string.task_not_created)
+                doneCb.apply {
+                    this.isChecked = false
+                    jumpDrawablesToCurrentState()
+                }
+            }
         }
     }
 
-    private fun disableCheckbox() = with (binding) {
-        doneCb.isEnabled = false
-    }
-
     private fun hideTimestamp() = with (binding) {
-        taskTimestampTv.visibility = View.INVISIBLE
+        timestampTv.visibility = View.INVISIBLE
     }
 
     override fun onDestroyView() {
