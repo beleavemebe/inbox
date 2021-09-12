@@ -3,6 +3,8 @@ package io.github.beleavemebe.inbox.repositories
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import io.github.beleavemebe.inbox.db.task.TaskDatabase
 import io.github.beleavemebe.inbox.model.Task
 import java.lang.IllegalStateException
@@ -12,7 +14,6 @@ import java.util.concurrent.Executors
 class TaskRepository private constructor(context: Context) {
     companion object {
         private const val DATABASE_NAME = "task-db"
-
         private var INSTANCE : TaskRepository? = null
 
         fun getInstance() = INSTANCE
@@ -23,11 +24,18 @@ class TaskRepository private constructor(context: Context) {
         }
     }
 
+    private val MIGRATION_2_3 = object : Migration(2, 3) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE task ADD COLUMN date INTEGER")
+            database.execSQL("ALTER TABLE task ADD COLUMN duration INTEGER")
+        }
+    }
+
     private val database: TaskDatabase = Room.databaseBuilder(
         context.applicationContext,
         TaskDatabase::class.java,
         DATABASE_NAME
-    ).build()
+    ).addMigrations(MIGRATION_2_3).build()
 
     private val taskDao = database.taskDao()
     private val executor = Executors.newSingleThreadExecutor()
