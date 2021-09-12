@@ -151,35 +151,13 @@
             tools:text="Вс, 12 сент 2021 0:48"/>
 
         <ImageView
-            android:id="@+id/duration_iv"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/ic_baseline_timer_24"
-            app:layout_constraintEnd_toStartOf="@id/duration_tv"
-            app:layout_constraintTop_toBottomOf="@id/calendar_iv"
-            app:tint="@color/primary_dark" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/duration_tv"
-            android:layout_width="256dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:hint="@string/task_add_duration_hint"
-            android:textColor="@color/secondary_text"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@id/duration_iv"
-            app:layout_constraintStart_toEndOf="@id/duration_iv"
-            app:layout_constraintTop_toTopOf="@+id/duration_iv" />
-
-        <ImageView
             android:id="@+id/frequency_iv"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="12dp"
             android:src="@drawable/ic_baseline_repeat_24"
             app:layout_constraintEnd_toStartOf="@id/frequency_tv"
-            app:layout_constraintTop_toBottomOf="@id/duration_iv"
+            app:layout_constraintTop_toBottomOf="@id/deadline_iv"
             app:tint="@color/primary_dark" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -201,7 +179,7 @@
             android:layout_marginTop="12dp"
             android:src="@drawable/ic_baseline_hourglass_bottom_24"
             app:layout_constraintEnd_toStartOf="@id/deadline_tv"
-            app:layout_constraintTop_toBottomOf="@id/frequency_iv"
+            app:layout_constraintTop_toBottomOf="@id/calendar_iv"
             app:tint="@color/primary_dark" />
 
         <com.google.android.material.textview.MaterialTextView

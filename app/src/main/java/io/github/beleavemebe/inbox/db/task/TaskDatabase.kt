@@ -6,9 +6,19 @@ import io.github.beleavemebe.inbox.model.Task
 
 @Database(
     entities = [Task::class],
-    version = 3
+    version = 4,
+    autoMigrations = [
+        AutoMigration(from = 3, to = 4, spec = TaskDatabase.ThirdMigration::class)
+    ]
 )
 @TypeConverters(TaskTypeConverters::class)
-abstract class TaskDatabase : RoomDatabase(), AutoMigrationSpec {
+abstract class TaskDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
+
+    @DeleteColumn(
+        tableName = "Task",
+        columnName = "duration"
+    )
+    class ThirdMigration : AutoMigrationSpec
+
 }
