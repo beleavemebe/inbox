@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.model.Task
@@ -57,15 +59,10 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         addCheckboxListener()
         hideTimestamp()
         setHeaderText(R.string.new_task)
-        initDatePicker()
-        initTimePicker()
+        initDateTimePicker()
     }
 
-    private fun initTimePicker() {
-
-    }
-
-    private fun initDatePicker() {
+    private fun initDateTimePicker() {
         binding.dateTv.setOnClickListener { showDatePicker() }
     }
 
@@ -81,13 +78,10 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
                 addOnPositiveButtonClickListener { ms ->
                     val pickedDate = Date(ms)
                     updateDate(pickedDate)
+                    showTimePicker()
                 }
             }.show(childFragmentManager, "MaterialDatePicker")
-    }
 
-    private fun clearDateTv() {
-        task.date = null
-        binding.dateTv.text = ""
     }
 
     private fun updateDate(pickedDate: Date) {
@@ -95,21 +89,50 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         binding.dateTv.text = taskViewModel.getFormattedDate(pickedDate)
     }
 
+    private fun clearDateTv() {
+        task.date = null
+        binding.dateTv.text = ""
+    }
+
+    private fun showTimePicker() {
+        MaterialTimePicker.Builder()
+            .setTitleText(R.string.select_time)
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(12)
+            .setMinute(0)
+            .build()
+            .apply {
+                addOnPositiveButtonClickListener {
+                    updateTime(hour, minute)
+                }
+            }.show(childFragmentManager, "MaterialTimePicker")
+    }
+
+    private fun updateTime(pickedHour: Int, pickedMinute: Int) {
+        task.date?.hours = pickedHour
+        task.date?.minutes = pickedMinute
+        updateDateTv()
+    }
+
     private fun updateUI() = with (binding) {
+        setHeaderText(R.string.task)
         titleTi.setText(task.title)
         noteTi.setText(task.note)
-        dateTv.text = task.date?.let { taskViewModel.getFormattedDate(it) } ?: ""
-        timestampTv.apply {
-            text = getString(R.string.task_timestamp, taskViewModel.getFormattedTimestamp(task.timestamp))
-            visibility = View.VISIBLE
-        }
         doneCb.apply {
             isEnabled  = true
             isSelected = true
             isChecked  = task.isCompleted
             jumpDrawablesToCurrentState()
         }
-        setHeaderText(R.string.task)
+        timestampTv.apply {
+            text = getString(R.string.task_timestamp, taskViewModel.getFormattedTimestamp(task.timestamp))
+            visibility = View.VISIBLE
+        }
+        updateDateTv()
+    }
+
+    private fun updateDateTv() = with (binding) {
+        dateTv.text = task.date?.let { taskViewModel.getFormattedDate(it) } ?: ""
     }
 
     private fun setHeaderText(@StringRes res: Int) = with (binding) {
