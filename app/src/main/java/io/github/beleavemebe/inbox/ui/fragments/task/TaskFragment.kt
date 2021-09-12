@@ -20,7 +20,7 @@ import java.lang.IllegalArgumentException
 import java.util.*
 
 class TaskFragment : Fragment(R.layout.fragment_task) {
-    private lateinit var task : Task
+    private lateinit var task: Task
     private val taskViewModel: TaskViewModel by viewModels()
 
     private var _binding: FragmentTaskBinding? = null
@@ -28,7 +28,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val taskId : UUID? = arguments?.get("taskId") as? UUID
+        val taskId: UUID? = arguments?.get("taskId") as? UUID
         if (taskId == null) {
             task = Task()
             taskViewModel.onNoTaskIdGiven()
@@ -47,7 +47,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun setTaskLiveDataObserver() {
-        taskViewModel.taskLiveData.observe(viewLifecycleOwner) { task : Task? ->
+        taskViewModel.taskLiveData.observe(viewLifecycleOwner) { task: Task? ->
             this.task = task ?: throw IllegalArgumentException("Impossible wrong id")
             updateUI()
         }
@@ -59,112 +59,11 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         addCheckboxListener()
         hideTimestamp()
         setHeaderText(R.string.new_task)
-        initDatePicker()
-        initTimePicker()
+        initDatePickerListener()
+        initTimePickerListener()
     }
 
-    private fun initDatePicker() {
-        binding.dateTv.setOnClickListener { showDatePicker() }
-    }
-
-    private fun showDatePicker() {
-        MaterialDatePicker.Builder.datePicker()
-            .setTitleText(getString(R.string.select_date))
-            .setSelection(task.date?.time ?: System.currentTimeMillis())
-            .build()
-            .apply {
-                addOnNegativeButtonClickListener {
-                    clearDateTv()
-                }
-                addOnPositiveButtonClickListener { ms ->
-                    val pickedDate = Date(ms)
-                    updateDate(pickedDate)
-                }
-            }.show(childFragmentManager, "MaterialDatePicker")
-
-    }
-
-    private fun updateDate(pickedDate: Date) {
-        task.date = pickedDate
-        binding.dateTv.text = taskViewModel.getFormattedDate(pickedDate)
-    }
-
-    private fun clearDateTv() {
-        task.date = null
-        binding.dateTv.text = ""
-    }
-
-    private fun initTimePicker() {
-        binding.timeTv.setOnClickListener { showTimePicker() }
-    }
-
-    private fun showTimePicker() {
-        MaterialTimePicker.Builder()
-            .setTitleText(R.string.select_time)
-            .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setHour(12)
-            .setMinute(0)
-            .build()
-            .apply {
-                addOnPositiveButtonClickListener {
-                    updateTime(hour, minute)
-                }
-            }.show(childFragmentManager, "MaterialTimePicker")
-    }
-
-    private fun updateTime(pickedHour: Int, pickedMinute: Int) {
-        task.date?.hours = pickedHour
-        task.date?.minutes = pickedMinute
-        updateTimeTv()
-    }
-
-    private fun updateTimeTv() = with (binding) {
-        timeTv.text = task.date?.run { "${hours}:${ if (minutes >= 10) "$minutes" else "0$minutes" }" }
-    }
-
-    private fun updateUI() = with (binding) {
-        setHeaderText(R.string.task)
-        titleTi.setText(task.title)
-        noteTi.setText(task.note)
-        doneCb.apply {
-            isEnabled  = true
-            isSelected = true
-            isChecked  = task.isCompleted
-            jumpDrawablesToCurrentState()
-        }
-        timestampTv.apply {
-            text = getString(R.string.task_timestamp, taskViewModel.getFormattedTimestamp(task.timestamp))
-            visibility = View.VISIBLE
-        }
-        updateDateTv()
-        updateTimeTv()
-    }
-
-    private fun updateDateTv() = with (binding) {
-        dateTv.text = task.date?.let { taskViewModel.getFormattedDate(it) } ?: ""
-    }
-
-    private fun setHeaderText(@StringRes res: Int) = with (binding) {
-        taskHeaderTv.text = getString(res)
-    }
-
-    private fun saveTask(view: View) {
-        if (task.isBlank()) {
-            Toaster.get().toast(R.string.task_is_blank)
-        } else {
-            taskViewModel.onExitFragment(task)
-            navToTaskListFragment(view)
-        }
-    }
-
-    private fun navToTaskListFragment(view: View) {
-        Navigation.findNavController(view)
-            .navigate(
-                R.id.action_taskFragment_to_taskListFragment
-            )
-    }
-
-    private fun addTextWatchers() = with (binding) {
+    private fun addTextWatchers() = with(binding) {
         TextWatcherImpl.newWatcher { sequence ->
             task.title = sequence.toString()
         }.also { titleTi.addTextChangedListener(it) }
@@ -174,12 +73,12 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         }.also { noteTi.addTextChangedListener(it) }
     }
 
-    private fun addListeners() = with (binding) {
+    private fun addListeners() = with(binding) {
         backIb.setOnClickListener(::navToTaskListFragment)
         saveIb.setOnClickListener(::saveTask)
     }
 
-    private fun addCheckboxListener() = with (binding) {
+    private fun addCheckboxListener() = with(binding) {
         doneCb.setOnCheckedChangeListener { _, isChecked ->
             if (taskViewModel.isTaskIdGiven) {
                 task.isCompleted = isChecked
@@ -193,8 +92,123 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         }
     }
 
-    private fun hideTimestamp() = with (binding) {
+    private fun hideTimestamp() = with(binding) {
         timestampTv.visibility = View.INVISIBLE
+    }
+
+    private fun setHeaderText(@StringRes res: Int) = with(binding) {
+        taskHeaderTv.text = getString(res)
+    }
+
+    private fun updateDateTv() = with(binding) {
+        dateTv.text = task.date?.let { taskViewModel.getFormattedDate(it) } ?: ""
+    }
+
+    private fun updateTimeTv() = with(binding) {
+        val date = task.date ?: return
+        val cal = Calendar.getInstance(Locale("ru")).apply { time = date }
+        val hrs = cal.get(Calendar.HOUR_OF_DAY)
+        val min = cal.get(Calendar.MINUTE)
+        timeTv.text = date.run { "${hrs}:${if (min >= 10) "$min" else "0$min"}" }
+    }
+
+    private fun initDatePickerListener() {
+        binding.dateTv.setOnClickListener { showDatePicker() }
+    }
+
+    private fun initTimePickerListener() {
+        binding.timeTv.setOnClickListener { showTimePicker() }
+    }
+
+    private fun showDatePicker() {
+        MaterialDatePicker.Builder.datePicker()
+            .setTitleText(getString(R.string.select_date))
+            .setSelection(task.date?.time ?: System.currentTimeMillis())
+            .build()
+            .apply {
+                addOnNegativeButtonClickListener {
+                    clearDate()
+                }
+                addOnPositiveButtonClickListener { ms ->
+                    val pickedDate = Date(ms)
+                    updateDate(pickedDate)
+                }
+            }.show(childFragmentManager, "MaterialDatePicker")
+    }
+
+    private fun updateDate(pickedDate: Date) {
+        task.date = pickedDate
+        binding.dateTv.text = taskViewModel.getFormattedDate(pickedDate)
+    }
+
+    private fun clearDate() {
+        task.date = null
+        binding.dateTv.text = ""
+        clearTime()
+    }
+
+    private fun showTimePicker() {
+        if (task.date == null) {
+            Toaster.get().toast(R.string.date_not_set)
+            return
+        }
+        MaterialTimePicker.Builder()
+            .setTitleText(R.string.select_time)
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(12)
+            .setMinute(0)
+            .build()
+            .apply {
+                addOnPositiveButtonClickListener {
+                    updateTime(hour, minute)
+                }
+                addOnNegativeButtonClickListener {
+                    clearTime()
+                }
+            }.show(childFragmentManager, "MaterialTimePicker")
+    }
+
+    private fun updateTime(pickedHour: Int, pickedMinute: Int) {
+        task.date =
+            Calendar.getInstance(Locale("ru")).run {
+                time = task.date ?: return@updateTime
+                set(Calendar.HOUR_OF_DAY, pickedHour)
+                set(Calendar.MINUTE, pickedMinute)
+                time
+            }
+        updateTimeTv()
+    }
+
+    private fun clearTime() = with(binding) {
+        updateTime(0, 0)
+        binding.timeTv.text = ""
+    }
+
+    private fun updateUI() = with(binding) {
+        setHeaderText(R.string.task)
+        titleTi.setText(task.title)
+        noteTi.setText(task.note)
+        doneCb.apply {
+            isEnabled = true
+            isSelected = true
+            isChecked = task.isCompleted
+            jumpDrawablesToCurrentState()
+        }
+        timestampTv.apply {
+            text = getString(R.string.task_timestamp, taskViewModel.getFormattedTimestamp(task.timestamp))
+            visibility = View.VISIBLE
+        }
+        updateDateTv()
+        updateTimeTv()
+    }
+
+    private fun saveTask(view: View) {
+        if (task.isBlank()) {
+            Toaster.get().toast(R.string.task_is_blank)
+        } else {
+            taskViewModel.onExitFragment(task)
+            navToTaskListFragment(view)
+        }
     }
 
     override fun onDestroyView() {
@@ -203,7 +217,14 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         _binding = null
     }
 
-    private fun Task.isBlank() : Boolean {
+    private fun navToTaskListFragment(view: View) {
+        Navigation.findNavController(view)
+            .navigate(
+                R.id.action_taskFragment_to_taskListFragment
+            )
+    }
+
+    private fun Task.isBlank(): Boolean {
         return title == ""
     }
 }

@@ -18,4 +18,5 @@
     <string name="projects">Проекты</string>
     <string name="information">Информация</string>
     <string name="meetings">Встречи</string>
+    <string name="date_not_set">Дата не задана</string>
 </resources>
