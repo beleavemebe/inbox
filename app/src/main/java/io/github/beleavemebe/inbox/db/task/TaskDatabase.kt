@@ -6,23 +6,19 @@ import io.github.beleavemebe.inbox.model.Task
 
 @Database(
     entities = [Task::class],
-    version = 2,
+    version = 4,
     autoMigrations = [
-        AutoMigration(
-            from = 1,
-            to = 2,
-            spec = TaskDatabase.FirstMigration::class
-        )
+        AutoMigration(from = 3, to = 4, spec = TaskDatabase.ThirdMigration::class)
     ]
 )
 @TypeConverters(TaskTypeConverters::class)
-abstract class TaskDatabase : RoomDatabase(), AutoMigrationSpec {
+abstract class TaskDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
 
-    @RenameColumn(
+    @DeleteColumn(
         tableName = "Task",
-        fromColumnName = "repetitionReferenceTimestamp",
-        toColumnName = "rep_ref_timestamp"
+        columnName = "duration"
     )
-    class FirstMigration : AutoMigrationSpec
+    class ThirdMigration : AutoMigrationSpec
+
 }

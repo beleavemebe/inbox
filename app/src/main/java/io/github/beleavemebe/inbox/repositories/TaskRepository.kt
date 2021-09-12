@@ -3,6 +3,8 @@ package io.github.beleavemebe.inbox.repositories
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import io.github.beleavemebe.inbox.db.task.TaskDatabase
 import io.github.beleavemebe.inbox.model.Task
 import java.lang.IllegalStateException
@@ -12,7 +14,6 @@ import java.util.concurrent.Executors
 class TaskRepository private constructor(context: Context) {
     companion object {
         private const val DATABASE_NAME = "task-db"
-
         private var INSTANCE : TaskRepository? = null
 
         fun getInstance() = INSTANCE

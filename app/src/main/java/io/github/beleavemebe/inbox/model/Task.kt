@@ -16,7 +16,8 @@ data class Task(
     @ColumnInfo(name="note")               var note: String? = null,
     @ColumnInfo(name="deadline")           var deadline: Date? = null,
     @Embedded(prefix="rep_freq")           var repeatFrequency: TaskRepeatFrequency? = null,
-    @ColumnInfo(name="rep_ref_timestamp")  var repetitionReferenceTimestamp: Date? = null
+    @ColumnInfo(name="rep_ref_timestamp")  var repetitionReferenceTimestamp: Date? = null,
+    @ColumnInfo(name="date")               var date: Date ?= null,
 ) {
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {
