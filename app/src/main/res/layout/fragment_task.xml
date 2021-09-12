@@ -76,6 +76,7 @@
         android:id="@+id/done_cb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:scaleX="1.5"
         android:scaleY="1.5"
         app:buttonTint="@color/accent"
