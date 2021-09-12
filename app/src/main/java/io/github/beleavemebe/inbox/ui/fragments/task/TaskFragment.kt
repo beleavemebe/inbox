@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.model.Task
+import io.github.beleavemebe.inbox.util.TextWatcherImpl
 import io.github.beleavemebe.inbox.util.Toaster
 import io.github.beleavemebe.inbox.util.hideBottomNavMenu
 import io.github.beleavemebe.inbox.util.revealBottomNavMenu
@@ -144,17 +145,4 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     private fun Task.isBlank() : Boolean {
         return title == ""
     }
-
-    private class TextWatcherImpl(private val onTextChangedAction: (CharSequence) -> Unit) : TextWatcher {
-        companion object {
-            fun newWatcher(onTextChangedAction: (CharSequence) -> Unit) =
-                TextWatcherImpl(onTextChangedAction)
-        }
-
-        override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) =
-            onTextChangedAction.invoke(sequence ?: "")
-
-        override fun beforeTextChanged(sequence: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun afterTextChanged(sequence: Editable?) {}
-    } // lord forgive me
 }
