@@ -15,8 +15,12 @@
     <string name="task_not_created">Задача не создана</string>
     <string name="select_date">Выбрать дату</string>
     <string name="select_time">Выбрать время</string>
+    <string name="date_not_set">Дата не задана</string>
+    <string name="yesterday">Вчера</string>
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
+    <string name="task_datetime_placeholder">%1$s %2$s</string>
     <string name="projects">Проекты</string>
     <string name="information">Информация</string>
     <string name="meetings">Встречи</string>
-    <string name="date_not_set">Дата не задана</string>
 </resources>

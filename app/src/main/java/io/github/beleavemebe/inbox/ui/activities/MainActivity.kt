@@ -3,6 +3,7 @@ package io.github.beleavemebe.inbox.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,16 +20,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hideBottomNavMenu() {
-        setBottomNavVisibility(View.GONE)
+        setBottomNavVisibility(false)
     }
 
     fun revealBottomNavMenu() {
-        setBottomNavVisibility(View.VISIBLE)
+        setBottomNavVisibility(true)
     }
 
-    private fun setBottomNavVisibility(visibility : Int) {
+    private fun setBottomNavVisibility(visibility : Boolean) {
         findViewById<View>(R.id.main_bottom_navigation_view).apply {
-            this.visibility = visibility
+            this.isVisible = visibility
         }
     }
 }

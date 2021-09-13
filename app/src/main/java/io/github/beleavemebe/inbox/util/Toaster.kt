@@ -5,7 +5,7 @@ import android.content.Context
 import android.widget.Toast
 import java.lang.IllegalStateException
 
-class Toaster private constructor(private val context: Context) {
+internal class Toaster private constructor(private val context: Context) {
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var INSTANCE : Toaster ?= null

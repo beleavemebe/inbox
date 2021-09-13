@@ -3,6 +3,7 @@ package io.github.beleavemebe.inbox.ui.fragments.task
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -16,6 +17,7 @@ import io.github.beleavemebe.inbox.util.TextWatcherImpl
 import io.github.beleavemebe.inbox.util.Toaster
 import io.github.beleavemebe.inbox.util.hideBottomNavMenu
 import io.github.beleavemebe.inbox.util.revealBottomNavMenu
+import io.github.beleavemebe.inbox.util.calendar as extCalendar
 import java.lang.IllegalArgumentException
 import java.util.*
 
@@ -25,7 +27,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private val calendar : Calendar?
         get() = task.date?.let {
-            Calendar.getInstance(Locale("ru")).apply { time = it }
+            extCalendar.apply { time = it }
         }
 
     private var _binding: FragmentTaskBinding? = null
@@ -144,7 +146,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             }.show(childFragmentManager, "MaterialDatePicker")
     }
 
-    private fun setDate(ms: Long, hrs: Int = 12, minutes: Int = 0) {
+    private fun setDate(ms: Long, hrs: Int = 0, minutes: Int = 0) {
         val oneMinuteMs = 60*1000L
         val oneHourMs = 60*60*1000L
         val pickedDate = Date(
@@ -203,7 +205,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         noteTi.setText(task.note)
         doneCb.apply {
             isEnabled = true
-            isSelected = true
             isChecked = task.isCompleted
             jumpDrawablesToCurrentState()
         }

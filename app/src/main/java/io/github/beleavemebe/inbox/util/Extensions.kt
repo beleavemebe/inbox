@@ -1,8 +1,10 @@
 package io.github.beleavemebe.inbox.util
 
+import android.text.format.DateUtils
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import io.github.beleavemebe.inbox.ui.activities.MainActivity
+import java.util.*
 
 @MainThread internal fun Fragment.hideBottomNavMenu() {
     (requireActivity() as MainActivity)
@@ -13,3 +15,16 @@ import io.github.beleavemebe.inbox.ui.activities.MainActivity
     (requireActivity() as MainActivity)
         .revealBottomNavMenu()
 }
+
+internal val calendar get() = Calendar.getInstance(Locale("ru"))
+
+const val HOUR_MS = 60*60*1000L
+
+internal val Date.isToday get() =
+    DateUtils.isToday(this.time)
+
+internal val Date.isYesterday get() =
+    Date(this.time + 24 * HOUR_MS).isToday
+
+internal val Date.isTomorrow get() =
+    Date(this.time - 24 * HOUR_MS).isToday
