@@ -32,7 +32,7 @@ class TaskViewModel : ViewModel() {
         taskIdMutableLiveData.value = taskId
     }
 
-    fun onExitFragment(task: Task) = taskHandleAction(task)
+    fun handleTask(task: Task) = taskHandleAction(task)
 
     fun getFormattedDate(d : Date) =
         SimpleDateFormat("EEE, dd MMM yyyy", Locale("ru"))
