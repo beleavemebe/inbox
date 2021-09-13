@@ -133,16 +133,28 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
                     clearDate()
                 }
                 addOnPositiveButtonClickListener { ms ->
-                    val nineHours : Long = 9L*(60L*60L*1000L)
-                    val pickedDate = Date(ms + nineHours)
-                    setDate(pickedDate)
+                    val hrs = calendar?.get(Calendar.HOUR_OF_DAY)
+                    val min = calendar?.get(Calendar.MINUTE)
+                    if (hrs != null && min != null) {
+                        setDate(ms, hrs, min)
+                    } else {
+                        setDate(ms)
+                    }
                 }
             }.show(childFragmentManager, "MaterialDatePicker")
     }
 
-    private fun setDate(pickedDate: Date) {
+    private fun setDate(ms: Long, hrs: Int = 12, minutes: Int = 0) {
+        val oneMinuteMs = 60*1000L
+        val oneHourMs = 60*60*1000L
+        val pickedDate = Date(
+            ms
+                - 3 * oneHourMs // 3 AM is default time, we drop it to 0 AM
+                + hrs * oneHourMs
+                + minutes * oneMinuteMs
+        )
         task.date = pickedDate
-        binding.dateTv.text = taskViewModel.getFormattedDate(pickedDate)
+        updateDateTv()
     }
 
     private fun clearDate() {
