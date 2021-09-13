@@ -23,6 +23,11 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     private lateinit var task: Task
     private val taskViewModel: TaskViewModel by viewModels()
 
+    private val calendar : Calendar?
+        get() = task.date?.let {
+            Calendar.getInstance(Locale("ru")).apply { time = it }
+        }
+
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
 
@@ -104,12 +109,10 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         dateTv.text = task.date?.let { taskViewModel.getFormattedDate(it) } ?: ""
     }
 
-    private fun updateTimeTv() = with(binding) {
-        val date = task.date ?: return
-        val cal = Calendar.getInstance(Locale("ru")).apply { time = date }
-        val hrs = cal.get(Calendar.HOUR_OF_DAY)
-        val min = cal.get(Calendar.MINUTE)
-        timeTv.text = date.run { "${hrs}:${if (min >= 10) "$min" else "0$min"}" }
+    private fun updateTimeTv() = calendar?.apply {
+        val hrs = get(Calendar.HOUR_OF_DAY)
+        val min = get(Calendar.MINUTE)
+        binding.timeTv.text = time.run { "${hrs}:${if (min >= 10) "$min" else "0$min"}" }
     }
 
     private fun initDatePickerListener() {
@@ -130,13 +133,14 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
                     clearDate()
                 }
                 addOnPositiveButtonClickListener { ms ->
-                    val pickedDate = Date(ms)
-                    updateDate(pickedDate)
+                    val nineHours : Long = 9L*(60L*60L*1000L)
+                    val pickedDate = Date(ms + nineHours)
+                    setDate(pickedDate)
                 }
             }.show(childFragmentManager, "MaterialDatePicker")
     }
 
-    private fun updateDate(pickedDate: Date) {
+    private fun setDate(pickedDate: Date) {
         task.date = pickedDate
         binding.dateTv.text = taskViewModel.getFormattedDate(pickedDate)
     }
@@ -148,19 +152,18 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun showTimePicker() {
-        if (task.date == null) {
-            Toaster.get().toast(R.string.date_not_set)
-            return
-        }
+        val cal = calendar ?: return Toaster.get().toast(R.string.date_not_set)
+        val hrs = cal.get(Calendar.HOUR_OF_DAY)
+        val min = cal.get(Calendar.MINUTE)
         MaterialTimePicker.Builder()
             .setTitleText(R.string.select_time)
             .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setHour(12)
-            .setMinute(0)
+            .setHour(hrs)
+            .setMinute(min)
             .build()
             .apply {
                 addOnPositiveButtonClickListener {
-                    updateTime(hour, minute)
+                    setTime(hour, minute)
                 }
                 addOnNegativeButtonClickListener {
                     clearTime()
@@ -168,19 +171,17 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             }.show(childFragmentManager, "MaterialTimePicker")
     }
 
-    private fun updateTime(pickedHour: Int, pickedMinute: Int) {
-        task.date =
-            Calendar.getInstance(Locale("ru")).run {
-                time = task.date ?: return@updateTime
-                set(Calendar.HOUR_OF_DAY, pickedHour)
-                set(Calendar.MINUTE, pickedMinute)
-                time
-            }
+    private fun setTime(pickedHour: Int, pickedMinute: Int) {
+        task.date = calendar?.run {
+            set(Calendar.HOUR_OF_DAY, pickedHour)
+            set(Calendar.MINUTE, pickedMinute)
+            time
+        } ?: return
         updateTimeTv()
     }
 
     private fun clearTime() = with(binding) {
-        updateTime(0, 0)
+        setTime(0, 0)
         binding.timeTv.text = ""
     }
 
@@ -206,7 +207,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         if (task.isBlank()) {
             Toaster.get().toast(R.string.task_is_blank)
         } else {
-            taskViewModel.onExitFragment(task)
+            taskViewModel.handleTask(task)
             navToTaskListFragment(view)
         }
     }
