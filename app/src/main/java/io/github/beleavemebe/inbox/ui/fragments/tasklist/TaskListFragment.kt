@@ -2,6 +2,7 @@ package io.github.beleavemebe.inbox.ui.fragments.tasklist
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -38,10 +39,18 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
     private fun setTaskListLiveDataObserver() {
         taskListViewModel.taskListLiveData.observe(viewLifecycleOwner) { taskList ->
-            val adapter = binding.tasksRv.adapter as TaskAdapter
-            adapter.submitList(taskList)
+            if (taskList.isEmpty()) {
+                showNoTasksTv()
+            } else {
+                val adapter = binding.tasksRv.adapter as TaskAdapter
+                adapter.submitList(taskList)
+                hideNoTasksTv()
+            }
         }
     }
+
+    private fun showNoTasksTv() = with (binding.noTasksTv) { isVisible = true }
+    private fun hideNoTasksTv() = with (binding.noTasksTv) { isVisible = false }
 
     private fun navToTaskFragment() {
         findNavController().navigate(
