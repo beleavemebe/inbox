@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="16dp">
+        android:paddingVertical="12dp">
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/completed_cb"

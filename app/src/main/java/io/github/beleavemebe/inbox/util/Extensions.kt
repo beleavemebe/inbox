@@ -16,10 +16,6 @@ import java.util.*
         .revealBottomNavMenu()
 }
 
-internal val calendar get() = Calendar.getInstance(Locale("ru"))
-
-const val HOUR_MS = 60*60*1000L
-
 internal val Date.isToday get() =
     DateUtils.isToday(this.time)
 

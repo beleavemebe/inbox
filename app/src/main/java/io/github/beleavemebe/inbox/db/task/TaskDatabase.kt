@@ -6,9 +6,9 @@ import io.github.beleavemebe.inbox.model.Task
 
 @Database(
     entities = [Task::class],
-    version = 4,
+    version = 5,
     autoMigrations = [
-        AutoMigration(from = 3, to = 4, spec = TaskDatabase.ThirdMigration::class)
+        AutoMigration(from = 4, to = 5)
     ]
 )
 @TypeConverters(TaskTypeConverters::class)
