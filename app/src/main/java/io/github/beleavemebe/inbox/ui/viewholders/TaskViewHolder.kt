@@ -1,6 +1,7 @@
 package io.github.beleavemebe.inbox.ui.viewholders
 
-import android.graphics.Paint
+import android.content.res.Resources
+import android.graphics.Color
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
@@ -10,13 +11,12 @@ import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
 import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.repositories.TaskRepository
 import io.github.beleavemebe.inbox.ui.fragments.tasklist.TaskListFragmentDirections
+import io.github.beleavemebe.inbox.util.*
 import io.github.beleavemebe.inbox.util.isToday
 import io.github.beleavemebe.inbox.util.isTomorrow
 import io.github.beleavemebe.inbox.util.isYesterday
 import java.text.SimpleDateFormat
 import java.util.*
-
-const val TAG = "TaskViewHolder"
 
 class TaskViewHolder(taskView: View) :
     RecyclerView.ViewHolder(taskView),
@@ -56,18 +56,8 @@ class TaskViewHolder(taskView: View) :
         if (taskDate == null) {
             datetimeBar.isVisible = false
         } else {
-            val date = when {
-                taskDate.isYesterday -> resources.getString(R.string.yesterday)
-                taskDate.isToday -> resources.getString(R.string.today)
-                taskDate.isTomorrow -> resources.getString(R.string.tomorrow)
-                else -> SimpleDateFormat("EEE, dd MMM", Locale("ru"))
-                    .format(taskDate)
-                    .replaceFirstChar { it.uppercase() }
-            }
-            val time = if (task.isTimeSpecified == true) {
-                SimpleDateFormat("HH:mm", Locale("ru")).format(taskDate)
-            } else ""
-            taskTimeTv.text = resources.getString(R.string.task_datetime_placeholder, date, time)
+            taskTimeTv.text = getDatetimeText(task.date!!, resources)
+            updateDatetimeBarColor(resources)
         }
     }
 
@@ -75,12 +65,44 @@ class TaskViewHolder(taskView: View) :
         val textColor : Int
         if (task.isCompleted) {
             textColor = resources.getColor(R.color.secondary_text)
-            paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
             textColor = resources.getColor(R.color.primary_text)
-            paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
+        setCrossedOut(task.isCompleted)
         setTextColor(textColor)
+        updateDatetimeBarColor(resources)
+    }
+
+    private fun updateDatetimeBarColor(resources: Resources) = with (binding) {
+        val datetimeBarColor = getDatetimeBarColor(resources)
+        taskTimeTv.apply {
+            setTextColor(datetimeBarColor)
+            setCrossedOut(task.isCompleted)
+        }
+        taskTimeIv.setColorFilter(datetimeBarColor)
+    }
+
+    private fun getDatetimeBarColor(res: Resources): Int =
+        when {
+            task.isCompleted -> res.getColor(R.color.secondary_text)
+            System.currentTimeMillis() > (task.date?.time ?: 0L) -> Color.RED
+            task.date?.isToday ?: false -> res.getColor(R.color.accent_text_blue)
+            else -> res.getColor(R.color.primary_dark)
+        }
+
+    private fun getDatetimeText(taskDate: Date, resources : Resources): String {
+        val date = when {
+            taskDate.isYesterday -> resources.getString(R.string.yesterday)
+            taskDate.isToday -> resources.getString(R.string.today)
+            taskDate.isTomorrow -> resources.getString(R.string.tomorrow)
+            else -> SimpleDateFormat("EEE, dd MMM", Locale("ru"))
+                .format(taskDate)
+                .replaceFirstChar { it.uppercase() }
+        }
+        val time = if (task.isTimeSpecified == true) {
+            SimpleDateFormat("HH:mm", Locale("ru")).format(taskDate)
+        } else ""
+        return resources.getString(R.string.task_datetime_placeholder, date, time)
     }
 
     init {

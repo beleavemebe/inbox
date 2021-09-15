@@ -1,10 +1,10 @@
 package io.github.beleavemebe.inbox.util
 
-import android.text.format.DateUtils
+import android.graphics.Paint
+import android.widget.TextView
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import io.github.beleavemebe.inbox.ui.activities.MainActivity
-import java.util.*
 
 @MainThread internal fun Fragment.hideBottomNavMenu() {
     (requireActivity() as MainActivity)
@@ -16,11 +16,14 @@ import java.util.*
         .revealBottomNavMenu()
 }
 
-internal val Date.isToday get() =
-    DateUtils.isToday(this.time)
+internal fun TextView.setCrossedOut(crossedOut: Boolean) {
+    if (crossedOut) crossOut() else uncross()
+}
 
-internal val Date.isYesterday get() =
-    Date(this.time + 24 * HOUR_MS).isToday
+private fun TextView.crossOut() {
+    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+}
 
-internal val Date.isTomorrow get() =
-    Date(this.time - 24 * HOUR_MS).isToday
+private fun TextView.uncross() {
+    paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+}
