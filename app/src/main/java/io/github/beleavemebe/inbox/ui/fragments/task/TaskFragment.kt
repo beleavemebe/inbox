@@ -59,7 +59,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun setupUI() {
         addTextWatchers()
-        addListeners()
+        addNavListeners()
         addCheckboxListener()
         hideTimestamp()
         setHeaderText(R.string.new_task)
@@ -67,7 +67,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         initTimePickerListener()
     }
 
-    private fun addTextWatchers() = with(binding) {
+    private fun addTextWatchers() = with (binding) {
         TextWatcherImpl.newWatcher { sequence ->
             task.title = sequence.toString()
         }.also { titleTi.addTextChangedListener(it) }
@@ -77,7 +77,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         }.also { noteTi.addTextChangedListener(it) }
     }
 
-    private fun addListeners() = with (binding) {
+    private fun addNavListeners() = with (binding) {
         backIb.setOnClickListener(::navToTaskListFragment)
         saveIb.setOnClickListener(::saveTask)
     }
@@ -147,8 +147,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun setDate(ms: Long, hrs: Int = 0, minutes: Int = 0) {
         task.date = Date(
-            ms
-                - 3 * HOUR_MS // 3 AM is default time, we drop it to 0 AM
+            ms - 3 * HOUR_MS // 3 AM is default time, we drop it to 0 AM
                 + hrs * HOUR_MS
                 + minutes * MINUTE_MS
         )

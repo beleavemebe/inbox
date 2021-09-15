@@ -37,9 +37,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     private fun setupRecyclerView() = with (binding.tasksRv) {
         layoutManager = LinearLayoutManager(context)
         adapter = TaskAdapter()
-        ItemTouchHelper(touchHelperCallback).also {
-            it.attachToRecyclerView(this)
-        }
+        ItemTouchHelper(touchHelperCallback).attachToRecyclerView(this)
     }
 
     private fun setTaskListLiveDataObserver() {
