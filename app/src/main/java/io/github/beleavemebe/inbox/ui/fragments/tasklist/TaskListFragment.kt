@@ -48,7 +48,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     }
 
     private val touchHelperCallback =
-        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT)
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
     {
         override fun onMove(
             recyclerView: RecyclerView,

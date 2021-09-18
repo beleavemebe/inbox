@@ -62,14 +62,13 @@ class TaskViewHolder(taskView: View) :
     }
 
     private fun alterViewIfTaskIsCompleted() = with (binding.taskTitleTv) {
-        val textColor : Int
-        if (task.isCompleted) {
-            textColor = resources.getColor(R.color.secondary_text)
+        val titleTextColor = if (task.isCompleted) {
+            resources.getColor(R.color.secondary_text)
         } else {
-            textColor = resources.getColor(R.color.primary_text)
+            resources.getColor(R.color.primary_text)
         }
         setCrossedOut(task.isCompleted)
-        setTextColor(textColor)
+        setTextColor(titleTextColor)
         updateDatetimeBarColor(resources)
     }
 
@@ -82,13 +81,21 @@ class TaskViewHolder(taskView: View) :
         taskTimeIv.setColorFilter(datetimeBarColor)
     }
 
-    private fun getDatetimeBarColor(res: Resources): Int =
-        when {
-            task.isCompleted -> res.getColor(R.color.secondary_text)
-            System.currentTimeMillis() > (task.date?.time ?: 0L) -> Color.RED
-            task.date?.isToday ?: false -> res.getColor(R.color.accent_text_blue)
-            else -> res.getColor(R.color.primary_dark)
+    private fun getDatetimeBarColor(res: Resources): Int {
+        val activeColor = res.getColor(R.color.primary_dark)
+        val inactiveColor = res.getColor(R.color.secondary_text)
+        val todayColor = res.getColor(R.color.accent_text_blue)
+        val failedColor  = Color.RED
+        return when {
+            task.isCompleted -> inactiveColor
+            task.date.isPast -> when {
+                (task.date.isToday) && (task.isTimeSpecified ?: false).not() -> todayColor
+                else -> failedColor
+            }
+            task.date.isToday -> todayColor
+            else -> activeColor
         }
+    }
 
     private fun getDatetimeText(taskDate: Date, resources : Resources): String {
         val date = when {
