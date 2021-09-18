@@ -1,8 +1,9 @@
 package io.github.beleavemebe.inbox.ui.viewholders
 
-import android.graphics.Paint
-import android.util.Log
+import android.content.res.Resources
+import android.graphics.Color
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import io.github.beleavemebe.inbox.R
@@ -10,23 +11,26 @@ import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
 import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.repositories.TaskRepository
 import io.github.beleavemebe.inbox.ui.fragments.tasklist.TaskListFragmentDirections
-
-const val TAG = "TaskViewHolder"
+import io.github.beleavemebe.inbox.util.*
+import io.github.beleavemebe.inbox.util.isToday
+import io.github.beleavemebe.inbox.util.isTomorrow
+import io.github.beleavemebe.inbox.util.isYesterday
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TaskViewHolder(taskView: View) :
     RecyclerView.ViewHolder(taskView),
     View.OnClickListener
 {
-    private lateinit var task: Task
+    lateinit var task: Task
     private val repo get() = TaskRepository.getInstance()
     private var binding: ListItemTaskBinding = ListItemTaskBinding.bind(taskView)
 
     fun bind(task: Task) {
         this.task = task
-        Log.d(TAG, "i bind task: $task")
         initTitleTv(task)
-        initDeleteIb(task)
         initCompletedCb(task)
+        initDatetimeBar(task)
     }
 
     private fun initTitleTv(task: Task) = with (binding.taskTitleTv) {
@@ -39,7 +43,6 @@ class TaskViewHolder(taskView: View) :
             isChecked = task.isCompleted
             jumpDrawablesToCurrentState()
             setOnCheckedChangeListener { _, isChecked ->
-                Log.d(TAG, "task checked")
                 task.isCompleted = isChecked
                 repo.updateTask(task)
                 alterViewIfTaskIsCompleted()
@@ -47,23 +50,66 @@ class TaskViewHolder(taskView: View) :
         }
     }
 
-    private fun alterViewIfTaskIsCompleted() = with (binding.taskTitleTv) {
-        val textColor : Int
-        if (task.isCompleted) {
-            textColor = resources.getColor(R.color.secondary_text)
-            paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+    private fun initDatetimeBar(task: Task) = with (binding) {
+        val taskDate = task.date
+        val resources = datetimeBar.resources
+        if (taskDate == null) {
+            datetimeBar.isVisible = false
         } else {
-            textColor = resources.getColor(R.color.primary_text)
-            paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            taskTimeTv.text = getDatetimeText(task.date!!, resources)
+            updateDatetimeBarColor(resources)
         }
-        setTextColor(textColor)
     }
 
-    private fun initDeleteIb(task: Task) = with (binding) {
-        deleteIb.setOnClickListener {
-            root.setOnClickListener(null)
-            repo.deleteTask(task)
+    private fun alterViewIfTaskIsCompleted() = with (binding.taskTitleTv) {
+        val titleTextColor = if (task.isCompleted) {
+            resources.getColor(R.color.secondary_text)
+        } else {
+            resources.getColor(R.color.primary_text)
         }
+        setCrossedOut(task.isCompleted)
+        setTextColor(titleTextColor)
+        updateDatetimeBarColor(resources)
+    }
+
+    private fun updateDatetimeBarColor(resources: Resources) = with (binding) {
+        val datetimeBarColor = getDatetimeBarColor(resources)
+        taskTimeTv.apply {
+            setTextColor(datetimeBarColor)
+            setCrossedOut(task.isCompleted)
+        }
+        taskTimeIv.setColorFilter(datetimeBarColor)
+    }
+
+    private fun getDatetimeBarColor(res: Resources): Int {
+        val activeColor = res.getColor(R.color.primary_dark)
+        val inactiveColor = res.getColor(R.color.secondary_text)
+        val todayColor = res.getColor(R.color.accent_text_blue)
+        val failedColor  = Color.RED
+        return when {
+            task.isCompleted -> inactiveColor
+            task.date.isPast -> when {
+                (task.date.isToday) && (task.isTimeSpecified ?: false).not() -> todayColor
+                else -> failedColor
+            }
+            task.date.isToday -> todayColor
+            else -> activeColor
+        }
+    }
+
+    private fun getDatetimeText(taskDate: Date, resources : Resources): String {
+        val date = when {
+            taskDate.isYesterday -> resources.getString(R.string.yesterday)
+            taskDate.isToday -> resources.getString(R.string.today)
+            taskDate.isTomorrow -> resources.getString(R.string.tomorrow)
+            else -> SimpleDateFormat("EEE, dd MMM", Locale("ru"))
+                .format(taskDate)
+                .replaceFirstChar { it.uppercase() }
+        }
+        val time = if (task.isTimeSpecified == true) {
+            SimpleDateFormat("HH:mm", Locale("ru")).format(taskDate)
+        } else ""
+        return resources.getString(R.string.task_datetime_placeholder, date, time)
     }
 
     init {
@@ -71,7 +117,6 @@ class TaskViewHolder(taskView: View) :
     }
 
     override fun onClick(view: View?) {
-        Log.d(TAG, "navigating to task $task")
         view!!.findNavController().navigate(
                 TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(task.id)
             )

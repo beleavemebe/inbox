@@ -156,7 +156,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="24dp"
-            android:src="@drawable/ic_baseline_timer_24"
+            android:src="@drawable/ic_baseline_access_time_24"
+            android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="@id/date_tv"
             app:layout_constraintStart_toEndOf="@id/date_tv"
             app:layout_constraintTop_toTopOf="@id/date_tv" />

@@ -12,10 +12,8 @@ import com.google.android.material.timepicker.TimeFormat
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.model.Task
-import io.github.beleavemebe.inbox.util.TextWatcherImpl
-import io.github.beleavemebe.inbox.util.Toaster
-import io.github.beleavemebe.inbox.util.hideBottomNavMenu
-import io.github.beleavemebe.inbox.util.revealBottomNavMenu
+import io.github.beleavemebe.inbox.util.*
+import io.github.beleavemebe.inbox.util.calendar as extCalendar
 import java.lang.IllegalArgumentException
 import java.util.*
 
@@ -25,7 +23,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private val calendar : Calendar?
         get() = task.date?.let {
-            Calendar.getInstance(Locale("ru")).apply { time = it }
+            extCalendar.apply { time = it }
         }
 
     private var _binding: FragmentTaskBinding? = null
@@ -53,14 +51,15 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun setTaskLiveDataObserver() {
         taskViewModel.taskLiveData.observe(viewLifecycleOwner) { task: Task? ->
-            this.task = task ?: throw IllegalArgumentException("Impossible wrong id")
+            this.task = task
+                ?: throw IllegalArgumentException("Impossible wrong id")
             updateUI()
         }
     }
 
     private fun setupUI() {
         addTextWatchers()
-        addListeners()
+        addNavListeners()
         addCheckboxListener()
         hideTimestamp()
         setHeaderText(R.string.new_task)
@@ -68,7 +67,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         initTimePickerListener()
     }
 
-    private fun addTextWatchers() = with(binding) {
+    private fun addTextWatchers() = with (binding) {
         TextWatcherImpl.newWatcher { sequence ->
             task.title = sequence.toString()
         }.also { titleTi.addTextChangedListener(it) }
@@ -78,12 +77,12 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         }.also { noteTi.addTextChangedListener(it) }
     }
 
-    private fun addListeners() = with(binding) {
+    private fun addNavListeners() = with (binding) {
         backIb.setOnClickListener(::navToTaskListFragment)
         saveIb.setOnClickListener(::saveTask)
     }
 
-    private fun addCheckboxListener() = with(binding) {
+    private fun addCheckboxListener() = with (binding) {
         doneCb.setOnCheckedChangeListener { _, isChecked ->
             if (taskViewModel.isTaskIdGiven) {
                 task.isCompleted = isChecked
@@ -97,22 +96,24 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         }
     }
 
-    private fun hideTimestamp() = with(binding) {
+    private fun hideTimestamp() = with (binding) {
         timestampTv.visibility = View.INVISIBLE
     }
 
-    private fun setHeaderText(@StringRes res: Int) = with(binding) {
+    private fun setHeaderText(@StringRes res: Int) = with (binding) {
         taskHeaderTv.text = getString(res)
     }
 
-    private fun updateDateTv() = with(binding) {
+    private fun updateDateTv() = with (binding) {
         dateTv.text = task.date?.let { taskViewModel.getFormattedDate(it) } ?: ""
     }
 
-    private fun updateTimeTv() = calendar?.apply {
-        val hrs = get(Calendar.HOUR_OF_DAY)
-        val min = get(Calendar.MINUTE)
-        binding.timeTv.text = time.run { "${hrs}:${if (min >= 10) "$min" else "0$min"}" }
+    private fun updateTimeTv() = calendar?.run {
+        if (task.isTimeSpecified == true) {
+            val hrs = get(Calendar.HOUR_OF_DAY)
+            val min = get(Calendar.MINUTE)
+            binding.timeTv.text = time.run { "${hrs}:${if (min >= 10) "$min" else "0$min"}" }
+        }
     }
 
     private fun initDatePickerListener() {
@@ -144,16 +145,12 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             }.show(childFragmentManager, "MaterialDatePicker")
     }
 
-    private fun setDate(ms: Long, hrs: Int = 12, minutes: Int = 0) {
-        val oneMinuteMs = 60*1000L
-        val oneHourMs = 60*60*1000L
-        val pickedDate = Date(
-            ms
-                - 3 * oneHourMs // 3 AM is default time, we drop it to 0 AM
-                + hrs * oneHourMs
-                + minutes * oneMinuteMs
+    private fun setDate(ms: Long, hrs: Int = 0, minutes: Int = 0) {
+        task.date = Date(
+            ms - 3 * HOUR_MS // 3 AM is default time, we drop it to 0 AM
+                + hrs * HOUR_MS
+                + minutes * MINUTE_MS
         )
-        task.date = pickedDate
         updateDateTv()
     }
 
@@ -189,26 +186,30 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             set(Calendar.MINUTE, pickedMinute)
             time
         } ?: return
+        task.isTimeSpecified = true
         updateTimeTv()
     }
 
-    private fun clearTime() = with(binding) {
+    private fun clearTime() = with (binding) {
         setTime(0, 0)
+        task.isTimeSpecified = false
         binding.timeTv.text = ""
     }
 
-    private fun updateUI() = with(binding) {
+    private fun updateUI() = with (binding) {
         setHeaderText(R.string.task)
         titleTi.setText(task.title)
         noteTi.setText(task.note)
         doneCb.apply {
             isEnabled = true
-            isSelected = true
             isChecked = task.isCompleted
             jumpDrawablesToCurrentState()
         }
         timestampTv.apply {
-            text = getString(R.string.task_timestamp, taskViewModel.getFormattedTimestamp(task.timestamp))
+            text = getString(
+                R.string.task_timestamp,
+                taskViewModel.getFormattedTimestamp(task.timestamp)
+            )
             visibility = View.VISIBLE
         }
         updateDateTv()

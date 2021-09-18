@@ -5,50 +5,104 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    app:cardCornerRadius="8dp"
-    android:layout_marginVertical="8dp">
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/task_title_tv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="16dp"
-            android:layout_marginHorizontal="64dp"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:textColor="@color/primary_text"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@id/completed_cb"
-            app:layout_constraintStart_toEndOf="@id/completed_cb"
-            app:layout_constraintTop_toTopOf="@id/completed_cb"
-            tools:text="Sample text" />
+        android:layout_height="wrap_content"
+        android:paddingVertical="12dp">
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/completed_cb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:buttonTint="@color/primary_dark"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
             android:text=""
             app:buttonTint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/task_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/completed_cb"
+            app:layout_constraintStart_toEndOf="@id/completed_cb"
+            app:layout_constraintTop_toTopOf="@id/completed_cb">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/task_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxWidth="210dp"
+                android:maxLines="3"
+                android:paddingHorizontal="4dp"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Sample title" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/datetime_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@id/task_title_tv"
+                app:layout_constraintTop_toBottomOf="@id/task_title_tv">
+
+                <ImageView
+                    android:id="@+id/task_time_iv"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_baseline_calendar_today_24"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/task_time_tv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/primary_dark" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/task_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="4dp"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/primary_dark"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/task_time_iv"
+                    app:layout_constraintStart_toEndOf="@id/task_time_iv"
+                    app:layout_constraintTop_toTopOf="@id/task_time_iv"
+                    tools:text="Today, 18:00" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ImageButton
-            android:id="@+id/delete_ib"
+            android:id="@+id/next_iv"
             android:layout_width="32dp"
-            android:layout_height="match_parent"
+            android:layout_height="32dp"
             android:layout_marginEnd="12dp"
-            android:src="@drawable/ic_baseline_delete_24"
-            app:layout_constraintBottom_toBottomOf="@id/task_title_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/task_title_tv"
             android:backgroundTint="@color/white"
+            android:clickable="false"
+            android:focusable="false"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:src="@drawable/ic_baseline_navigate_next_24"
+            app:layout_constraintBottom_toBottomOf="@+id/completed_cb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/completed_cb"
             app:tint="@color/accent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>

@@ -10,13 +10,13 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE id=(:id)")
     fun getTask(id : UUID) : LiveData<Task?>
 
-    @Query("SELECT * FROM task ORDER BY is_completed ASC, timestamp DESC")
+    @Query("SELECT * FROM task ORDER BY is_completed ASC, date DESC, timestamp DESC")
     fun getTasks() : LiveData<List<Task>>
 
     @Update
     fun updateTask(task: Task)
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert
     fun addTask(task: Task)
 
     @Delete
