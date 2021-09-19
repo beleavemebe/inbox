@@ -18,7 +18,7 @@ data class Task(
     @Embedded(prefix="rep_freq")           var repeatFrequency: TaskRepeatFrequency? = null,
     @ColumnInfo(name="rep_ref_timestamp")  var repetitionReferenceTimestamp: Date? = null,
     @ColumnInfo(name="date")               var date: Date ?= null,
-    @ColumnInfo(name="is_time_specified")  var isTimeSpecified : Boolean ?= null,
+    @ColumnInfo(name="is_time_specified")  var isTimeSpecified: Boolean ?= null,
 ) {
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {

@@ -147,9 +147,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun setDate(ms: Long, hrs: Int = 0, minutes: Int = 0) {
         task.date = Date(
-            ms - 3 * HOUR_MS // 3 AM is default time, we drop it to 0 AM
-                + hrs * HOUR_MS
-                + minutes * MINUTE_MS
+            ms + (hrs * HOUR_MS) + (minutes * MINUTE_MS)
         )
         updateDateTv()
     }

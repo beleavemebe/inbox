@@ -1,7 +1,6 @@
 package io.github.beleavemebe.inbox.ui.viewholders
 
 import android.content.res.Resources
-import android.graphics.Color
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
@@ -85,7 +84,7 @@ class TaskViewHolder(taskView: View) :
         val activeColor = res.getColor(R.color.primary_dark)
         val inactiveColor = res.getColor(R.color.secondary_text)
         val todayColor = res.getColor(R.color.accent_text_blue)
-        val failedColor  = Color.RED
+        val failedColor = res.getColor(R.color.red)
         return when {
             task.isCompleted -> inactiveColor
             task.date.isPast -> when {
