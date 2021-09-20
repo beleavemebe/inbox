@@ -17,7 +17,7 @@ class TaskRepository private constructor(context: Context) {
         private var INSTANCE : TaskRepository? = null
 
         fun getInstance() = INSTANCE
-            ?: throw IllegalStateException("Repo was not initialized")
+            ?: throw IllegalStateException("TaskRepository was not initialized")
 
         fun initialize(context: Context) {
             if (INSTANCE == null) INSTANCE = TaskRepository(context)

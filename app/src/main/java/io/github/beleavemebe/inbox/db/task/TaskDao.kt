@@ -10,7 +10,7 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE id=(:id)")
     fun getTask(id : UUID) : LiveData<Task?>
 
-    @Query("SELECT * FROM task ORDER BY is_completed ASC, date DESC, timestamp DESC")
+    @Query("SELECT * FROM task ORDER BY is_completed ASC, date IS NULL ASC, date ASC, timestamp DESC")
     fun getTasks() : LiveData<List<Task>>
 
     @Update
