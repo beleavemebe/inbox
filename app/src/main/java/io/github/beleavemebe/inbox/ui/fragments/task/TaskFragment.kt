@@ -1,7 +1,9 @@
 package io.github.beleavemebe.inbox.ui.fragments.task
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -65,6 +67,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         setHeaderText(R.string.new_task)
         initDatePickerListener()
         initTimePickerListener()
+        if (!taskViewModel.isTaskIdGiven) showKeyboard()
     }
 
     private fun addTextWatchers() = with (binding) {
@@ -130,9 +133,8 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             .setSelection(task.date?.time ?: System.currentTimeMillis())
             .build()
             .apply {
-                addOnNegativeButtonClickListener {
-                    clearDate()
-                }
+                addOnNegativeButtonClickListener { clearDate() }
+
                 addOnPositiveButtonClickListener { ms ->
                     val hrs = calendar?.get(Calendar.HOUR_OF_DAY)
                     val min = calendar?.get(Calendar.MINUTE)
@@ -192,6 +194,13 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         setTime(0, 0)
         task.isTimeSpecified = false
         binding.timeTv.text = ""
+    }
+
+    private fun showKeyboard() {
+        binding.titleTi.requestFocus()
+        (requireActivity()
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .showSoftInput(binding.titleTi, 0)
     }
 
     private fun updateUI() = with (binding) {
