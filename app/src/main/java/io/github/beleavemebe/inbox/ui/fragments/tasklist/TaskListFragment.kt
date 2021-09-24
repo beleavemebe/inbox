@@ -8,23 +8,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
 import io.github.beleavemebe.inbox.repositories.TaskRepository
 import io.github.beleavemebe.inbox.ui.adapters.TaskAdapter
-import io.github.beleavemebe.inbox.ui.viewholders.TaskViewHolder
+import io.github.beleavemebe.inbox.ui.adapters.TaskViewHolder
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
-    private val taskListViewModel: TaskListViewModel by viewModels()
     private val repo get() = TaskRepository.getInstance()
-
-    private var _binding : FragmentTaskListBinding? = null
-    private val binding get() = _binding!!
+    private val taskListViewModel: TaskListViewModel by viewModels()
+    private val binding : FragmentTaskListBinding by viewBinding()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentTaskListBinding.bind(view)
-
         initAddButton()
         setupRecyclerView()
         setTaskListLiveDataObserver()
@@ -68,10 +65,5 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         findNavController().navigate(
             TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(null)
         )
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

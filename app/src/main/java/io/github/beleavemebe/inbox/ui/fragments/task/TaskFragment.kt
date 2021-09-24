@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -22,14 +23,12 @@ import java.util.*
 class TaskFragment : Fragment(R.layout.fragment_task) {
     private lateinit var task: Task
     private val taskViewModel: TaskViewModel by viewModels()
+    private val binding: FragmentTaskBinding by viewBinding()
 
     private val calendar : Calendar?
         get() = task.date?.let {
             extCalendar.apply { time = it }
         }
-
-    private var _binding: FragmentTaskBinding? = null
-    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +43,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentTaskBinding.bind(view)
-
         hideBottomNavMenu()
         setupUI()
         setTaskLiveDataObserver()
@@ -235,7 +232,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     override fun onDestroyView() {
         super.onDestroyView()
         revealBottomNavMenu()
-        _binding = null
     }
 
     private fun navToTaskListFragment(view: View) {

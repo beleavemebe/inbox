@@ -1,10 +1,11 @@
-package io.github.beleavemebe.inbox.ui.viewholders
+package io.github.beleavemebe.inbox.ui.adapters
 
 import android.content.res.Resources
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
 import io.github.beleavemebe.inbox.model.Task
@@ -23,7 +24,7 @@ class TaskViewHolder(taskView: View) :
 {
     lateinit var task: Task
     private val repo get() = TaskRepository.getInstance()
-    private var binding: ListItemTaskBinding = ListItemTaskBinding.bind(taskView)
+    private val binding: ListItemTaskBinding by viewBinding()
 
     fun bind(task: Task) {
         this.task = task

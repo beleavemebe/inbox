@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.model.Task
-import io.github.beleavemebe.inbox.ui.viewholders.TaskViewHolder
 
 class TaskAdapter : ListAdapter<Task, TaskViewHolder>(Task.DIFF_CALLBACK) {
     companion object {
