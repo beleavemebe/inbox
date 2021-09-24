@@ -64,7 +64,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         setHeaderText(R.string.new_task)
         initDatePickerListener()
         initTimePickerListener()
-        if (!taskViewModel.isTaskIdGiven) showKeyboard()
+        if (!taskViewModel.isTaskIdGiven) forceEditTitle()
     }
 
     private fun addTextWatchers() = with (binding) {
@@ -159,8 +159,12 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun showTimePicker() {
         val cal = calendar ?: return Toaster.get().toast(R.string.date_not_set)
-        val hrs = cal.get(Calendar.HOUR_OF_DAY)
-        val min = cal.get(Calendar.MINUTE)
+        var hrs = 12
+        var min = 0
+        if (task.isTimeSpecified == true) {
+            hrs = cal.get(Calendar.HOUR_OF_DAY)
+            min = cal.get(Calendar.MINUTE)
+        }
         MaterialTimePicker.Builder()
             .setTitleText(R.string.select_time)
             .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -193,10 +197,9 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         binding.timeTv.text = ""
     }
 
-    private fun showKeyboard() {
+    private fun forceEditTitle() {
         binding.titleTi.requestFocus()
-        (requireActivity()
-            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+        (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
             .showSoftInput(binding.titleTi, 0)
     }
 

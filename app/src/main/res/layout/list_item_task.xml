@@ -82,7 +82,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/task_time_iv"
                     app:layout_constraintStart_toEndOf="@id/task_time_iv"
                     app:layout_constraintTop_toTopOf="@id/task_time_iv"
-                    tools:text="Today, 18:00" />
+                    tools:text="Tomorrow 18:00" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
