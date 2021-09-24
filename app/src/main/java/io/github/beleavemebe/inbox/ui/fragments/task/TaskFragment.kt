@@ -60,21 +60,20 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         addTextWatchers()
         addNavListeners()
         addCheckboxListener()
-        hideTimestamp()
-        setHeaderText(R.string.new_task)
         initDatePickerListener()
         initTimePickerListener()
-        if (!taskViewModel.isTaskIdGiven) forceEditTitle()
+        if (!taskViewModel.isTaskIdGiven) {
+            setHeaderText(R.string.new_task)
+            hideTimestamp()
+            forceEditTitle()
+        } else {
+            setHeaderText(R.string.task)
+        }
     }
 
     private fun addTextWatchers() = with (binding) {
-        TextWatcherImpl.newWatcher { sequence ->
-            task.title = sequence.toString()
-        }.also { titleTi.addTextChangedListener(it) }
-
-        TextWatcherImpl.newWatcher { sequence ->
-            task.note = sequence.toString()
-        }.also { noteTi.addTextChangedListener(it) }
+        titleTi.addOnTextChangedListener { sequence -> task.title = sequence.toString() }
+        noteTi.addOnTextChangedListener { sequence -> task.note = sequence.toString() }
     }
 
     private fun addNavListeners() = with (binding) {
@@ -135,19 +134,16 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
                 addOnPositiveButtonClickListener { ms ->
                     val hrs = calendar?.get(Calendar.HOUR_OF_DAY)
                     val min = calendar?.get(Calendar.MINUTE)
+                    setDate(ms)
                     if (hrs != null && min != null) {
-                        setDate(ms, hrs, min)
-                    } else {
-                        setDate(ms)
+                        setTime(hrs, min)
                     }
                 }
             }.show(childFragmentManager, "MaterialDatePicker")
     }
 
-    private fun setDate(ms: Long, hrs: Int = 0, minutes: Int = 0) {
-        task.date = Date(
-            ms + (hrs * HOUR_MS) + (minutes * MINUTE_MS)
-        )
+    private fun setDate(ms: Long) {
+        task.date = Date(ms)
         updateDateTv()
     }
 
@@ -204,7 +200,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun updateUI() = with (binding) {
-        setHeaderText(R.string.task)
         titleTi.setText(task.title)
         noteTi.setText(task.note)
         doneCb.apply {

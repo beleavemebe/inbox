@@ -1,6 +1,5 @@
 package io.github.beleavemebe.inbox.model
 
-import androidx.recyclerview.widget.DiffUtil
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -17,16 +16,6 @@ data class Task(
     @ColumnInfo(name="deadline")           var deadline: Date? = null,
     @Embedded(prefix="rep_freq")           var repeatFrequency: TaskRepeatFrequency? = null,
     @ColumnInfo(name="rep_ref_timestamp")  var repetitionReferenceTimestamp: Date? = null,
-    @ColumnInfo(name="date")               var date: Date ?= null,
-    @ColumnInfo(name="is_time_specified")  var isTimeSpecified: Boolean ?= null,
-) {
-    companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {
-            override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean =
-                oldItem == newItem
-        }
-    }
-}
+    @ColumnInfo(name="date")               var date: Date? = null,
+    @ColumnInfo(name="is_time_specified")  var isTimeSpecified: Boolean? = null,
+)

@@ -8,7 +8,7 @@ import java.lang.IllegalStateException
 internal class Toaster private constructor(private val context: Context) {
     companion object {
         @SuppressLint("StaticFieldLeak")
-        private var INSTANCE : Toaster ?= null
+        private var INSTANCE: Toaster? = null
 
         fun get(): Toaster = INSTANCE
             ?: throw IllegalStateException("Toaster was not initialized")

@@ -20,14 +20,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hideBottomNavMenu() {
-        setBottomNavVisibility(false)
+        setBottomNavVisible(false)
     }
 
     fun revealBottomNavMenu() {
-        setBottomNavVisibility(true)
+        setBottomNavVisible(true)
     }
 
-    private fun setBottomNavVisibility(visibility : Boolean) {
+    private fun setBottomNavVisible(visibility : Boolean) {
         findViewById<View>(R.id.main_bottom_navigation_view).apply {
             this.isVisible = visibility
         }
