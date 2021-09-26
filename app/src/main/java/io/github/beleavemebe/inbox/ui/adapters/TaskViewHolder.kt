@@ -1,6 +1,7 @@
 package io.github.beleavemebe.inbox.ui.adapters
 
 import android.content.res.Resources
+import android.text.format.DateFormat
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
@@ -15,7 +16,6 @@ import io.github.beleavemebe.inbox.util.*
 import io.github.beleavemebe.inbox.util.isToday
 import io.github.beleavemebe.inbox.util.isTomorrow
 import io.github.beleavemebe.inbox.util.isYesterday
-import java.text.SimpleDateFormat
 import java.util.*
 
 class TaskViewHolder(taskView: View) :
@@ -104,12 +104,11 @@ class TaskViewHolder(taskView: View) :
             taskDate.isYesterday -> resources.getString(R.string.yesterday)
             taskDate.isToday -> resources.getString(R.string.today)
             taskDate.isTomorrow -> resources.getString(R.string.tomorrow)
-            else -> SimpleDateFormat("EEE, dd MMM", Locale("ru"))
-                .format(taskDate)
+            else -> DateFormat.format("EEE, dd MMM", taskDate).toString()
                 .replaceFirstChar { it.uppercase() }
         }
         val time = if (task.isTimeSpecified == true) {
-            SimpleDateFormat("HH:mm", Locale("ru")).format(taskDate)
+            DateFormat.format("HH:mm", taskDate).toString()
         } else ""
         return resources.getString(R.string.task_datetime_placeholder, date, time)
     }
