@@ -11,7 +11,7 @@ interface TaskDao {
     fun getTask(id : UUID) : LiveData<Task?>
 
     @Query("SELECT * FROM task ORDER BY is_completed ASC, date IS NULL ASC, date ASC, timestamp DESC")
-    fun getTasks() : LiveData<List<Task>>
+    fun getTasks() : LiveData<MutableList<Task>>
 
     @Update
     fun updateTask(task: Task)

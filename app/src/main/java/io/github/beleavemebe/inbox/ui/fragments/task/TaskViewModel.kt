@@ -35,7 +35,7 @@ class TaskViewModel : ViewModel() {
     fun handleTask(task: Task) = taskHandleAction(task)
 
     fun getFormattedDate(date : Date) =
-        DateFormat.format("EEE, dd MMM yyyy", date).toString()
+        DateFormat.format("EEE, d MMM yyyy", date).toString()
             .replaceFirstChar { it.uppercase() }
 
     fun getFormattedTimestamp(date : Date) =

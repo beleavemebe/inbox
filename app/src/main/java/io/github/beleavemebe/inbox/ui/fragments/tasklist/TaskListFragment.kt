@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.snackbar.Snackbar
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
-import io.github.beleavemebe.inbox.repositories.TaskRepository
+import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.ui.adapters.TaskAdapter
 import io.github.beleavemebe.inbox.ui.adapters.TaskViewHolder
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
-    private val repo get() = TaskRepository.getInstance()
-    private val taskListViewModel: TaskListViewModel by viewModels()
+    private val viewModel: TaskListViewModel by viewModels()
     private val binding : FragmentTaskListBinding by viewBinding()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     }
 
     private fun setTaskListLiveDataObserver() {
-        taskListViewModel.taskListLiveData.observe(viewLifecycleOwner) { taskList ->
+        viewModel.taskListLiveData.observe(viewLifecycleOwner) { taskList ->
             val adapter = binding.tasksRv.adapter as TaskAdapter
             adapter.submitList(taskList)
         }
@@ -59,7 +59,32 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         ) = deleteTask(viewHolder as TaskViewHolder)
     }
 
-    private fun deleteTask(holder: TaskViewHolder) = repo.deleteTask(holder.task)
+    private fun deleteTask(holder: TaskViewHolder) {
+        val task = holder.task
+        val index = holder.bindingAdapterPosition
+        deleteTask(index)
+        showUndoSnackbar { insertTask(task, index) }
+    }
+
+    private fun showUndoSnackbar(onUndoPressed: () -> Unit) {
+        Snackbar.make(
+            binding.root,
+            getString(R.string.task_removed),
+            Snackbar.LENGTH_LONG
+        ).setAction(getString(R.string.undo)) {
+            onUndoPressed()
+        }.show()
+    }
+
+    private fun deleteTask(index: Int) {
+        viewModel.deleteTask(index)
+        binding.tasksRv.adapter?.notifyItemRemoved(index)
+    }
+
+    private fun insertTask(task: Task, taskPosition: Int) {
+        viewModel.insertTask(task, taskPosition)
+        binding.tasksRv.adapter?.notifyItemInserted(taskPosition)
+    }
 
     private fun navToTaskFragment() {
         findNavController().navigate(

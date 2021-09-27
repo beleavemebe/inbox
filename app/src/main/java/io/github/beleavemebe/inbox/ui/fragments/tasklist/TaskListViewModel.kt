@@ -7,5 +7,15 @@ import io.github.beleavemebe.inbox.repositories.TaskRepository
 
 class TaskListViewModel : ViewModel() {
     private val taskRepository = TaskRepository.getInstance()
-    val taskListLiveData: LiveData<List<Task>> = taskRepository.getTasks()
+    val taskListLiveData: LiveData<MutableList<Task>> = taskRepository.getTasks()
+
+    fun deleteTask(index: Int) {
+        val task = taskListLiveData.value?.removeAt(index)
+        taskRepository.deleteTask(task ?: return)
+    }
+
+    fun insertTask(task: Task, position: Int) {
+        taskListLiveData.value?.add(position, task)
+        taskRepository.addTask(task)
+    }
 }

@@ -72,8 +72,8 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun addTextWatchers() = with (binding) {
-        titleTi.addOnTextChangedListener { sequence -> task.title = sequence.toString() }
-        noteTi.addOnTextChangedListener { sequence -> task.note = sequence.toString() }
+        titleTi.addOnTextChangedListener { text -> task.title = text.toString().trim() }
+        noteTi.addOnTextChangedListener { text -> task.note = text.toString().trim() }
     }
 
     private fun addNavListeners() = with (binding) {
@@ -135,7 +135,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
                     val hrs = calendar?.get(Calendar.HOUR_OF_DAY)
                     val min = calendar?.get(Calendar.MINUTE)
                     setDate(ms)
-                    if (hrs != null && min != null) {
+                    if (task.isTimeSpecified == true && hrs != null && min != null) {
                         setTime(hrs, min)
                     }
                 }
