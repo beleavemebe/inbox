@@ -86,7 +86,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             if (taskViewModel.isTaskIdGiven) {
                 task.isCompleted = isChecked
             } else {
-                Toaster.get().toast(R.string.task_not_created)
+                context.toast(R.string.task_not_created)
                 doneCb.apply {
                     this.isChecked = false
                     jumpDrawablesToCurrentState()
@@ -154,7 +154,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun showTimePicker() {
-        val cal = calendar ?: return Toaster.get().toast(R.string.date_not_set)
+        val cal = calendar ?: return context.toast(R.string.date_not_set)
         var hrs = 12
         var min = 0
         if (task.isTimeSpecified == true) {
@@ -220,7 +220,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun saveTask(view: View) {
         if (task.isBlank()) {
-            Toaster.get().toast(R.string.task_is_blank)
+            context.toast(R.string.task_is_blank)
         } else {
             taskViewModel.handleTask(task)
             navToTaskListFragment(view)
