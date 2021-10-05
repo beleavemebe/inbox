@@ -15,6 +15,7 @@ import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
 import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.ui.adapters.TaskAdapter
 import io.github.beleavemebe.inbox.ui.adapters.TaskViewHolder
+import io.github.beleavemebe.inbox.util.*
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     private val viewModel: TaskListViewModel by viewModels()
@@ -39,6 +40,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
     private fun setTaskListLiveDataObserver() {
         viewModel.taskListLiveData.observe(viewLifecycleOwner) { taskList ->
+            log("got list of tasks: ${taskList.joinToString { task -> task.title }}")
             val adapter = binding.tasksRv.adapter as TaskAdapter
             adapter.submitList(taskList)
         }
@@ -66,14 +68,15 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         showUndoSnackbar { insertTask(task, index) }
     }
 
-    private fun showUndoSnackbar(onUndoPressed: () -> Unit) {
+    private fun showUndoSnackbar(onUndoCallback: () -> Unit) {
         Snackbar.make(
             binding.root,
             getString(R.string.task_removed),
             Snackbar.LENGTH_LONG
-        ).setAction(getString(R.string.undo)) {
-            onUndoPressed()
-        }.show()
+        )
+            .setAnchorView(bottomNavView)
+            .setAction(getString(R.string.undo)) { onUndoCallback() }
+            .show()
     }
 
     private fun deleteTask(index: Int) {

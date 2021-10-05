@@ -13,9 +13,6 @@ import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.repositories.TaskRepository
 import io.github.beleavemebe.inbox.ui.fragments.tasklist.TaskListFragmentDirections
 import io.github.beleavemebe.inbox.util.*
-import io.github.beleavemebe.inbox.util.isToday
-import io.github.beleavemebe.inbox.util.isTomorrow
-import io.github.beleavemebe.inbox.util.isYesterday
 import java.util.*
 
 class TaskViewHolder(taskView: View) :
@@ -27,15 +24,16 @@ class TaskViewHolder(taskView: View) :
     private val binding: ListItemTaskBinding by viewBinding()
 
     fun bind(task: Task) {
+        log("binding task ${task.title}")
         this.task = task
         initTitleTv(task)
         initCompletedCb(task)
         initDatetimeBar(task)
+        alterViewIfTaskIsCompleted()
     }
 
     private fun initTitleTv(task: Task) = with (binding.taskTitleTv) {
         text = task.title
-        alterViewIfTaskIsCompleted()
     }
 
     private fun initCompletedCb(task: Task) = with (binding) {
@@ -43,11 +41,16 @@ class TaskViewHolder(taskView: View) :
             isChecked = task.isCompleted
             jumpDrawablesToCurrentState()
             setOnCheckedChangeListener { _, isChecked ->
-                task.isCompleted = isChecked
-                repo.updateTask(task)
-                alterViewIfTaskIsCompleted()
+                setTaskChecked(isChecked)
             }
         }
+    }
+
+    private fun setTaskChecked(isChecked: Boolean) {
+        log("${task.title} set isCompeted=$isChecked")
+        task.isCompleted = isChecked
+        repo.updateTask(task)
+        alterViewIfTaskIsCompleted()
     }
 
     private fun initDatetimeBar(task: Task) = with (binding) {

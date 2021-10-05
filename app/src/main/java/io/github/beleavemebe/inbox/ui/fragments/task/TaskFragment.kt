@@ -22,7 +22,7 @@ import java.util.*
 
 class TaskFragment : Fragment(R.layout.fragment_task) {
     private lateinit var task: Task
-    private val taskViewModel: TaskViewModel by viewModels()
+    private val viewModel: TaskViewModel by viewModels()
     private val binding: FragmentTaskBinding by viewBinding()
 
     private val calendar : Calendar?
@@ -35,9 +35,9 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         val taskId: UUID? = arguments?.get("taskId") as? UUID
         if (taskId == null) {
             task = Task()
-            taskViewModel.onNoTaskIdGiven()
+            viewModel.onNoTaskIdGiven()
         } else {
-            taskViewModel.onTaskIdGiven(taskId)
+            viewModel.onTaskIdGiven(taskId)
         }
     }
 
@@ -49,7 +49,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun setTaskLiveDataObserver() {
-        taskViewModel.taskLiveData.observe(viewLifecycleOwner) { task: Task? ->
+        viewModel.taskLiveData.observe(viewLifecycleOwner) { task: Task? ->
             this.task = task
                 ?: throw IllegalArgumentException("Impossible wrong id")
             updateUI()
@@ -62,7 +62,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         addCheckboxListener()
         initDatePickerListener()
         initTimePickerListener()
-        if (!taskViewModel.isTaskIdGiven) {
+        if (!viewModel.isTaskIdGiven) {
             setHeaderText(R.string.new_task)
             hideTimestamp()
             forceEditTitle()
@@ -83,7 +83,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
 
     private fun addCheckboxListener() = with (binding) {
         doneCb.setOnCheckedChangeListener { _, isChecked ->
-            if (taskViewModel.isTaskIdGiven) {
+            if (viewModel.isTaskIdGiven) {
                 task.isCompleted = isChecked
             } else {
                 context.toast(R.string.task_not_created)
@@ -104,7 +104,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun updateDateTv() = with (binding) {
-        dateTv.text = task.date?.let { taskViewModel.getFormattedDate(it) } ?: ""
+        dateTv.text = task.date?.let { viewModel.getFormattedDate(it) } ?: ""
     }
 
     private fun updateTimeTv() = calendar?.run {
@@ -210,7 +210,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         timestampTv.apply {
             text = getString(
                 R.string.task_timestamp,
-                taskViewModel.getFormattedTimestamp(task.timestamp)
+                viewModel.getFormattedTimestamp(task.timestamp)
             )
             visibility = View.VISIBLE
         }
@@ -222,7 +222,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         if (task.isBlank()) {
             context.toast(R.string.task_is_blank)
         } else {
-            taskViewModel.handleTask(task)
+            viewModel.handleTask(task)
             navToTaskListFragment(view)
         }
     }
@@ -239,7 +239,5 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             )
     }
 
-    private fun Task.isBlank(): Boolean {
-        return title == ""
-    }
+    private fun Task.isBlank() = title.isBlank()
 }

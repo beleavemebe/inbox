@@ -2,12 +2,17 @@ package io.github.beleavemebe.inbox.util
 
 import android.content.Context
 import android.graphics.Paint
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import io.github.beleavemebe.inbox.ui.activities.MainActivity
+
+internal val Fragment.bottomNavView get() =
+    (requireActivity() as MainActivity)
+        .getBottomNavigationView()
 
 @MainThread internal fun Fragment.hideBottomNavMenu() {
     (requireActivity() as MainActivity)
@@ -26,6 +31,8 @@ internal fun Context?.toast(@StringRes stringRes: Int) {
         Toast.LENGTH_SHORT
     ).show()
 }
+
+internal fun log(msg: String) = Log.d("app-debug", msg)
 
 internal fun TextView.setCrossedOut(crossedOut: Boolean) {
     if (crossedOut) crossOut() else uncross()

@@ -18,16 +18,6 @@
                 app:argType="java.util.UUID"
                 app:nullable="true" />
         </action>
-        <action
-            android:id="@+id/action_taskListFragment_to_projectListFragment"
-            app:destination="@id/projectListFragment" />
-        <action
-            android:id="@+id/action_taskListFragment_to_meetingListFragment"
-            app:destination="@id/meetingListFragment" />
-        <action
-            android:id="@+id/action_taskListFragment_to_infoListFragment"
-            app:destination="@id/infoListFragment" />
-
     </fragment>
     <fragment
         android:id="@+id/taskFragment"
@@ -45,45 +35,18 @@
         android:name="io.github.beleavemebe.inbox.ui.fragments.projectlist.ProjectListFragment"
         android:label="fragment_project_list"
         tools:layout="@layout/fragment_project_list" >
-        <action
-            android:id="@+id/action_projectListFragment_to_taskListFragment"
-            app:destination="@id/taskListFragment" />
-        <action
-            android:id="@+id/action_projectListFragment_to_meetingListFragment"
-            app:destination="@id/meetingListFragment" />
-        <action
-            android:id="@+id/action_projectListFragment_to_infoListFragment"
-            app:destination="@id/infoListFragment" />
     </fragment>
     <fragment
         android:id="@+id/infoListFragment"
         android:name="io.github.beleavemebe.inbox.ui.fragments.infolist.InfoListFragment"
         android:label="fragment_info_list"
         tools:layout="@layout/fragment_info_list" >
-        <action
-            android:id="@+id/action_infoListFragment_to_meetingListFragment"
-            app:destination="@id/meetingListFragment" />
-        <action
-            android:id="@+id/action_infoListFragment_to_projectListFragment"
-            app:destination="@id/projectListFragment" />
-        <action
-            android:id="@+id/action_infoListFragment_to_taskListFragment"
-            app:destination="@id/taskListFragment" />
     </fragment>
     <fragment
         android:id="@+id/meetingListFragment"
         android:name="io.github.beleavemebe.inbox.ui.fragments.meetinglist.MeetingListFragment"
         android:label="fragment_meeting_list"
         tools:layout="@layout/fragment_meeting_list" >
-        <action
-            android:id="@+id/action_meetingListFragment_to_projectListFragment"
-            app:destination="@id/projectListFragment" />
-        <action
-            android:id="@+id/action_meetingListFragment_to_taskListFragment"
-            app:destination="@id/taskListFragment" />
-        <action
-            android:id="@+id/action_meetingListFragment_to_infoListFragment"
-            app:destination="@id/infoListFragment" />
     </fragment>
 
 </navigation>
