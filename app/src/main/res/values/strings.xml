@@ -4,16 +4,16 @@
     <string name="new_task">Новая задача</string>
     <string name="tasks">Задачи</string>
     <string name="no_tasks">Задачи отсутствуют</string>
-    <string name="task_title_hint">Добавить задачу…</string>
-    <string name="task_attach_note_hint">Заметка</string>
-    <string name="task_add_frequency_hint">Периодичность</string>
-    <string name="task_add_deadline_hint">Дедлайн</string>
-    <string name="task_timestamp">Задача добавлена %1$s</string>
+    <string name="add_task_hint">Добавить задачу…</string>
+    <string name="save">Сохранить</string>
+    <string name="note">Заметка</string>
+    <string name="deadline">Дедлайн</string>
+    <string name="task_created_placeholder">Задача добавлена %1$s</string>
     <string name="task_is_blank">Задача пустая</string>
     <string name="task_not_created">Задача не создана</string>
     <string name="task_datetime_placeholder">%1$s %2$s</string>
     <string name="task_removed">Задача удалена</string>
-    <string name="undo">Отмена</string>
+    <string name="undo">Отменить</string>
 
     <string name="projects">Проекты</string>
     <string name="information">Информация</string>
@@ -21,10 +21,12 @@
 
     <string name="date">Дата</string>
     <string name="time">Время</string>
+    <string name="date_and_time">Дата и время</string>
     <string name="select_date">Выбрать дату</string>
     <string name="select_time">Выбрать время</string>
     <string name="date_not_set">Дата не задана</string>
     <string name="yesterday">Вчера</string>
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
+    <string name="periodicity">Периодичность</string>
 </resources>

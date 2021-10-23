@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupMenu
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,9 +24,9 @@ import java.util.*
 class TaskFragment : Fragment(R.layout.fragment_task) {
     private lateinit var task: Task
     private val viewModel: TaskViewModel by viewModels()
-    private val binding: FragmentTaskBinding by viewBinding()
+    private val binding by viewBinding(FragmentTaskBinding::bind)
 
-    private val calendar : Calendar?
+    private val calendar: Calendar?
         get() = task.date?.let {
             extCalendar.apply { time = it }
         }
@@ -59,7 +60,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     private fun setupUI() {
         addTextWatchers()
         addNavListeners()
-        addCheckboxListener()
         initDatePickerListener()
         initTimePickerListener()
         if (!viewModel.isTaskIdGiven) {
@@ -72,56 +72,67 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun addTextWatchers() = with (binding) {
-        titleTi.addOnTextChangedListener { text -> task.title = text.toString().trim() }
-        noteTi.addOnTextChangedListener { text -> task.note = text.toString().trim() }
+        titleEt.addOnTextChangedListener { text -> task.title = text.toString().trim() }
+        noteEt.addOnTextChangedListener { text -> task.note = text.toString().trim() }
     }
 
     private fun addNavListeners() = with (binding) {
-        backIb.setOnClickListener(::navToTaskListFragment)
-        saveIb.setOnClickListener(::saveTask)
+        saveBtn.setOnClickListener(::saveTask)
+//        non-existent
+//        backIb.setOnClickListener(::navToTaskListFragment)
     }
 
-    private fun addCheckboxListener() = with (binding) {
-        doneCb.setOnCheckedChangeListener { _, isChecked ->
-            if (viewModel.isTaskIdGiven) {
-                task.isCompleted = isChecked
-            } else {
-                context.toast(R.string.task_not_created)
-                doneCb.apply {
-                    this.isChecked = false
-                    jumpDrawablesToCurrentState()
-                }
-            }
-        }
+    private fun setHeaderText(@StringRes res: Int) = with (binding) {
+//        non-existent
+//        taskHeaderTv.text = getString(res)
     }
 
     private fun hideTimestamp() = with (binding) {
         timestampTv.visibility = View.INVISIBLE
     }
 
-    private fun setHeaderText(@StringRes res: Int) = with (binding) {
-        taskHeaderTv.text = getString(res)
+    private fun forceEditTitle() {
+        binding.titleEt.requestFocus()
+        (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .showSoftInput(binding.titleEt, 0)
     }
 
     private fun updateDateTv() = with (binding) {
-        dateTv.text = task.date?.let { viewModel.getFormattedDate(it) } ?: ""
+        val date: String = task.date?.let { viewModel.getFormattedDate(it) } ?: ""
+        dateTv.text = date
     }
 
     private fun updateTimeTv() = calendar?.run {
         if (task.isTimeSpecified == true) {
             val hrs = get(Calendar.HOUR_OF_DAY)
             val min = get(Calendar.MINUTE)
-            binding.timeTv.text = time.run { "${hrs}:${if (min >= 10) "$min" else "0$min"}" }
+            val time: String = time.run { "${hrs}:${if (min >= 10) "$min" else "0$min"}" }
+            binding.timeTv.text = time
         }
     }
 
     private fun initDatePickerListener() {
-        binding.dateTv.setOnClickListener { showDatePicker() }
+        binding.dateCv.setOnClickListener(::showPickDateMenu)
     }
 
-    private fun initTimePickerListener() {
-        binding.timeTv.setOnClickListener { showTimePicker() }
+    private fun showPickDateMenu(view: View) {
+        PopupMenu(requireContext(), view)
+            .apply {
+                menuInflater.inflate(R.menu.menu_pick_date, menu)
+                setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.option_pick_date_today -> onTodayOptionPicked()
+                        R.id.option_pick_date_tomorrow -> onTomorrowOptionPicked()
+                        R.id.option_pick_date_select_date -> onPickDateOptionPicked()
+                        else -> false
+                    }
+                }
+            }.show()
     }
+
+    private fun onTodayOptionPicked()    = true.also { setDate(System.currentTimeMillis()) }
+    private fun onTomorrowOptionPicked() = true.also { setDate(System.currentTimeMillis() + 24*HOUR_MS) }
+    private fun onPickDateOptionPicked() = true.also { showDatePicker() }
 
     private fun showDatePicker() {
         MaterialDatePicker.Builder.datePicker()
@@ -130,7 +141,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             .build()
             .apply {
                 addOnNegativeButtonClickListener { clearDate() }
-
                 addOnPositiveButtonClickListener { ms ->
                     val hrs = calendar?.get(Calendar.HOUR_OF_DAY)
                     val min = calendar?.get(Calendar.MINUTE)
@@ -153,6 +163,10 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         clearTime()
     }
 
+    private fun initTimePickerListener() {
+        binding.timeCv.setOnClickListener { showTimePicker() }
+    }
+
     private fun showTimePicker() {
         val cal = calendar ?: return context.toast(R.string.date_not_set)
         var hrs = 12
@@ -168,12 +182,8 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             .setMinute(min)
             .build()
             .apply {
-                addOnPositiveButtonClickListener {
-                    setTime(hour, minute)
-                }
-                addOnNegativeButtonClickListener {
-                    clearTime()
-                }
+                addOnNegativeButtonClickListener { clearTime() }
+                addOnPositiveButtonClickListener { setTime(hour, minute) }
             }.show(childFragmentManager, "MaterialTimePicker")
     }
 
@@ -193,23 +203,12 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         binding.timeTv.text = ""
     }
 
-    private fun forceEditTitle() {
-        binding.titleTi.requestFocus()
-        (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-            .showSoftInput(binding.titleTi, 0)
-    }
-
     private fun updateUI() = with (binding) {
-        titleTi.setText(task.title)
-        noteTi.setText(task.note)
-        doneCb.apply {
-            isEnabled = true
-            isChecked = task.isCompleted
-            jumpDrawablesToCurrentState()
-        }
+        titleEt.setText(task.title)
+        noteEt.setText(task.note)
         timestampTv.apply {
             text = getString(
-                R.string.task_timestamp,
+                R.string.task_created_placeholder,
                 viewModel.getFormattedTimestamp(task.timestamp)
             )
             visibility = View.VISIBLE
