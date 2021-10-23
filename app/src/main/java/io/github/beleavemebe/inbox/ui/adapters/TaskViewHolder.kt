@@ -38,8 +38,7 @@ class TaskViewHolder(taskView: View) :
 
     private fun initCompletedCb(task: Task) = with (binding) {
         completedCb.apply {
-            isChecked = task.isCompleted
-            jumpDrawablesToCurrentState()
+            load(task.isCompleted)
             setOnCheckedChangeListener { _, isChecked ->
                 setTaskChecked(isChecked)
             }

@@ -3,6 +3,7 @@ package io.github.beleavemebe.inbox.util
 import android.content.Context
 import android.graphics.Paint
 import android.util.Log
+import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.MainThread
@@ -30,6 +31,11 @@ internal fun Context?.toast(@StringRes stringRes: Int) {
         stringRes,
         Toast.LENGTH_SHORT
     ).show()
+}
+
+internal fun CheckBox.load(flag: Boolean) {
+    isChecked = flag
+    jumpDrawablesToCurrentState()
 }
 
 internal fun log(msg: String) = Log.d("app-debug", msg)

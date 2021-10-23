@@ -88,10 +88,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
                 task.isCompleted = isChecked
             } else {
                 context.toast(R.string.task_not_created)
-                doneCb.apply {
-                    this.isChecked = false
-                    jumpDrawablesToCurrentState()
-                }
+                doneCb.load(false)
             }
         }
     }
@@ -205,8 +202,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         noteTi.setText(task.note)
         doneCb.apply {
             isEnabled = true
-            isChecked = task.isCompleted
-            jumpDrawablesToCurrentState()
+            load(task.isCompleted)
         }
         timestampTv.apply {
             text = getString(
