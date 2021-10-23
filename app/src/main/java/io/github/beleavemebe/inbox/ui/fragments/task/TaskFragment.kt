@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StringRes
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -72,8 +73,8 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun addTextWatchers() = with (binding) {
-        titleTi.addOnTextChangedListener { text -> task.title = text.toString().trim() }
-        noteTi.addOnTextChangedListener { text -> task.note = text.toString().trim() }
+        titleTi.doOnTextChanged { text, _, _, _ -> task.title = text.toString().trim() }
+        noteTi.doOnTextChanged { text, _, _, _ -> task.note = text.toString().trim() }
     }
 
     private fun addNavListeners() = with (binding) {
