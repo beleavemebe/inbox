@@ -199,15 +199,15 @@ class TaskFragment :
         with(binding) {
             titleEt.setText(task.title)
             noteEt.setText(task.note)
+            updateDateTv()
+            updateTimeTv()
             timestampTv.apply {
+                isVisible = true
                 text = getString(
                     R.string.task_created_placeholder,
                     viewModel.getFormattedTimestamp(task.timestamp)
                 )
-                visibility = View.VISIBLE
             }
-            updateDateTv()
-            updateTimeTv()
         }
     }
 
