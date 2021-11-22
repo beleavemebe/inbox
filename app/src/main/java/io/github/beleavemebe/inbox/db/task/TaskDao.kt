@@ -8,10 +8,10 @@ import java.util.*
 @Dao
 interface TaskDao {
     @Query("SELECT * FROM task WHERE id=(:id)")
-    fun getTask(id : UUID) : LiveData<Task?>
+    fun getTask(id : UUID): LiveData<Task?>
 
-    @Query("SELECT * FROM task ORDER BY is_completed ASC, date IS NULL ASC, date ASC, timestamp DESC")
-    fun getTasks() : LiveData<MutableList<Task>>
+    @Query("SELECT * FROM task ORDER BY is_completed ASC, date IS NULL ASC, date ASC, timestamp ASC")
+    fun getTasks(): LiveData<MutableList<Task>>
 
     @Update
     fun updateTask(task: Task)

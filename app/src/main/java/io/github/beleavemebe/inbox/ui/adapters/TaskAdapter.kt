@@ -1,13 +1,14 @@
 package io.github.beleavemebe.inbox.ui.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import io.github.beleavemebe.inbox.R
+import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
 import io.github.beleavemebe.inbox.model.Task
 
-class TaskAdapter : ListAdapter<Task, TaskViewHolder>(TASK_DIFF_CALLBACK) {
+class TaskAdapter(val context: Context) : ListAdapter<Task, TaskViewHolder>(TASK_DIFF_CALLBACK) {
     companion object {
         private val TASK_DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>()
         {
@@ -20,10 +21,8 @@ class TaskAdapter : ListAdapter<Task, TaskViewHolder>(TASK_DIFF_CALLBACK) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val taskViewLayoutResource = R.layout.list_item_task
-        val taskView = LayoutInflater.from(parent.context)
-            .inflate(taskViewLayoutResource, parent, false)
-        return TaskViewHolder(taskView)
+        val binding = ListItemTaskBinding.inflate(LayoutInflater.from(context), parent, false)
+        return TaskViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {

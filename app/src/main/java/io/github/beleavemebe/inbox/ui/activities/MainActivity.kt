@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    val mainToolbar get() = binding.mainToolbar
+    val bottomNavigationView get() = binding.mainBottomNavigationView
+
     fun hideBottomNavMenu() {
         setBottomNavVisible(false)
     }
@@ -30,9 +33,9 @@ class MainActivity : AppCompatActivity() {
         setBottomNavVisible(true)
     }
 
-    fun getBottomNavigationView() = binding.mainBottomNavigationView
-
-    private fun setBottomNavVisible(visibility : Boolean) {
-        binding.mainBottomNavigationView.isVisible = visibility
-    }
+    private fun setBottomNavVisible(visible : Boolean) =
+        with (binding) {
+            mainBottomNavigationView.isVisible = visible
+//            fragmentContainer.bottomMargin = if (visible) 56 else 0
+        }
 }
