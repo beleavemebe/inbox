@@ -13,9 +13,6 @@ data class Task(
     @ColumnInfo(name="title")              var title: String = "",
     @ColumnInfo(name="is_completed")       var isCompleted: Boolean = false,
     @ColumnInfo(name="note")               var note: String? = null,
-    @ColumnInfo(name="deadline")           var deadline: Date? = null,
-    @Embedded(prefix="rep_freq")           var repeatFrequency: TaskRepeatFrequency? = null,
-    @ColumnInfo(name="rep_ref_timestamp")  var repetitionReferenceTimestamp: Date? = null,
     @ColumnInfo(name="date")               var date: Date? = null,
     @ColumnInfo(name="is_time_specified")  var isTimeSpecified: Boolean? = null,
 )

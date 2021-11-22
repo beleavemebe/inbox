@@ -6,7 +6,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import by.kirich1409.viewbindingdelegate.viewBinding
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
 import io.github.beleavemebe.inbox.model.Task
@@ -15,16 +14,15 @@ import io.github.beleavemebe.inbox.ui.fragments.tasklist.TaskListFragmentDirecti
 import io.github.beleavemebe.inbox.util.*
 import java.util.*
 
-class TaskViewHolder(taskView: View) :
-    RecyclerView.ViewHolder(taskView),
+class TaskViewHolder(private val binding: ListItemTaskBinding) :
+    RecyclerView.ViewHolder(binding.root),
     View.OnClickListener
 {
     lateinit var task: Task
     private val repo get() = TaskRepository.getInstance()
-    private val binding: ListItemTaskBinding by viewBinding()
 
     fun bind(task: Task) {
-        log("binding task ${task.title}")
+        log("binding task ${task.title} at ${hashCode()}")
         this.task = task
         initTitleTv(task)
         initCompletedCb(task)
@@ -106,8 +104,9 @@ class TaskViewHolder(taskView: View) :
             taskDate.isYesterday -> resources.getString(R.string.yesterday)
             taskDate.isToday -> resources.getString(R.string.today)
             taskDate.isTomorrow -> resources.getString(R.string.tomorrow)
-            else -> DateFormat.format("EEE, dd MMM", taskDate).toString()
-                .replaceFirstChar { it.uppercase() }
+            else -> DateFormat
+                .format("EEE, dd MMM", taskDate)
+                .toString().replaceFirstChar { it.uppercase() }
         }
         val time = if (task.isTimeSpecified == true) {
             DateFormat.format("HH:mm", taskDate).toString()
@@ -116,11 +115,11 @@ class TaskViewHolder(taskView: View) :
     }
 
     init {
-        taskView.setOnClickListener(this)
+        binding.root.setOnClickListener(this)
     }
 
-    override fun onClick(view: View?) {
-        view!!.findNavController().navigate(
+    override fun onClick(view: View) {
+        view.findNavController().navigate(
                 TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(task.id)
             )
     }

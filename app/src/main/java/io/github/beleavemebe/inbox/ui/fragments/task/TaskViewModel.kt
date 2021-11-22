@@ -13,28 +13,28 @@ class TaskViewModel : ViewModel() {
     private val taskRepository = TaskRepository.getInstance()
     private val taskIdMutableLiveData = MutableLiveData<UUID>()
 
-    var taskLiveData : LiveData<Task?> =
+    var taskLiveData: LiveData<Task?> =
         Transformations.switchMap(taskIdMutableLiveData) { id ->
             taskRepository.getTask(id)
         }
 
-    // Add or update task depending on whether or not the task id is passed as an argument
     var isTaskIdGiven: Boolean = false
-    private val taskHandleAction : (Task) -> Unit
+
+    private val taskHandleAction: (Task) -> Unit
         get() = if (isTaskIdGiven) ::updateTask else ::addTask
 
-    fun onNoTaskIdGiven() {
-        isTaskIdGiven = false
-    }
-
-    fun onTaskIdGiven(taskId: UUID) {
-        isTaskIdGiven = true
-        taskIdMutableLiveData.value = taskId
-    }
+    var taskId: UUID? = null
+        set(value) =
+            value?.let {
+                taskIdMutableLiveData.value = it
+                isTaskIdGiven = true
+            } ?: run {
+                isTaskIdGiven = false
+            }
 
     fun handleTask(task: Task) = taskHandleAction(task)
 
-    fun getFormattedDate(date : Date) =
+    fun getFormattedDate(date: Date) =
         DateFormat.format("EEE, d MMM yyyy", date).toString()
             .replaceFirstChar { it.uppercase() }
 
