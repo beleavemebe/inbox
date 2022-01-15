@@ -32,4 +32,12 @@
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
     <string name="periodicity">Периодичность</string>
+    <string name="day_of_week_mon">Пн</string>
+    <string name="day_of_week_tue">Вт</string>
+    <string name="day_of_week_wed">Ср</string>
+    <string name="day_of_week_thu">Чт</string>
+    <string name="day_of_week_fri">Пт</string>
+    <string name="day_of_week_sat">Сб</string>
+    <string name="day_of_week_sun">Вс</string>
+    <string name="repeat">Повторять</string>
 </resources>

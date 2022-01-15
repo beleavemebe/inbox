@@ -1,38 +1,39 @@
 package io.github.beleavemebe.inbox.ui.fragments.task
 
 import android.text.format.DateFormat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.repositories.TaskRepository
+import kotlinx.coroutines.launch
+import java.lang.UnsupportedOperationException
 import java.util.*
 
 class TaskViewModel : ViewModel() {
-    private val taskRepository = TaskRepository.getInstance()
-    private val taskIdMutableLiveData = MutableLiveData<UUID>()
+    private val taskIdMutableLiveData = MutableLiveData<UUID?>()
 
-    var taskLiveData: LiveData<Task?> =
-        Transformations.switchMap(taskIdMutableLiveData) { id ->
-            taskRepository.getTask(id)
+    val task: LiveData<Task> =
+        taskIdMutableLiveData.switchMap { id: UUID? ->
+            if (id != null) {
+                taskRepository.getTask(id)
+            } else {
+                MutableLiveData(Task())
+            }
         }
 
     var isTaskIdGiven: Boolean = false
+        private set
 
-    private val taskHandleAction: (Task) -> Unit
+    var taskId: UUID?
+        get() = throw UnsupportedOperationException()
+        set(value) {
+            isTaskIdGiven = value != null
+            taskIdMutableLiveData.value = value
+        }
+
+    fun saveTask() = taskSavingAction(task.value!!)
+
+    private val taskSavingAction: (Task) -> Unit
         get() = if (isTaskIdGiven) ::updateTask else ::addTask
-
-    var taskId: UUID? = null
-        set(value) =
-            value?.let {
-                taskIdMutableLiveData.value = it
-                isTaskIdGiven = true
-            } ?: run {
-                isTaskIdGiven = false
-            }
-
-    fun handleTask(task: Task) = taskHandleAction(task)
 
     fun getFormattedDate(date: Date) =
         DateFormat.format("EEE, d MMM yyyy", date).toString()
@@ -41,11 +42,15 @@ class TaskViewModel : ViewModel() {
     fun getFormattedTimestamp(date : Date) =
         DateFormat.format("dd MMM `yy HH:mm", date).toString()
 
-    private fun addTask(task: Task) {
-        taskRepository.addTask(task)
-    }
+    private val taskRepository = TaskRepository.getInstance()
 
-    private fun updateTask(task: Task) {
-        taskRepository.updateTask(task)
-    }
+    private fun addTask(task: Task) =
+        viewModelScope.launch {
+            taskRepository.addTask(task)
+        }
+
+    private fun updateTask(task: Task) =
+        viewModelScope.launch {
+            taskRepository.updateTask(task)
+        }
 }

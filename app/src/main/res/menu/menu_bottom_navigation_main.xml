@@ -2,20 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/taskListFragment"
-        android:icon="@drawable/ic_baseline_note_24"
-        android:title="@string/tasks" />
+        android:icon="@drawable/ic_note_24"
+        android:title="@null" />
 
     <item
         android:id="@+id/projectListFragment"
-        android:icon="@drawable/ic_project"
-        android:title="@string/projects" />
+        android:icon="@drawable/ic_project_24"
+        android:title="@null" />
 
     <item
         android:id="@+id/infoListFragment"
-        android:icon="@drawable/ic_info"
-        android:title="@string/information" />
+        android:icon="@drawable/ic_info_24"
+        android:title="@null" />
     <item
         android:id="@+id/meetingListFragment"
-        android:icon="@drawable/ic_baseline_groups_24"
-        android:title="@string/meetings" />
+        android:icon="@drawable/ic_meetings_24"
+        android:title="@null" />
 </menu>

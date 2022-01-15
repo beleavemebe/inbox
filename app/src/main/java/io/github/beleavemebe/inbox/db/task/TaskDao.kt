@@ -8,23 +8,17 @@ import java.util.*
 @Dao
 interface TaskDao {
     @Query("SELECT * FROM task WHERE id=(:id)")
-    fun getTask(id : UUID): LiveData<Task?>
+    fun getTask(id : UUID): LiveData<Task>
 
     @Query("SELECT * FROM task ORDER BY is_completed ASC, date IS NULL ASC, date ASC, timestamp ASC")
-    fun getTasks(): LiveData<MutableList<Task>>
+    fun getTasks(): LiveData<List<Task>>
 
     @Update
-    fun updateTask(task: Task)
+    suspend fun updateTask(task: Task)
 
     @Insert
-    fun addTask(task: Task)
+    suspend fun addTask(task: Task)
 
     @Delete
-    fun deleteTask(taskToDelete: Task)
-
-    @Query("DELETE FROM task WHERE id=(:taskId)")
-    fun deleteTask(taskId: UUID)
-
-    @Query("DELETE FROM task WHERE is_completed=1")
-    fun deleteCompletedTasks()
+    suspend fun deleteTask(taskToDelete: Task)
 }

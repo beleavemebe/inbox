@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PeriodicityCheckBox">
+        <item name="android:button">@null</item>
+        <item name="android:drawableTop">?android:attr/listChoiceIndicatorMultiple</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">8dp</item>
+        <item name="drawableTint">@color/accent</item>
+    </style>
+</resources>

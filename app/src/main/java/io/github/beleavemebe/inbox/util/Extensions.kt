@@ -12,33 +12,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import io.github.beleavemebe.inbox.ui.activities.MainActivity
 
-internal fun log(msg: String) = Log.d("app-debug", msg)
-
-internal val Fragment.mainBottomNavigationView get() =
-    (requireActivity() as MainActivity)
-        .bottomNavigationView
-
-internal fun Fragment.hideBottomNavMenu() {
-    (requireActivity() as MainActivity)
-        .hideBottomNavMenu()
-}
-
-internal fun Fragment.revealBottomNavMenu() {
-    (requireActivity() as MainActivity)
-        .revealBottomNavMenu()
-}
-
-internal val Fragment.mainToolbar get() =
-    (requireActivity() as MainActivity)
-        .mainToolbar
+internal fun log(msg: Any?) = Log.d("app-debug", msg.toString())
 
 internal fun Fragment.drawable(@DrawableRes drawableResId: Int) : Drawable? =
     AppCompatResources.getDrawable(requireContext(), drawableResId)
-
-internal inline fun <reified T> Fragment.getTypedArg(key: String?): T? =
-    arguments?.get(key) as? T
 
 internal fun Context?.toast(@StringRes stringRes: Int) {
     if (this == null) return
@@ -59,8 +37,11 @@ internal fun EditText.forceEditing() {
         .showSoftInput(this, 0)
 }
 
-internal fun TextView.setCrossedOut(crossedOut: Boolean) {
-    if (crossedOut) crossOut() else uncross()
+internal fun TextView.setCrossedOut(flag: Boolean) {
+    if (flag)
+        crossOut()
+    else
+        uncross()
 }
 
 private fun TextView.crossOut() {
