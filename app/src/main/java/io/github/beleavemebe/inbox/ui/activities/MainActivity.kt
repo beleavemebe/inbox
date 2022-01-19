@@ -3,7 +3,6 @@ package io.github.beleavemebe.inbox.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,16 +19,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navController =
-            supportFragmentManager.findFragmentById(R.id.fragment_container)!!.findNavController()
+        val navController: NavController = supportFragmentManager
+            .findFragmentById(R.id.fragment_container)!!
+            .findNavController()
 
         initToolbar(navController)
         initBottomNavigation(navController)
     }
 
     private fun initToolbar(navController: NavController) {
-        val appBarConfiguration = configureAppBar()
-        NavigationUI.setupWithNavController(binding.mainToolbar, navController, appBarConfiguration)
+        NavigationUI.setupWithNavController(
+            binding.mainToolbar,
+            navController,
+            configureAppBar()
+        )
     }
 
     private fun configureAppBar(): AppBarConfiguration {
@@ -44,7 +47,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initBottomNavigation(navController: NavController) {
-        NavigationUI.setupWithNavController(binding.mainBottomNavigationView, navController)
+        NavigationUI.setupWithNavController(
+            binding.mainBottomNavigationView,
+            navController
+        )
     }
 
     fun hideBottomNavMenu() { setBottomNavVisible(false) }

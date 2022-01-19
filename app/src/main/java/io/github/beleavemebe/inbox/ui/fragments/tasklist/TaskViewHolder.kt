@@ -1,9 +1,12 @@
 package io.github.beleavemebe.inbox.ui.fragments.tasklist
 
+import android.content.Context
 import android.content.res.Resources
 import android.text.format.DateFormat
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import io.github.beleavemebe.inbox.R
@@ -18,8 +21,7 @@ import java.util.*
 class TaskViewHolder(
     private val binding: ListItemTaskBinding,
     private val onTaskClicked: (UUID) -> Unit,
-) : RecyclerView.ViewHolder(binding.root), View.OnClickListener
-{
+) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
     var task: Task? = null
         private set
 
@@ -72,7 +74,7 @@ class TaskViewHolder(
         }
     }
 
-    private fun getDatetimeText(task: Task, resources : Resources): String {
+    private fun getDatetimeText(task: Task, resources: Resources): String {
         val dateText = when {
             task.date.isYesterday -> resources.getString(R.string.yesterday)
             task.date.isToday -> resources.getString(R.string.today)
@@ -106,23 +108,21 @@ class TaskViewHolder(
         onTaskClicked(uuid)
     }
 
+    private val appContext: Context
+        get() = binding.root.context.applicationContext
+
     @ColorInt
-    @Suppress("DEPRECATION")
-    private fun getTitleColor(task: Task, resources: Resources): Int {
-        return if (task.isCompleted) {
-            resources.getColor(R.color.secondary_text)
-        } else {
-            resources.getColor(R.color.primary_text)
-        }
+    private fun getTitleColor(task: Task, res: Resources): Int {
+        val textColorRes = if (task.isCompleted) R.color.secondary_text else R.color.primary_text
+        return res.getColorCompat(appContext, textColorRes)
     }
 
     @ColorInt
-    @Suppress("DEPRECATION")
     private fun getDatetimeBarColor(task: Task, res: Resources): Int {
-        val activeColor = res.getColor(R.color.primary_dark)
-        val inactiveColor = res.getColor(R.color.secondary_text)
-        val todayColor = res.getColor(R.color.accent_text_blue)
-        val failedColor = res.getColor(R.color.red)
+        val activeColor = res.getColorCompat(appContext, R.color.primary_dark)
+        val inactiveColor = res.getColorCompat(appContext, R.color.secondary_text)
+        val todayColor = res.getColorCompat(appContext, R.color.accent_text_blue)
+        val failedColor = res.getColorCompat(appContext, R.color.red)
         return when {
             task.isCompleted -> inactiveColor
             task.date.isPast -> when {
@@ -133,6 +133,17 @@ class TaskViewHolder(
             else -> activeColor
         }
     }
+
+    @ColorInt
+    private fun Resources.getColorCompat(
+        context: Context,
+        @ColorRes colorResId: Int
+    ): Int =
+        ResourcesCompat.getColor(
+            this,
+            colorResId,
+            context.applicationContext.theme
+        )
 
     fun invalidateTask() {
         task = null

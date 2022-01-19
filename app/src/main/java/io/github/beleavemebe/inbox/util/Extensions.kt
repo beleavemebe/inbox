@@ -2,21 +2,14 @@ package io.github.beleavemebe.inbox.util
 
 import android.content.Context
 import android.graphics.Paint
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.fragment.app.Fragment
 
 internal fun log(msg: Any?) = Log.d("app-debug", msg.toString())
-
-internal fun Fragment.drawable(@DrawableRes drawableResId: Int) : Drawable? =
-    AppCompatResources.getDrawable(requireContext(), drawableResId)
 
 internal fun Context?.toast(@StringRes stringRes: Int) {
     if (this == null) return
