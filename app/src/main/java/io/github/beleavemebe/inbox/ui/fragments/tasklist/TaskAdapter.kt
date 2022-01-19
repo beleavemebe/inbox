@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.adapters
+package io.github.beleavemebe.inbox.ui.fragments.tasklist
 
 import android.content.Context
 import android.view.LayoutInflater

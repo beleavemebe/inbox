@@ -12,8 +12,6 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
 import io.github.beleavemebe.inbox.ui.activities.MainActivity.Companion.mainBottomNavigationView
-import io.github.beleavemebe.inbox.ui.adapters.TaskAdapter
-import io.github.beleavemebe.inbox.ui.adapters.TaskViewHolder
 import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
 import io.github.beleavemebe.inbox.util.*
 

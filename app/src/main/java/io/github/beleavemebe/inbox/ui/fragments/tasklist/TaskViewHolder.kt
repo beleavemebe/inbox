@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.adapters
+package io.github.beleavemebe.inbox.ui.fragments.tasklist
 
 import android.content.res.Resources
 import android.text.format.DateFormat
@@ -11,7 +11,6 @@ import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
 import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.repositories.TaskRepository
-import io.github.beleavemebe.inbox.ui.fragments.tasklist.TaskListFragmentDirections
 import io.github.beleavemebe.inbox.util.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

@@ -93,15 +93,18 @@ class TaskFragment : BaseFragment(R.layout.fragment_task) {
     }
 
     private fun FragmentTaskBinding.updateDateTv() {
-        val date: String = task.date?.let { viewModel.getFormattedDate(it) } ?: ""
-        dateTv.text = date
+        dateTv.text =
+            task.date?.let {
+                viewModel.getFormattedDate(it)
+            } ?: ""
     }
 
-    private fun FragmentTaskBinding.updateTimeTv() = calendar?.run {
+    private fun FragmentTaskBinding.updateTimeTv() {
         if (task.isTimeSpecified == true) {
-            val hrs = get(Calendar.HOUR_OF_DAY)
-            val min = get(Calendar.MINUTE)
-            val time: String = time.run { "${hrs}:${if (min >= 10) "$min" else "0$min"}" }
+            val cal = calendar ?: return
+            val hrs = cal.get(Calendar.HOUR_OF_DAY)
+            val min = cal.get(Calendar.MINUTE)
+            val time = "${hrs}:${if (min >= 10) "$min" else "0$min"}"
             timeTv.text = time
         }
     }
