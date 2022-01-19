@@ -7,14 +7,12 @@
     android:layout_margin="16dp"
     tools:context=".ui.fragments.task.TaskFragment">
 
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/main_guideline"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="8dp" />
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/task_title_tv"
@@ -70,62 +68,44 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/date_cv"
+        style="@style/TextInputCardView"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/main_guideline"
         app:layout_constraintTop_toBottomOf="@+id/date_header_tv"
-        app:layout_constraintVertical_bias="0"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"
-        app:cardCornerRadius="4dp"
-        android:layout_marginTop="6dp"
-        app:strokeColor="#5A5A5A"
-        app:strokeWidth="0.8dp">
+        app:layout_constraintVertical_bias="0">
 
         <TextView
             android:id="@+id/date_tv"
+            style="@style/TextInputTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="12dp"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
             android:hint="@string/date"
-            android:inputType="none"
-            android:textColor="@color/black"
-            android:textSize="16sp"
             app:drawableStartCompat="@drawable/ic_calendar"
             tools:text="Tue, Oct 19 2021" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/time_cv"
+        style="@style/TextInputCardView"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"
-        app:cardCornerRadius="4dp"
         android:layout_marginTop="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/main_guideline"
         app:layout_constraintTop_toBottomOf="@+id/date_cv"
-        app:layout_constraintVertical_bias="0"
-        app:strokeColor="#5A5A5A"
-        app:strokeWidth="0.8dp">
+        app:layout_constraintVertical_bias="0">
 
         <TextView
             android:id="@+id/time_tv"
+            style="@style/TextInputTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="12dp"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
             android:hint="@string/time"
-            android:inputType="none"
-            android:textColor="@color/black"
-            android:textSize="16sp"
             app:drawableStartCompat="@drawable/ic_time"
             tools:text="10:27" />
     </com.google.android.material.card.MaterialCardView>
@@ -143,6 +123,27 @@
         app:layout_constraintTop_toBottomOf="@id/time_cv"
         tools:viewBindingIgnore="true" />
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/periodicity_cv"
+        style="@style/TextInputCardView"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/main_guideline"
+        app:layout_constraintTop_toBottomOf="@id/periodicity_header_tv">
+
+        <TextView
+            android:id="@+id/periodicity_tv"
+            style="@style/TextInputTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="12dp"
+            android:hint="@string/repeat"
+            tools:text="Еженедельно: пн, вт, ср, пт"
+            app:drawableStartCompat="@drawable/ic_baseline_repeat_24" />
+    </com.google.android.material.card.MaterialCardView>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/save_btn"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -156,9 +157,9 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timestamp_tv"
-        android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:hint="@string/task_created_placeholder"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@id/save_btn"

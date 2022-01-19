@@ -8,44 +8,46 @@
     <fragment
         android:id="@+id/taskListFragment"
         android:name="io.github.beleavemebe.inbox.ui.fragments.tasklist.TaskListFragment"
-        android:label="TaskListFragment"
+        android:label="@string/my_tasks"
         tools:layout="@layout/fragment_task_list">
         <action
             android:id="@+id/action_taskListFragment_to_taskFragment"
             app:destination="@id/taskFragment">
-            <argument
-                android:name="taskId"
-                app:argType="java.util.UUID"
-                app:nullable="true" />
         </action>
     </fragment>
+
     <fragment
         android:id="@+id/taskFragment"
         android:name="io.github.beleavemebe.inbox.ui.fragments.task.TaskFragment"
-        android:label="fragment_task"
+        android:label="{title}"
         tools:layout="@layout/fragment_task">
-        <action
-            android:id="@+id/action_taskFragment_to_taskListFragment"
-            app:destination="@id/taskListFragment"
-            app:popUpTo="@id/taskListFragment"
-            app:popUpToInclusive="true" />
+        <argument
+            android:name="taskId"
+            app:argType="java.util.UUID"
+            app:nullable="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/projectListFragment"
         android:name="io.github.beleavemebe.inbox.ui.fragments.projectlist.ProjectListFragment"
-        android:label="fragment_project_list"
+        android:label="@string/my_projects"
         tools:layout="@layout/fragment_project_list" >
     </fragment>
+
     <fragment
         android:id="@+id/infoListFragment"
         android:name="io.github.beleavemebe.inbox.ui.fragments.infolist.InfoListFragment"
-        android:label="fragment_info_list"
+        android:label="@string/information"
         tools:layout="@layout/fragment_info_list" >
     </fragment>
+
     <fragment
         android:id="@+id/meetingListFragment"
         android:name="io.github.beleavemebe.inbox.ui.fragments.meetinglist.MeetingListFragment"
-        android:label="fragment_meeting_list"
+        android:label="@string/my_meetings"
         tools:layout="@layout/fragment_meeting_list" >
     </fragment>
 
