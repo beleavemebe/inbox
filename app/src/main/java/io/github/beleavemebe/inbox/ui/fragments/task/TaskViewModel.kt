@@ -9,10 +9,10 @@ import java.lang.UnsupportedOperationException
 import java.util.*
 
 class TaskViewModel : ViewModel() {
-    private val taskIdMutableLiveData = MutableLiveData<UUID?>()
+    private val mutableTaskId = MutableLiveData<UUID?>()
 
     val task: LiveData<Task> =
-        taskIdMutableLiveData.switchMap { id: UUID? ->
+        mutableTaskId.switchMap { id: UUID? ->
             if (id != null) {
                 taskRepository.getTask(id)
             } else {
@@ -27,20 +27,11 @@ class TaskViewModel : ViewModel() {
         get() = throw UnsupportedOperationException()
         set(value) {
             isTaskIdGiven = value != null
-            taskIdMutableLiveData.value = value
+            mutableTaskId.value = value
         }
-
-    fun saveTask() = taskSavingAction(task.value!!)
 
     private val taskSavingAction: (Task) -> Unit
         get() = if (isTaskIdGiven) ::updateTask else ::addTask
-
-    fun getFormattedDate(date: Date) =
-        DateFormat.format("EEE, d MMM yyyy", date).toString()
-            .replaceFirstChar { it.uppercase() }
-
-    fun getFormattedTimestamp(date : Date) =
-        DateFormat.format("dd MMM `yy HH:mm", date).toString()
 
     private val taskRepository = TaskRepository.getInstance()
 
@@ -53,4 +44,13 @@ class TaskViewModel : ViewModel() {
         viewModelScope.launch {
             taskRepository.updateTask(task)
         }
+
+    fun saveTask() = taskSavingAction(task.value!!)
+
+    fun getFormattedDate(date: Date) =
+        DateFormat.format("EEE, d MMM yyyy", date).toString()
+            .replaceFirstChar { it.uppercase() }
+
+    fun getFormattedTimestamp(date : Date) =
+        DateFormat.format("dd MMM `yy HH:mm", date).toString()
 }

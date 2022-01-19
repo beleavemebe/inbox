@@ -3,6 +3,7 @@ package io.github.beleavemebe.inbox.ui.fragments.tasklist
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
 import io.github.beleavemebe.inbox.ui.activities.MainActivity.Companion.mainBottomNavigationView
 import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
 import io.github.beleavemebe.inbox.util.*
+import java.util.*
 
 class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
     private val viewModel: TaskListViewModel by viewModels()
@@ -28,13 +30,13 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
 
     private fun FragmentTaskListBinding.initAddButton() {
         fabAddTask.setOnClickListener {
-            navToTaskFragment()
+            goToNewTask()
         }
     }
 
     private fun FragmentTaskListBinding.setupRecyclerView() {
         tasksRv.let { rv ->
-            rv.adapter = TaskAdapter(requireContext())
+            rv.adapter = TaskAdapter(::goToTask)
             rv.layoutManager = LinearLayoutManager(context)
             ItemTouchHelper(taskTouchHelperCallback).attachToRecyclerView(rv)
         }
@@ -68,10 +70,20 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
         }
     }
 
-    private fun navToTaskFragment() {
+    private fun goToNewTask() {
         findNavController().navigate(
-            TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(null)
+            TaskListFragmentDirections
+                .actionTaskListFragmentToTaskFragment(null, getString(R.string.new_task))
         )
+    }
+
+    private fun goToTask(uuid: UUID) {
+        requireView().findNavController()
+            .navigate(
+                TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(
+                    uuid, getString(R.string.task)
+                )
+            )
     }
 
     private val taskTouchHelperCallback =

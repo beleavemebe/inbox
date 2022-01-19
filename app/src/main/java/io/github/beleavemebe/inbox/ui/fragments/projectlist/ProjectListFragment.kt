@@ -4,7 +4,6 @@ import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentProjectListBinding
-import io.github.beleavemebe.inbox.ui.activities.MainActivity.Companion.mainToolbar
 import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
 
 class ProjectListFragment :

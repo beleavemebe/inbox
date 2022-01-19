@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private fun initToolbar(navController: NavController) {
         val appBarConfiguration = configureAppBar()
         NavigationUI.setupWithNavController(binding.mainToolbar, navController, appBarConfiguration)
-        setSupportActionBar(binding.mainToolbar)
     }
 
     private fun configureAppBar(): AppBarConfiguration {
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             R.id.meetingListFragment,
         )
 
-        return AppBarConfiguration(topLevelDestinations, DrawerLayout(this))
+        return AppBarConfiguration(topLevelDestinations)
     }
 
     private fun initBottomNavigation(navController: NavController) {
@@ -56,10 +55,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        val BaseFragment.mainToolbar
-            get() = (requireActivity() as MainActivity)
-                .binding.mainToolbar
-
         val BaseFragment.mainBottomNavigationView
             get() = (requireActivity() as MainActivity)
                 .binding.mainBottomNavigationView

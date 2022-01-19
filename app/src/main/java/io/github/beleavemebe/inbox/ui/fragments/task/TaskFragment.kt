@@ -15,7 +15,6 @@ import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.ui.activities.MainActivity.Companion.hideBottomNavMenu
-import io.github.beleavemebe.inbox.ui.activities.MainActivity.Companion.mainToolbar
 import io.github.beleavemebe.inbox.ui.activities.MainActivity.Companion.revealBottomNavMenu
 import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
 import io.github.beleavemebe.inbox.util.HOUR_MS
@@ -47,7 +46,6 @@ class TaskFragment : BaseFragment(R.layout.fragment_task) {
         super.onViewCreated(view, savedInstanceState)
         hideBottomNavMenu()
         binding.setupUI()
-        tweakToolbarTitle()
         observeTask()
     }
 
@@ -55,15 +53,6 @@ class TaskFragment : BaseFragment(R.layout.fragment_task) {
         viewModel.task
             .observe(viewLifecycleOwner) { task: Task ->
                 binding.updateUI()
-            }
-    }
-
-    private fun tweakToolbarTitle() {
-        mainToolbar.title =
-            if (viewModel.isTaskIdGiven) {
-                getString(R.string.task)
-            } else {
-                getString(R.string.new_task)
             }
     }
 
@@ -211,20 +200,13 @@ class TaskFragment : BaseFragment(R.layout.fragment_task) {
             context.toast(R.string.task_is_blank)
         } else {
             viewModel.saveTask()
-            navToTaskListFragment(view)
+            view.findNavController().navigateUp()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         revealBottomNavMenu()
-    }
-
-    private fun navToTaskListFragment(view: View) {
-        view.findNavController()
-            .navigate(
-                R.id.action_taskFragment_to_taskListFragment
-            )
     }
 
     private fun Task.isBlank() = title.isBlank()

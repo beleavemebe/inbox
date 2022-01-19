@@ -5,7 +5,6 @@ import android.text.format.DateFormat
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.view.isVisible
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
@@ -14,9 +13,11 @@ import io.github.beleavemebe.inbox.repositories.TaskRepository
 import io.github.beleavemebe.inbox.util.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 class TaskViewHolder(
-    private val binding: ListItemTaskBinding
+    private val binding: ListItemTaskBinding,
+    private val onTaskClicked: (UUID) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener
 {
     var task: Task? = null
@@ -101,9 +102,8 @@ class TaskViewHolder(
     }
 
     override fun onClick(view: View) {
-        view.findNavController().navigate(
-            TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(task?.id)
-        )
+        val uuid = task?.id ?: return
+        onTaskClicked(uuid)
     }
 
     @ColorInt

@@ -19,17 +19,15 @@
     <fragment
         android:id="@+id/taskFragment"
         android:name="io.github.beleavemebe.inbox.ui.fragments.task.TaskFragment"
-        android:label="@string/task"
+        android:label="{title}"
         tools:layout="@layout/fragment_task">
-        <action
-            android:id="@+id/action_taskFragment_to_taskListFragment"
-            app:destination="@id/taskListFragment"
-            app:popUpTo="@id/taskListFragment"
-            app:popUpToInclusive="true" />
         <argument
             android:name="taskId"
             app:argType="java.util.UUID"
             app:nullable="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 
     <fragment
