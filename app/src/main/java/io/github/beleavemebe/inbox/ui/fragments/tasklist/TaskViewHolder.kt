@@ -34,7 +34,7 @@ class TaskViewHolder(
     }
 
     private fun ListItemTaskBinding.initTitleTv(task: Task) {
-        taskTitleTv.text = task.title
+        titleTv.text = task.title
     }
 
     private fun ListItemTaskBinding.initCompletedCb(task: Task) {
@@ -57,7 +57,7 @@ class TaskViewHolder(
     }
 
     private fun ListItemTaskBinding.alterViewIfTaskIsCompleted(task: Task) {
-        taskTitleTv.apply {
+        titleTv.apply {
             val titleTextColor = getTitleColor(task, resources)
             setCrossedOut(task.isCompleted)
             setTextColor(titleTextColor)
