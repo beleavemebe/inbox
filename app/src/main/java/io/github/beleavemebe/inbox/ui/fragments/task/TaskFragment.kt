@@ -3,6 +3,7 @@ package io.github.beleavemebe.inbox.ui.fragments.task
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -51,7 +52,7 @@ class TaskFragment : BaseFragment(R.layout.fragment_task) {
 
     private fun observeTask() {
         viewModel.task
-            .observe(viewLifecycleOwner) { task: Task ->
+            .observe(viewLifecycleOwner) {
                 binding.updateUI()
             }
     }
@@ -69,7 +70,10 @@ class TaskFragment : BaseFragment(R.layout.fragment_task) {
         timeCv.setOnClickListener(::showTimePicker)
         dateCv.setOnClickListener(::showPickDatePopupMenu)
         periodicityCv.setOnClickListener(::showPeriodicityDialog)
-        titleEt.doOnTextChanged { text, _, _, _ -> task.title = text.toString().trim() }
+        titleEt.doOnTextChanged { text, _, _, _ ->
+            titleTi.error = null
+            task.title = text.toString().trim()
+        }
         noteEt.doOnTextChanged { text, _, _, _ -> task.note = text.toString().trim() }
     }
 
@@ -197,7 +201,7 @@ class TaskFragment : BaseFragment(R.layout.fragment_task) {
 
     private fun saveTask(view: View) {
         if (task.isBlank()) {
-            context.toast(R.string.task_is_blank)
+            binding.titleTi.error = getString(R.string.task_is_blank)
         } else {
             viewModel.saveTask()
             view.findNavController().navigateUp()

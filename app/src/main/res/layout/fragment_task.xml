@@ -15,7 +15,7 @@
         app:layout_constraintGuide_begin="8dp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/task_title_tv"
+        android:id="@+id/title_ti"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:layout_marginTop="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/main_guideline"
-        app:layout_constraintTop_toBottomOf="@id/task_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/title_ti"
         app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
 
         <com.google.android.material.textfield.TextInputEditText
