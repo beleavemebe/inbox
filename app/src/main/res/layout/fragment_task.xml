@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/task"
-            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
             android:maxLength="100"
             android:textSize="18sp"
             tools:text="Turquoise Hexagon Sun - make a cool remix" />
@@ -140,20 +140,9 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="12dp"
             android:hint="@string/repeat"
-            tools:text="Еженедельно: пн, вт, ср, пт"
-            app:drawableStartCompat="@drawable/ic_baseline_repeat_24" />
+            app:drawableStartCompat="@drawable/ic_baseline_repeat_24"
+            tools:text="Еженедельно: пн, вт, ср, пт" />
     </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/save_btn"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/accent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timestamp_tv"
@@ -166,4 +155,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Задача добавлена 29.07.2021 15:41" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/save_btn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@color/accent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

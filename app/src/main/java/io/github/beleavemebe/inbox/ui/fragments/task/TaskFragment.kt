@@ -16,6 +16,7 @@ import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
 import io.github.beleavemebe.inbox.util.HOUR_MS
+import io.github.beleavemebe.inbox.util.enableDoneImeAction
 import io.github.beleavemebe.inbox.util.forceEditing
 import io.github.beleavemebe.inbox.util.toast
 import java.lang.IllegalStateException
@@ -66,11 +67,14 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         timeCv.setOnClickListener(::showTimePicker)
         dateCv.setOnClickListener(::showPickDatePopupMenu)
         periodicityCv.setOnClickListener(::showPeriodicityDialog)
+        titleEt.enableDoneImeAction()
         titleEt.doOnTextChanged { text, _, _, _ ->
             titleTi.error = null
             task.title = text.toString().trim()
         }
-        noteEt.doOnTextChanged { text, _, _, _ -> task.note = text.toString().trim() }
+        noteEt.doOnTextChanged { text, _, _, _ ->
+            task.note = text.toString().trim()
+        }
     }
 
     private fun showPeriodicityDialog(v: View) {

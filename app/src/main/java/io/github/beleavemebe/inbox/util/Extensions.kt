@@ -2,7 +2,9 @@ package io.github.beleavemebe.inbox.util
 
 import android.content.Context
 import android.graphics.Paint
+import android.text.InputType
 import android.util.Log
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
@@ -28,6 +30,12 @@ internal fun EditText.forceEditing() {
     requestFocus()
     (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
         .showSoftInput(this, 0)
+}
+
+// https://stackoverflow.com/q/2986387
+internal fun EditText.enableDoneImeAction() {
+    imeOptions = EditorInfo.IME_ACTION_DONE;
+    setRawInputType(InputType.TYPE_CLASS_TEXT);
 }
 
 internal fun TextView.setCrossedOut(flag: Boolean) {
