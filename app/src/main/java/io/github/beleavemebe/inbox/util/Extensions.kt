@@ -44,3 +44,8 @@ private fun TextView.crossOut() {
 private fun TextView.uncross() {
     paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 }
+
+fun <E> MutableList<E>.refillWith(content: List<E>) {
+    clear()
+    addAll(content)
+}

@@ -7,17 +7,17 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
-import io.github.beleavemebe.inbox.ui.activities.MainActivity.Companion.mainBottomNavigationView
 import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
-import io.github.beleavemebe.inbox.util.*
+import io.github.beleavemebe.inbox.util.log
 import java.util.*
 
-class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
+class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCallback {
     private val viewModel: TaskListViewModel by viewModels()
     private val binding by viewBinding(FragmentTaskListBinding::bind)
 
@@ -36,7 +36,7 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
 
     private fun FragmentTaskListBinding.setupRecyclerView() {
         tasksRv.let { rv ->
-            rv.adapter = TaskAdapter(::goToTask)
+            rv.adapter = TaskAdapter(this@TaskListFragment, ::goToTask)
             rv.layoutManager = LinearLayoutManager(context)
             ItemTouchHelper(taskTouchHelperCallback).attachToRecyclerView(rv)
         }
@@ -46,7 +46,7 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
         viewModel.tasks.observe(viewLifecycleOwner) { taskList ->
             log("got list of ${taskList.size} tasks: ${taskList.joinToString { it.title }}")
             val adapter = binding.tasksRv.adapter as TaskAdapter
-            adapter.submitList(taskList.toList())
+            adapter.setContent(taskList.toList())
         }
     }
 
@@ -101,4 +101,12 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
                 direction: Int
             ) = deleteTask(viewHolder as TaskViewHolder)
         }
+
+    override fun onInserted(position: Int, count: Int) {
+        binding.tasksRv.scrollToPosition(position)
+    }
+
+    override fun onRemoved(position: Int, count: Int) {}
+    override fun onMoved(fromPosition: Int, toPosition: Int) {}
+    override fun onChanged(position: Int, count: Int, payload: Any?) {}
 }

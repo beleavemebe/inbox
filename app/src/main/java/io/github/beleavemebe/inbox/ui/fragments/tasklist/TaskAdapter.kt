@@ -1,26 +1,31 @@
 package io.github.beleavemebe.inbox.ui.fragments.tasklist
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.ListUpdateCallback
+import androidx.recyclerview.widget.RecyclerView
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
 import io.github.beleavemebe.inbox.model.Task
+import io.github.beleavemebe.inbox.util.refillWith
 import java.util.*
 
 class TaskAdapter(
+    private val callback: ListUpdateCallback,
     private val onTaskClicked: (UUID) -> Unit,
-) : ListAdapter<Task, TaskViewHolder>(TASK_DIFF_CALLBACK) {
-    companion object {
-        private val TASK_DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>()
-        {
-            override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean =
-                oldItem.id == newItem.id
+) : RecyclerView.Adapter<TaskViewHolder>() {
+    private val tasks = mutableListOf<Task>()
 
-            override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean =
-                oldItem == newItem
-        }
+    fun setContent(content: List<Task>) {
+        val diffCallback = TaskDiffCallback(tasks, content)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        tasks.refillWith(content)
+        diffResult.dispatchUpdatesTo(this)
+        diffResult.dispatchUpdatesTo(callback)
+    }
+
+    override fun getItemCount(): Int {
+        return tasks.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -29,7 +34,7 @@ class TaskAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task = getItem(position)
+        val task = tasks[position]
         holder.bind(task)
     }
 
