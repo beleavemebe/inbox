@@ -64,11 +64,5 @@ class MainActivity : AppCompatActivity() {
     private fun setBottomNavVisible(visible : Boolean) {
         binding.mainBottomNavigationView.isVisible = visible
     }
-
-    companion object {
-        val BaseFragment.mainBottomNavigationView
-            get() = (requireActivity() as MainActivity)
-                .binding.mainBottomNavigationView
-    }
 }
 

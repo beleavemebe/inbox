@@ -52,11 +52,10 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list) {
 
     private fun showUndoSnackbar(onUndoCallback: () -> Unit) {
         Snackbar.make(
-            binding.root,
+            binding.fabAddTask,
             getString(R.string.task_removed),
             Snackbar.LENGTH_LONG
         )
-            .setAnchorView(mainBottomNavigationView)
             .setAction(getString(R.string.undo)) { onUndoCallback() }
             .show()
     }
