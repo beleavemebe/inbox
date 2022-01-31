@@ -11,10 +11,9 @@ class TaskListViewModel : ViewModel() {
     private val taskRepository = TaskRepository.getInstance()
     val tasks: LiveData<List<Task>> = taskRepository.getTasks()
 
-    fun deleteTask(index: Int) {
-        val task = tasks.value?.get(index)
+    fun deleteTask(task: Task) {
         viewModelScope.launch {
-            taskRepository.deleteTask(task ?: return@launch)
+            taskRepository.deleteTask(task)
         }
     }
 

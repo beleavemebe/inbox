@@ -62,8 +62,7 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
 
     private fun deleteTask(holder: TaskViewHolder) {
         val task = holder.task ?: return
-        val index = holder.bindingAdapterPosition
-        viewModel.deleteTask(index)
+        viewModel.deleteTask(task)
         showUndoSnackbar {
             viewModel.insertTask(task)
         }
