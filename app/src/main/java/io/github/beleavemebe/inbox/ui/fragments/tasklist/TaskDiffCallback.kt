@@ -1,7 +1,7 @@
 package io.github.beleavemebe.inbox.ui.fragments.tasklist
 
 import androidx.recyclerview.widget.DiffUtil
-import io.github.beleavemebe.inbox.model.Task
+import io.github.beleavemebe.inbox.core.model.Task
 
 class TaskDiffCallback(
     private val oldList: List<Task>,

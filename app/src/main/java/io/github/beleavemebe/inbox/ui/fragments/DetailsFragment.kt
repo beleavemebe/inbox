@@ -3,7 +3,7 @@ package io.github.beleavemebe.inbox.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import io.github.beleavemebe.inbox.ui.activities.MainActivity
+import io.github.beleavemebe.inbox.ui.MainActivity
 
 abstract class DetailsFragment(@LayoutRes layoutResId: Int) : BaseFragment(layoutResId) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

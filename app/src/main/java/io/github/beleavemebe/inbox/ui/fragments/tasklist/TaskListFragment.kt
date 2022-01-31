@@ -18,8 +18,10 @@ import io.github.beleavemebe.inbox.util.log
 import java.util.*
 
 class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCallback {
-    private val viewModel: TaskListViewModel by viewModels()
     private val binding by viewBinding(FragmentTaskListBinding::bind)
+    private val viewModel by viewModels<TaskListViewModel> {
+        TaskListViewModel.provideFactory()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,7 +38,11 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
 
     private fun FragmentTaskListBinding.setupRecyclerView() {
         tasksRv.let { rv ->
-            rv.adapter = TaskAdapter(this@TaskListFragment, ::goToTask)
+            rv.adapter = TaskAdapter(
+                this@TaskListFragment,
+                ::goToTask,
+                viewModel::setTaskCompleted
+            )
             rv.layoutManager = LinearLayoutManager(context)
             ItemTouchHelper(taskTouchHelperCallback).attachToRecyclerView(rv)
         }

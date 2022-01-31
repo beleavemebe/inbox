@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.activities
+package io.github.beleavemebe.inbox.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,7 +16,7 @@ import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
 import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
 
 class MainActivity : AppCompatActivity() {
-    val binding by viewBinding(ActivityMainBinding::bind)
+    private val binding by viewBinding(ActivityMainBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

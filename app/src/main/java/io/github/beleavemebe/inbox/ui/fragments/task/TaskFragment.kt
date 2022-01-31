@@ -12,34 +12,30 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import io.github.beleavemebe.inbox.R
+import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
-import io.github.beleavemebe.inbox.model.Task
 import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
 import io.github.beleavemebe.inbox.util.HOUR_MS
 import io.github.beleavemebe.inbox.util.enableDoneImeAction
 import io.github.beleavemebe.inbox.util.forceEditing
 import io.github.beleavemebe.inbox.util.toast
-import java.lang.IllegalStateException
 import java.util.*
 import io.github.beleavemebe.inbox.util.calendar as extCalendar
 
 class TaskFragment : DetailsFragment(R.layout.fragment_task) {
-    private val args: TaskFragmentArgs by navArgs()
-    private val viewModel: TaskViewModel by viewModels()
+    private val args by navArgs<TaskFragmentArgs>()
     private val binding by viewBinding(FragmentTaskBinding::bind)
+    private val viewModel by viewModels<TaskViewModel> {
+        TaskViewModel.provideFactory(args.taskId)
+    }
 
     private val task: Task
         get() = viewModel.task.value ?: throw IllegalStateException()
 
     private val calendar: Calendar?
-        get() = task.date?.let {
+        get() = task.dueDate?.let {
             extCalendar.apply { time = it }
         }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.taskId = args.taskId
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -87,7 +83,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
 
     private fun FragmentTaskBinding.updateDateTv() {
         dateTv.text =
-            task.date?.let {
+            task.dueDate?.let {
                 viewModel.getFormattedDate(it)
             } ?: ""
     }
@@ -117,14 +113,22 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
             }.show()
     }
 
-    private fun onTodayOptionPicked() = true.also { setDate(System.currentTimeMillis()) }
-    private fun onTomorrowOptionPicked() = true.also { setDate(System.currentTimeMillis() + 24 * HOUR_MS) }
-    private fun onPickDateOptionPicked() = true.also { showDatePicker() }
+    private fun onTodayOptionPicked() = true.also {
+        setDate(System.currentTimeMillis())
+    }
+
+    private fun onTomorrowOptionPicked() = true.also {
+        setDate(System.currentTimeMillis() + 24 * HOUR_MS)
+    }
+
+    private fun onPickDateOptionPicked() = true.also {
+        showDatePicker()
+    }
 
     private fun showDatePicker() {
         MaterialDatePicker.Builder.datePicker()
             .setTitleText(getString(R.string.select_date))
-            .setSelection(task.date?.time ?: System.currentTimeMillis())
+            .setSelection(task.dueDate?.time ?: System.currentTimeMillis())
             .build()
             .apply {
                 addOnNegativeButtonClickListener { clearDate() }
@@ -135,7 +139,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     private fun setDate(ms: Long) {
         val hrs = calendar?.get(Calendar.HOUR_OF_DAY) ?: 12
         val min = calendar?.get(Calendar.MINUTE) ?: 0
-        task.date = Date(ms)
+        task.dueDate = Date(ms)
         binding.updateDateTv()
         if (task.isTimeSpecified == true) {
             setTime(hrs, min)
@@ -143,7 +147,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     }
 
     private fun clearDate() {
-        task.date = null
+        task.dueDate = null
         binding.dateTv.text = ""
         clearTime()
     }
@@ -170,7 +174,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     }
 
     private fun setTime(pickedHour: Int, pickedMinute: Int) {
-        task.date = calendar?.run {
+        task.dueDate = calendar?.run {
             set(Calendar.HOUR_OF_DAY, pickedHour)
             set(Calendar.MINUTE, pickedMinute)
             time

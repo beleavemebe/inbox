@@ -1,25 +1,59 @@
 package io.github.beleavemebe.inbox.ui.fragments.tasklist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import io.github.beleavemebe.inbox.model.Task
-import io.github.beleavemebe.inbox.repositories.TaskRepository
+import androidx.lifecycle.*
+import io.github.beleavemebe.inbox.core.model.Task
+import io.github.beleavemebe.inbox.core.usecase.*
+import io.github.beleavemebe.inbox.di.ServiceLocator
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import java.util.*
 
-class TaskListViewModel : ViewModel() {
-    private val taskRepository = TaskRepository.getInstance()
-    val tasks: LiveData<List<Task>> = taskRepository.getTasks()
+class TaskListViewModel(
+    private val getTasks: GetTasks,
+    private val getTaskById: GetTaskById,
+    private val deleteTask: DeleteTask,
+    private val addTask: AddTask,
+    private val updateTask: UpdateTask,
+) : ViewModel() {
+
+    val tasks: LiveData<List<Task>> =
+        flow {
+            emit(getTasks())
+        }
+        .asLiveData()
 
     fun deleteTask(task: Task) {
         viewModelScope.launch {
-            taskRepository.deleteTask(task)
+            deleteTask.invoke(task)
         }
     }
 
     fun insertTask(task: Task) {
         viewModelScope.launch {
-            taskRepository.addTask(task)
+            addTask.invoke(task)
+        }
+    }
+
+    fun setTaskCompleted(id: UUID, flag: Boolean) {
+        viewModelScope.launch {
+            val task = getTaskById(id)
+            task.isCompleted = flag
+            updateTask(task)
+        }
+    }
+
+    companion object {
+        fun provideFactory() = object : ViewModelProvider.Factory {
+            @Suppress("unchecked_cast")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return TaskListViewModel(
+                    ServiceLocator.getTasks,
+                    ServiceLocator.getTaskById,
+                    ServiceLocator.deleteTask,
+                    ServiceLocator.addTask,
+                    ServiceLocator.updateTask,
+                ) as T
+            }
         }
     }
 }

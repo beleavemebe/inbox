@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.db.task
+package io.github.beleavemebe.inbox.data.db
 
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
