@@ -3,7 +3,6 @@ package io.github.beleavemebe.inbox.ui.fragments.task
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
-import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -15,9 +14,7 @@ import com.google.android.material.timepicker.TimeFormat
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.model.Task
-import io.github.beleavemebe.inbox.ui.activities.MainActivity.Companion.hideBottomNavMenu
-import io.github.beleavemebe.inbox.ui.activities.MainActivity.Companion.revealBottomNavMenu
-import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
+import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
 import io.github.beleavemebe.inbox.util.HOUR_MS
 import io.github.beleavemebe.inbox.util.forceEditing
 import io.github.beleavemebe.inbox.util.toast
@@ -25,7 +22,7 @@ import java.lang.IllegalStateException
 import java.util.*
 import io.github.beleavemebe.inbox.util.calendar as extCalendar
 
-class TaskFragment : BaseFragment(R.layout.fragment_task) {
+class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     private val args: TaskFragmentArgs by navArgs()
     private val viewModel: TaskViewModel by viewModels()
     private val binding by viewBinding(FragmentTaskBinding::bind)
@@ -45,7 +42,6 @@ class TaskFragment : BaseFragment(R.layout.fragment_task) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hideBottomNavMenu()
         binding.setupUI()
         observeTask()
     }
@@ -206,11 +202,6 @@ class TaskFragment : BaseFragment(R.layout.fragment_task) {
             viewModel.saveTask()
             view.findNavController().navigateUp()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        revealBottomNavMenu()
     }
 
     private fun Task.isBlank() = title.isBlank()
