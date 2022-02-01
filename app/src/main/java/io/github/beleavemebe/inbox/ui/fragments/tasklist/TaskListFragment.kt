@@ -14,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
 import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
-import io.github.beleavemebe.inbox.util.log
+import io.github.beleavemebe.inbox.ui.util.log
 import java.util.*
 
 class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCallback {

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
-import io.github.beleavemebe.inbox.util.*
+import io.github.beleavemebe.inbox.ui.util.*
 import java.util.*
 
 class TaskViewHolder(

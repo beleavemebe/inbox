@@ -1,9 +1,9 @@
-package io.github.beleavemebe.inbox.util
+package io.github.beleavemebe.inbox.ui.util
 
 import android.text.format.DateUtils
 import java.util.*
 
-internal val calendar get() = Calendar.getInstance(Locale("ru"))
+internal val calendar get() = Calendar.getInstance(Locale.getDefault())
 
 const val MINUTE_MS = 60 * 1000L
 const val HOUR_MS = 60 * MINUTE_MS

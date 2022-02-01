@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.util
+package io.github.beleavemebe.inbox.ui.util
 
 import android.content.Context
 import android.graphics.Paint
@@ -34,8 +34,8 @@ internal fun EditText.forceEditing() {
 
 // https://stackoverflow.com/q/2986387
 internal fun EditText.enableDoneImeAction() {
-    imeOptions = EditorInfo.IME_ACTION_DONE;
-    setRawInputType(InputType.TYPE_CLASS_TEXT);
+    imeOptions = EditorInfo.IME_ACTION_DONE
+    setRawInputType(InputType.TYPE_CLASS_TEXT)
 }
 
 internal fun TextView.setCrossedOut(flag: Boolean) {

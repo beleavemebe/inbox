@@ -15,12 +15,12 @@ import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
-import io.github.beleavemebe.inbox.util.HOUR_MS
-import io.github.beleavemebe.inbox.util.enableDoneImeAction
-import io.github.beleavemebe.inbox.util.forceEditing
-import io.github.beleavemebe.inbox.util.toast
+import io.github.beleavemebe.inbox.ui.util.HOUR_MS
+import io.github.beleavemebe.inbox.ui.util.enableDoneImeAction
+import io.github.beleavemebe.inbox.ui.util.forceEditing
+import io.github.beleavemebe.inbox.ui.util.toast
 import java.util.*
-import io.github.beleavemebe.inbox.util.calendar as extCalendar
+import io.github.beleavemebe.inbox.ui.util.calendar as extCalendar
 
 class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     private val args by navArgs<TaskFragmentArgs>()
@@ -152,7 +152,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         clearTime()
     }
 
-    private fun showTimePicker(`_`: View?) {
+    private fun showTimePicker(v: View?) {
         val cal = calendar ?: return context.toast(R.string.date_not_set)
         var hrs = 12
         var min = 0
