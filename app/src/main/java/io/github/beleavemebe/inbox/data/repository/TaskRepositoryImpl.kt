@@ -9,6 +9,8 @@ import io.github.beleavemebe.inbox.data.db.TaskDatabase
 import io.github.beleavemebe.inbox.data.model.TaskEntity
 import io.github.beleavemebe.inbox.data.model.toTask
 import io.github.beleavemebe.inbox.data.model.toTaskEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.util.*
 
 class TaskRepositoryImpl(context: Context) : TaskRepository {
@@ -24,8 +26,12 @@ class TaskRepositoryImpl(context: Context) : TaskRepository {
         return taskDao.getTask(id).toTask()
     }
 
-    override suspend fun getTasks(): List<Task> {
-        return taskDao.getTasks().map(TaskEntity::toTask)
+    override fun getTasks(): Flow<List<Task>> {
+        return taskDao
+            .getTasks()
+            .map { dtoList ->
+                dtoList.map(TaskEntity::toTask)
+            }
     }
 
     override suspend fun addTask(task: Task) {

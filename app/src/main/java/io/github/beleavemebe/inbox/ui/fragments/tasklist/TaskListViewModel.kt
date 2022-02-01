@@ -4,12 +4,11 @@ import androidx.lifecycle.*
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.core.usecase.*
 import io.github.beleavemebe.inbox.di.ServiceLocator
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.util.*
 
 class TaskListViewModel(
-    private val getTasks: GetTasks,
+    getTasks: GetTasks,
     private val getTaskById: GetTaskById,
     private val deleteTask: DeleteTask,
     private val addTask: AddTask,
@@ -17,10 +16,7 @@ class TaskListViewModel(
 ) : ViewModel() {
 
     val tasks: LiveData<List<Task>> =
-        flow {
-            emit(getTasks())
-        }
-        .asLiveData()
+        getTasks().asLiveData()
 
     fun deleteTask(task: Task) {
         viewModelScope.launch {
