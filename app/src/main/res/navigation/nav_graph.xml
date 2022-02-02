@@ -14,6 +14,10 @@
             android:id="@+id/action_taskListFragment_to_taskFragment"
             app:destination="@id/taskFragment">
         </action>
+        <action
+            android:id="@+id/action_taskListFragment_to_filterTasksDialog"
+            app:destination="@id/filterTasksDialog" />
+
     </fragment>
 
     <fragment
@@ -50,5 +54,10 @@
         android:label="@string/my_meetings"
         tools:layout="@layout/fragment_meeting_list" >
     </fragment>
+
+    <dialog
+        android:id="@+id/filterTasksDialog"
+        android:name="io.github.beleavemebe.inbox.ui.fragments.tasklist.FilterTasksDialog"
+        tools:layout="@layout/dialog_filter_tasks"/>
 
 </navigation>

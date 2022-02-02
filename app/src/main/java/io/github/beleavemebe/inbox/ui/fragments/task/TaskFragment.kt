@@ -12,15 +12,15 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import io.github.beleavemebe.inbox.R
+import io.github.beleavemebe.inbox.core.common.util.HOUR_MS
+import io.github.beleavemebe.inbox.core.common.util.calendar
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
-import io.github.beleavemebe.inbox.ui.util.HOUR_MS
 import io.github.beleavemebe.inbox.ui.util.enableDoneImeAction
 import io.github.beleavemebe.inbox.ui.util.forceEditing
 import io.github.beleavemebe.inbox.ui.util.toast
 import java.util.*
-import io.github.beleavemebe.inbox.ui.util.calendar as extCalendar
 
 class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     private val args by navArgs<TaskFragmentArgs>()
@@ -33,9 +33,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         get() = viewModel.task.value ?: throw IllegalStateException()
 
     private val calendar: Calendar?
-        get() = task.dueDate?.let {
-            extCalendar.apply { time = it }
-        }
+        get() = task.dueDate?.calendar()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

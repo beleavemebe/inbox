@@ -1,10 +1,9 @@
 package io.github.beleavemebe.inbox.ui.fragments.tasklist
 
 import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
+import android.view.*
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListUpdateCallback
@@ -14,13 +13,34 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
 import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
+import io.github.beleavemebe.inbox.ui.util.actionBar
 import io.github.beleavemebe.inbox.ui.util.log
 import java.util.*
 
 class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCallback {
     private val binding by viewBinding(FragmentTaskListBinding::bind)
-    private val viewModel by viewModels<TaskListViewModel> {
+    private val viewModel by navGraphViewModels<TaskListViewModel>(R.id.nav_graph) {
         TaskListViewModel.provideFactory()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_task_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.filter_tasks -> {
+                showFilterTasksDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,24 +48,30 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
         binding.initAddButton()
         binding.setupRecyclerView()
         observeTaskList()
+        observeActionBarSubtitle()
+    }
+
+    private fun observeActionBarSubtitle() {
+        viewModel.taskFilterPreferenceLiveData.observe(viewLifecycleOwner) { pref ->
+            actionBar.subtitle =
+                if (pref.titleResId == R.string.all) {
+                    ""
+                } else {
+                    getString(pref.titleResId)
+                }
+        }
     }
 
     private fun FragmentTaskListBinding.initAddButton() {
-        fabAddTask.setOnClickListener {
-            goToNewTask()
-        }
+        fabAddTask.setOnClickListener { goToNewTask() }
     }
 
     private fun FragmentTaskListBinding.setupRecyclerView() {
-        tasksRv.let { rv ->
-            rv.adapter = TaskAdapter(
-                this@TaskListFragment,
-                ::goToTask,
-                viewModel::setTaskCompleted
-            )
-            rv.layoutManager = LinearLayoutManager(context)
-            ItemTouchHelper(taskTouchHelperCallback).attachToRecyclerView(rv)
-        }
+        tasksRv.adapter = TaskAdapter(
+            this@TaskListFragment, ::goToTask, viewModel::setTaskCompleted,
+        )
+        tasksRv.layoutManager = LinearLayoutManager(context)
+        ItemTouchHelper(taskTouchHelperCallback).attachToRecyclerView(tasksRv)
     }
 
     private fun observeTaskList() {
@@ -82,12 +108,18 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
     }
 
     private fun goToTask(uuid: UUID) {
-        requireView().findNavController()
-            .navigate(
-                TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(
-                    uuid, getString(R.string.task)
-                )
+        findNavController().navigate(
+            TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(
+                uuid, getString(R.string.task)
             )
+        )
+    }
+
+    private fun showFilterTasksDialog() {
+        findNavController().navigate(
+            TaskListFragmentDirections
+                .actionTaskListFragmentToFilterTasksDialog()
+        )
     }
 
     private val taskTouchHelperCallback =

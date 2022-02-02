@@ -4,19 +4,34 @@ import androidx.lifecycle.*
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.core.usecase.*
 import io.github.beleavemebe.inbox.di.ServiceLocator
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
 class TaskListViewModel(
-    getTasks: GetTasks,
+    private val getTasks: GetTasks,
+    private val getTasksDueThisWeek: GetTasksDueThisWeek,
+    private val getTasksDueThisOrNextWeek: GetTasksDueThisOrNextWeek,
     private val getTaskById: GetTaskById,
     private val deleteTask: DeleteTask,
     private val addTask: AddTask,
     private val updateTask: UpdateTask,
 ) : ViewModel() {
 
+    val taskFilterPreference = MutableStateFlow(TaskFilterPreference.UNFILTERED)
+
     val tasks: LiveData<List<Task>> =
-        getTasks().asLiveData()
+        taskFilterPreference.flatMapLatest {
+            when (it) {
+                TaskFilterPreference.UNFILTERED -> getTasks()
+                TaskFilterPreference.DUE_THIS_WEEK -> getTasksDueThisWeek()
+                TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK -> getTasksDueThisOrNextWeek()
+            }
+        }
+            .asLiveData()
+
+    val taskFilterPreferenceLiveData: LiveData<TaskFilterPreference>
+        get() = taskFilterPreference.asLiveData()
 
     fun deleteTask(task: Task) {
         viewModelScope.launch {
@@ -44,6 +59,8 @@ class TaskListViewModel(
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return TaskListViewModel(
                     ServiceLocator.getTasks,
+                    ServiceLocator.getTasksDueThisWeek,
+                    ServiceLocator.getTasksDueThisOrNextWeek,
                     ServiceLocator.getTaskById,
                     ServiceLocator.deleteTask,
                     ServiceLocator.addTask,

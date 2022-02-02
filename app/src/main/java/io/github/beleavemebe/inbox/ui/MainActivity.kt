@@ -18,23 +18,23 @@ import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
 class MainActivity : AppCompatActivity() {
     private val binding by viewBinding(ActivityMainBinding::bind)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
-
-        val navController: NavController = supportFragmentManager
+    private val navController: NavController
+        get() = supportFragmentManager
             .findFragmentById(R.id.fragment_container)!!
             .findNavController()
 
-        initToolbar(navController)
-        initBottomNavigation(navController)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+        initToolbar()
+        initBottomNavigation()
     }
 
-    private fun initToolbar(navController: NavController) {
-        NavigationUI.setupWithNavController(
-            binding.mainToolbar,
+    private fun initToolbar() {
+        setSupportActionBar(binding.mainToolbar)
+        NavigationUI.setupActionBarWithNavController(
+            this,
             navController,
             configureAppBar()
         )
@@ -51,15 +51,19 @@ class MainActivity : AppCompatActivity() {
         return AppBarConfiguration(topLevelDestinations)
     }
 
-    private fun initBottomNavigation(navController: NavController) {
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    private fun initBottomNavigation() {
         NavigationUI.setupWithNavController(
             binding.mainBottomNavigationView,
             navController
         )
     }
 
-    fun hideBottomNavMenu() { setBottomNavVisible(false) }
-    fun revealBottomNavMenu() { setBottomNavVisible(true) }
+    fun hideBottomNavMenu() = setBottomNavVisible(false)
+    fun revealBottomNavMenu() = setBottomNavVisible(true)
 
     private fun setBottomNavVisible(visible : Boolean) {
         binding.mainBottomNavigationView.isVisible = visible

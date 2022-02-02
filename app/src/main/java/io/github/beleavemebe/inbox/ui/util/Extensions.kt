@@ -10,6 +10,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
 internal fun log(msg: Any?) = Log.d("app-debug", msg.toString())
 
@@ -44,6 +47,10 @@ internal fun TextView.setCrossedOut(flag: Boolean) {
     else
         uncross()
 }
+
+internal val Fragment.actionBar: ActionBar
+    get() = (requireActivity() as AppCompatActivity)
+        .supportActionBar!!
 
 private fun TextView.crossOut() {
     paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

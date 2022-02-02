@@ -40,4 +40,7 @@
     <string name="day_of_week_sat">Сб</string>
     <string name="day_of_week_sun">Вс</string>
     <string name="repeat">Повторять</string>
+    <string name="all">Все</string>
+    <string name="this_week">Эта неделя</string>
+    <string name="this_or_next_week">Эта и следующая неделя</string>
 </resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sort_preferences_rg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <RadioButton
+        android:id="@+id/unsorted_rb"
+        style="@style/RadioButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/all" />
+
+    <RadioButton
+        android:id="@+id/this_week_rb"
+        style="@style/RadioButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/this_week" />
+
+    <RadioButton
+        android:id="@+id/this_or_next_week_rb"
+        style="@style/RadioButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/this_or_next_week" />
+</RadioGroup>

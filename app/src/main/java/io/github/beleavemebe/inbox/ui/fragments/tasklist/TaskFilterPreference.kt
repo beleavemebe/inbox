@@ -1,0 +1,12 @@
+package io.github.beleavemebe.inbox.ui.fragments.tasklist
+
+import androidx.annotation.StringRes
+import io.github.beleavemebe.inbox.R
+
+enum class TaskFilterPreference(
+    @StringRes val titleResId: Int
+) {
+    UNFILTERED(R.string.all),
+    DUE_THIS_WEEK(R.string.this_week),
+    DUE_THIS_OR_NEXT_WEEK(R.string.this_or_next_week),
+}
