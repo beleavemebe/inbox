@@ -122,6 +122,11 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
         )
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        actionBar.subtitle = ""
+    }
+
     private val taskTouchHelperCallback =
         object : ItemTouchHelper.SimpleCallback(
             0,
