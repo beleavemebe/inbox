@@ -10,17 +10,15 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import io.github.beleavemebe.inbox.R
+import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
-import io.github.beleavemebe.inbox.model.Task
-import io.github.beleavemebe.inbox.repositories.TaskRepository
-import io.github.beleavemebe.inbox.util.*
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import io.github.beleavemebe.inbox.ui.util.*
 import java.util.*
 
 class TaskViewHolder(
     private val binding: ListItemTaskBinding,
     private val onTaskClicked: (UUID) -> Unit,
+    private val onTaskChecked: (UUID, Boolean) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
     var task: Task? = null
         private set
@@ -47,7 +45,7 @@ class TaskViewHolder(
     }
 
     private fun ListItemTaskBinding.initDatetimeBar(task: Task) {
-        val taskDate = task.date
+        val taskDate = task.dueDate
         val resources = datetimeBar.resources
         datetimeBar.isVisible = taskDate != null
         if (taskDate != null) {
@@ -76,16 +74,16 @@ class TaskViewHolder(
 
     private fun getDatetimeText(task: Task, resources: Resources): String {
         val dateText = when {
-            task.date.isYesterday -> resources.getString(R.string.yesterday)
-            task.date.isToday -> resources.getString(R.string.today)
-            task.date.isTomorrow -> resources.getString(R.string.tomorrow)
+            task.dueDate.isYesterday -> resources.getString(R.string.yesterday)
+            task.dueDate.isToday -> resources.getString(R.string.today)
+            task.dueDate.isTomorrow -> resources.getString(R.string.tomorrow)
             else -> DateFormat
-                .format("EEE, dd MMM", task.date).toString()
+                .format("EEE, dd MMM", task.dueDate).toString()
                 .replaceFirstChar { it.uppercase() }
         }
 
         val timeText = if (task.isTimeSpecified == true) {
-            DateFormat.format("HH:mm", task.date).toString()
+            DateFormat.format("HH:mm", task.dueDate).toString()
         } else ""
 
         return resources.getString(R.string.task_datetime_placeholder, dateText, timeText)
@@ -96,11 +94,9 @@ class TaskViewHolder(
     }
 
     private fun setTaskCompleted(flag: Boolean) {
-        task?.let {
-            it.isCompleted = flag
-            MainScope().launch { TaskRepository.getInstance().updateTask(it) }
-            binding.alterViewIfTaskIsCompleted(it)
-        }
+        val task = task ?: return
+        onTaskChecked(task.id, flag)
+        binding.alterViewIfTaskIsCompleted(task)
     }
 
     override fun onClick(view: View) {
@@ -125,11 +121,11 @@ class TaskViewHolder(
         val failedColor = res.getColorCompat(appContext, R.color.red)
         return when {
             task.isCompleted -> inactiveColor
-            task.date.isPast -> when {
-                (task.date.isToday) && (task.isTimeSpecified != true) -> todayColor
+            task.dueDate.isPast -> when {
+                (task.dueDate.isToday) && (task.isTimeSpecified != true) -> todayColor
                 else -> failedColor
             }
-            task.date.isToday -> todayColor
+            task.dueDate.isToday -> todayColor
             else -> activeColor
         }
     }

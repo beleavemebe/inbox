@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "inbox"
 include ':app'
+include ':core'
