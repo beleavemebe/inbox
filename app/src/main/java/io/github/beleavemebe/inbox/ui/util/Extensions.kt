@@ -38,7 +38,7 @@ internal fun EditText.forceEditing() {
 // https://stackoverflow.com/q/2986387
 internal fun EditText.enableDoneImeAction() {
     imeOptions = EditorInfo.IME_ACTION_DONE
-    setRawInputType(InputType.TYPE_CLASS_TEXT)
+    setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or InputType.TYPE_CLASS_TEXT)
 }
 
 internal fun TextView.setCrossedOut(flag: Boolean) {
