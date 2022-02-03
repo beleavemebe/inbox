@@ -6,28 +6,11 @@
         <item name="colorPrimaryVariant">@color/accent_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-    </style>
-
-    <style name="TextInputCardView">
-        <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
-        <item name="cardCornerRadius">4dp</item>
-        <item name="strokeColor">#5A5A5A</item>
-        <item name="strokeWidth">0.8dp</item>
-    </style>
-
-    <style name="TextInputTextView">
-        <item name="android:drawablePadding">16dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:inputType">none</item>
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textSize">16sp</item>
     </style>
 </resources>

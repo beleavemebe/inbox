@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="TextInputCardView">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="strokeColor">#5A5A5A</item>
+        <item name="strokeWidth">0.8dp</item>
+    </style>
+
+    <style name="TextInputTextView">
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:inputType">none</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="PeriodicityCheckBox">
         <item name="android:button">@null</item>
         <item name="android:drawableTop">?android:attr/listChoiceIndicatorMultiple</item>

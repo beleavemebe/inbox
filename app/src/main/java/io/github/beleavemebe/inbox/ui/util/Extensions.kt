@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.text.InputType
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -12,6 +13,8 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.Group
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 
 internal fun log(msg: Any?) = Log.d("app-debug", msg.toString())
@@ -46,6 +49,23 @@ internal fun TextView.setCrossedOut(flag: Boolean) {
         crossOut()
     else
         uncross()
+}
+
+internal fun Group.setVisibleAnimated(flag: Boolean) {
+    referencedIds.forEach { viewId ->
+        rootView.findViewById<View>(viewId)
+            ?.setVisibleAnimated(flag)
+    }
+}
+
+internal fun View.setVisibleAnimated(flag: Boolean) {
+    if (flag) {
+        isVisible = true
+        alpha = 0f
+        animate().alpha(1f)
+    } else {
+        isVisible = false
+    }
 }
 
 internal val Fragment.actionBar: ActionBar

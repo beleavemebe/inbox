@@ -1,6 +1,5 @@
 package io.github.beleavemebe.inbox.ui.fragments.task
 
-import android.text.format.DateFormat
 import androidx.lifecycle.*
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.core.usecase.AddTask
@@ -42,13 +41,6 @@ class TaskViewModel(
         }
 
     fun saveTask() = taskSavingAction(task.value!!)
-
-    fun getFormattedDate(date: Date) =
-        DateFormat.format("EEE, d MMM yyyy", date).toString()
-            .replaceFirstChar(Char::uppercase)
-
-    fun getFormattedTimestamp(date: Date) =
-        DateFormat.format("dd MMM `yy HH:mm", date).toString()
 
     companion object {
         fun provideFactory(

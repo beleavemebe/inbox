@@ -66,6 +66,22 @@
         app:layout_constraintTop_toBottomOf="@id/note_ti"
         tools:viewBindingIgnore="true" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/datetime_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/date_header_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/date_header_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/date_header_tv"
+        tools:checked="true" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/datetime_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="date_cv, time_cv" />
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/date_cv"
         style="@style/TextInputCardView"
@@ -122,6 +138,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/time_cv"
         tools:viewBindingIgnore="true" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/periodicity_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/periodicity_header_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/periodicity_header_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/periodicity_header_tv" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/periodicity_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="periodicity_cv" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/periodicity_cv"
