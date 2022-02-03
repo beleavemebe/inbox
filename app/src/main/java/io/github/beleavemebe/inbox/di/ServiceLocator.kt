@@ -7,13 +7,15 @@ import io.github.beleavemebe.inbox.data.repository.TaskRepositoryImpl
 
 object ServiceLocator {
     lateinit var application: Application
-
     private val taskRepository: TaskRepository by lazy {
         TaskRepositoryImpl(application)
     }
 
     val getTaskById
         get() = GetTaskById(taskRepository)
+
+    val getUndatedTasks
+        get() = GetUndatedTasks(taskRepository)
 
     val getTasksDueThisWeek
         get() = GetTasksDueThisWeek(taskRepository)

@@ -13,6 +13,13 @@
         android:text="@string/all" />
 
     <RadioButton
+        android:id="@+id/undated_rb"
+        style="@style/RadioButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/undated" />
+
+    <RadioButton
         android:id="@+id/this_week_rb"
         style="@style/RadioButtonStyle"
         android:layout_width="match_parent"

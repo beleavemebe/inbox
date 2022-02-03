@@ -36,6 +36,9 @@ class FilterTasksDialog : BottomSheetDialogFragment() {
             TaskFilterPreference.UNFILTERED -> {
                 binding.unsortedRb.isChecked = true
             }
+            TaskFilterPreference.UNDATED -> {
+                binding.undatedRb.isChecked = true
+            }
             TaskFilterPreference.DUE_THIS_WEEK -> {
                 binding.thisWeekRb.isChecked = true
             }
@@ -49,6 +52,7 @@ class FilterTasksDialog : BottomSheetDialogFragment() {
         binding.sortPreferencesRg.setOnCheckedChangeListener { _, checkedId ->
             viewModel.taskFilterPreference.value = when (checkedId) {
                 R.id.unsorted_rb -> TaskFilterPreference.UNFILTERED
+                R.id.undated_rb -> TaskFilterPreference.UNDATED
                 R.id.this_week_rb -> TaskFilterPreference.DUE_THIS_WEEK
                 R.id.this_or_next_week_rb -> TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK
                 else -> error("Unknown RadioButton id")

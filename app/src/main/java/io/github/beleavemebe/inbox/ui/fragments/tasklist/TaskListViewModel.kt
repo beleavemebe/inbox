@@ -10,6 +10,7 @@ import java.util.*
 
 class TaskListViewModel(
     private val getTasks: GetTasks,
+    private val getUndatedTasks: GetUndatedTasks,
     private val getTasksDueThisWeek: GetTasksDueThisWeek,
     private val getTasksDueThisOrNextWeek: GetTasksDueThisOrNextWeek,
     private val getTaskById: GetTaskById,
@@ -24,6 +25,7 @@ class TaskListViewModel(
         taskFilterPreference.flatMapLatest {
             when (it) {
                 TaskFilterPreference.UNFILTERED -> getTasks()
+                TaskFilterPreference.UNDATED -> getUndatedTasks()
                 TaskFilterPreference.DUE_THIS_WEEK -> getTasksDueThisWeek()
                 TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK -> getTasksDueThisOrNextWeek()
             }
@@ -59,6 +61,7 @@ class TaskListViewModel(
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return TaskListViewModel(
                     ServiceLocator.getTasks,
+                    ServiceLocator.getUndatedTasks,
                     ServiceLocator.getTasksDueThisWeek,
                     ServiceLocator.getTasksDueThisOrNextWeek,
                     ServiceLocator.getTaskById,

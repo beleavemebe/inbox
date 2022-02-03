@@ -43,4 +43,5 @@
     <string name="all">Все</string>
     <string name="this_week">Эта неделя</string>
     <string name="this_or_next_week">Эта и следующая неделя</string>
+    <string name="undated">Без даты</string>
 </resources>

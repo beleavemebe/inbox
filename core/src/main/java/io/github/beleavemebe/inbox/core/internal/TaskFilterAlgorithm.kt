@@ -28,4 +28,11 @@ internal sealed interface TaskFilterAlgorithm {
                 }
         }
     }
+
+    object Undated : TaskFilterAlgorithm {
+        override fun applyFilter(source: List<Task>): List<Task> {
+            return source
+                .filter { it.dueDate == null }
+        }
+    }
 }
