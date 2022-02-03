@@ -12,13 +12,26 @@ object ServiceLocator {
         TaskRepositoryImpl(application)
     }
 
-    val getTaskById get() = GetTaskById(taskRepository)
-    val getTasksDueThisWeek get() = GetTasksDueThisWeek(taskRepository)
-    val getTasksDueThisOrNextWeek get() = GetTasksDueThisOrNextWeek(taskRepository)
-    val getTasks get() = GetTasks(taskRepository)
-    val addTask get() = AddTask(taskRepository)
-    val updateTask get() = UpdateTask(taskRepository)
-    val deleteTask get() = DeleteTask(taskRepository)
+    val getTaskById
+        get() = GetTaskById(taskRepository)
+
+    val getTasksDueThisWeek
+        get() = GetTasksDueThisWeek(taskRepository)
+
+    val getTasksDueThisOrNextWeek
+        get() = GetTasksDueThisOrNextWeek(taskRepository)
+
+    val getTasks
+        get() = GetTasks(taskRepository)
+
+    val addTask
+        get() = AddTask(taskRepository)
+
+    val updateTask
+        get() = UpdateTask(taskRepository)
+
+    val deleteTask
+        get() = DeleteTask(taskRepository)
 
     fun init(application: Application) {
         this.application = application
