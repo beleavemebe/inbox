@@ -55,10 +55,9 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/date_header_tv"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
+        style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="12dp"
         android:text="@string/date_and_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
@@ -128,10 +127,9 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/periodicity_header_tv"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
+        style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="12dp"
         android:text="@string/periodicity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"

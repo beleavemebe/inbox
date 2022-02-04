@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Title" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
     <style name="TextInputCardView">
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:clickable">true</item>
