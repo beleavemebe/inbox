@@ -10,6 +10,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import io.github.beleavemebe.inbox.R
+import io.github.beleavemebe.inbox.core.common.util.isPast
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
 import io.github.beleavemebe.inbox.ui.util.*
@@ -121,11 +122,7 @@ class TaskViewHolder(
         val failedColor = res.getColorCompat(appContext, R.color.red)
         return when {
             task.isCompleted -> inactiveColor
-            task.dueDate.isPast -> when {
-                (task.dueDate.isToday) && (task.isTimeSpecified != true) -> todayColor
-                else -> failedColor
-            }
-            task.dueDate.isToday -> todayColor
+            task.dueDate?.isPast == true -> if (task.isDueToday()) todayColor else failedColor
             else -> activeColor
         }
     }
@@ -144,4 +141,7 @@ class TaskViewHolder(
     fun invalidateTask() {
         task = null
     }
+
+    private fun Task.isDueToday() =
+        dueDate.isToday && (isTimeSpecified?.not() == true)
 }

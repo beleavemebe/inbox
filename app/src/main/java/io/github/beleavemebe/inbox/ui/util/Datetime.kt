@@ -12,6 +12,3 @@ internal val Date?.isYesterday get() =
 
 internal val Date?.isTomorrow get() =
     this?.let { Date(it.time - DAY_MS).isToday } ?: false
-
-internal val Date?.isPast get() =
-    this?.let { Date() > it } ?: false
