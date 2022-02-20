@@ -1,7 +1,9 @@
 package io.github.beleavemebe.inbox.ui.fragments.tasklist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -13,20 +15,28 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
+import io.github.beleavemebe.inbox.di.MultiViewModelFactory
+import io.github.beleavemebe.inbox.ui.appComponent
 import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
 import io.github.beleavemebe.inbox.ui.util.actionBar
 import io.github.beleavemebe.inbox.ui.util.log
 import java.util.*
+import javax.inject.Inject
 
 class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCallback {
     private val binding by viewBinding(FragmentTaskListBinding::bind)
-    private val viewModel by navGraphViewModels<TaskListViewModel>(R.id.nav_graph) {
-        TaskListViewModel.factory()
-    }
+
+    @Inject lateinit var factory: ViewModelProvider.Factory
+    private val viewModel by navGraphViewModels<TaskListViewModel>(R.id.nav_graph) { factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onAttach(context: Context) {
+        context.appComponent.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

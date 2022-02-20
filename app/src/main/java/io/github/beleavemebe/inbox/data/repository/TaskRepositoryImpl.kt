@@ -1,7 +1,5 @@
 package io.github.beleavemebe.inbox.data.repository
 
-import android.content.Context
-import androidx.room.Room
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.core.repository.TaskRepository
 import io.github.beleavemebe.inbox.data.db.TaskDao
@@ -12,14 +10,11 @@ import io.github.beleavemebe.inbox.data.model.toTaskEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.*
+import javax.inject.Inject
 
-class TaskRepositoryImpl(context: Context) : TaskRepository {
-    private val database = Room.databaseBuilder(
-        context.applicationContext,
-        TaskDatabase::class.java,
-        DATABASE_NAME
-    ).build()
-
+class TaskRepositoryImpl @Inject constructor(
+    database: TaskDatabase,
+) : TaskRepository {
     private val taskDao: TaskDao = database.taskDao()
 
     override fun getTasks(): Flow<List<Task>> {
@@ -44,9 +39,5 @@ class TaskRepositoryImpl(context: Context) : TaskRepository {
 
     override suspend fun deleteTask(taskToDelete: Task) {
         taskDao.deleteTask(taskToDelete.toTaskEntity())
-    }
-
-    companion object {
-        private const val DATABASE_NAME = "task-db"
     }
 }
