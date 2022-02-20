@@ -8,9 +8,9 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -81,6 +81,17 @@ private fun TextView.crossOut() {
 private fun TextView.uncross() {
     paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 }
+
+@ColorInt
+fun Resources.getColorCompat(
+    context: Context,
+    @ColorRes colorResId: Int
+): Int =
+    ResourcesCompat.getColor(
+        this,
+        colorResId,
+        context.applicationContext.theme
+    )
 
 fun <E> MutableList<E>.refillWith(content: List<E>) {
     clear()
