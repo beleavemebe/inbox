@@ -56,8 +56,8 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.initAddButton()
-        binding.setupRecyclerView()
+        initAddButton()
+        setupRecyclerView()
         observeTaskList()
         observeActionBarSubtitle()
     }
@@ -73,16 +73,14 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
         }
     }
 
-    private fun FragmentTaskListBinding.initAddButton() {
-        fabAddTask.setOnClickListener { goToNewTask() }
+    private fun initAddButton() {
+        binding.fabAddTask.setOnClickListener { goToNewTask() }
     }
 
-    private fun FragmentTaskListBinding.setupRecyclerView() {
-        tasksRv.adapter = TaskAdapter(
-            this@TaskListFragment, ::goToTask, viewModel::setTaskCompleted,
-        )
-        tasksRv.layoutManager = LinearLayoutManager(context)
-        ItemTouchHelper(taskTouchHelperCallback).attachToRecyclerView(tasksRv)
+    private fun setupRecyclerView() {
+        binding.tasksRv.adapter = TaskAdapter(this, ::goToTask, viewModel::setTaskCompleted)
+        binding.tasksRv.layoutManager = LinearLayoutManager(context)
+        ItemTouchHelper(taskTouchHelperCallback).attachToRecyclerView(binding.tasksRv)
     }
 
     private fun observeTaskList() {
