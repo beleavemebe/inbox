@@ -5,27 +5,29 @@ import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.core.usecase.AddTask
 import io.github.beleavemebe.inbox.core.usecase.GetTaskById
 import io.github.beleavemebe.inbox.core.usecase.UpdateTask
-import io.github.beleavemebe.inbox.di.ServiceLocator
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class TaskViewModel(
-    private val taskId: UUID?,
+class TaskViewModel @Inject constructor(
     private val getTaskById: GetTaskById,
     private val addTask: AddTask,
     private val updateTask: UpdateTask,
 ) : ViewModel() {
 
-    val task: LiveData<Task> =
+    val taskId = MutableLiveData<UUID>()
+
+    val task: LiveData<Task> = taskId.switchMap {
         flow {
-            val task = if (taskId != null) getTaskById(taskId) else Task()
+            val task = if (it != null) getTaskById(it) else Task()
             emit(task)
-        }
-            .asLiveData()
+        }.asLiveData()
+    }
+
 
     val isTaskIdGiven: Boolean
-        get() = taskId != null
+        get() = taskId.value != null
 
     private val taskSavingAction: (Task) -> Unit
         get() = if (isTaskIdGiven) ::updateTask else ::addTask
@@ -43,21 +45,4 @@ class TaskViewModel(
     }
 
     fun saveTask() = taskSavingAction(task.value!!)
-
-    companion object {
-        fun factory(
-            taskId: UUID?,
-        ) = object : ViewModelProvider.Factory {
-            @Suppress("unchecked_cast")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return TaskViewModel(
-                    taskId,
-                    ServiceLocator.getTaskById,
-                    ServiceLocator.addTask,
-                    ServiceLocator.updateTask,
-                ) as T
-            }
-        }
-    }
-
 }

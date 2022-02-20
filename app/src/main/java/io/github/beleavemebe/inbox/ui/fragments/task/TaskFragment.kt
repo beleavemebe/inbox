@@ -1,11 +1,14 @@
 package io.github.beleavemebe.inbox.ui.fragments.task
 
+import android.content.Context
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.PopupMenu
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -17,19 +20,22 @@ import io.github.beleavemebe.inbox.core.common.util.HOUR_MS
 import io.github.beleavemebe.inbox.core.common.util.calendar
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
+import io.github.beleavemebe.inbox.di.MultiViewModelFactory
+import io.github.beleavemebe.inbox.ui.appComponent
 import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
 import io.github.beleavemebe.inbox.ui.util.enableDoneImeAction
 import io.github.beleavemebe.inbox.ui.util.forceEditing
 import io.github.beleavemebe.inbox.ui.util.setVisibleAnimated
 import io.github.beleavemebe.inbox.ui.util.toast
 import java.util.*
+import javax.inject.Inject
 
 class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     private val args by navArgs<TaskFragmentArgs>()
     private val binding by viewBinding(FragmentTaskBinding::bind)
-    private val viewModel by viewModels<TaskViewModel> {
-        TaskViewModel.factory(args.taskId)
-    }
+
+    @Inject lateinit var factory: ViewModelProvider.Factory
+    private val viewModel by viewModels<TaskViewModel> { factory }
 
     private val task: Task
         get() = viewModel.task.value ?: throw IllegalStateException()
@@ -37,8 +43,14 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     private val calendar: Calendar?
         get() = task.dueDate?.calendar()
 
+    override fun onAttach(context: Context) {
+        context.appComponent.inject(this)
+        super.onAttach(context)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.taskId.value = args.taskId
         setupUI()
         observeTask()
     }

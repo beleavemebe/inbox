@@ -3,12 +3,12 @@ package io.github.beleavemebe.inbox.ui.fragments.tasklist
 import androidx.lifecycle.*
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.core.usecase.*
-import io.github.beleavemebe.inbox.di.ServiceLocator
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class TaskListViewModel(
+class TaskListViewModel @Inject constructor(
     private val getTasksInteractor: GetTasksInteractor,
     private val getTaskById: GetTaskById,
     private val deleteTask: DeleteTask,
@@ -65,21 +65,6 @@ class TaskListViewModel(
             val task = getTaskById(id)
             task.isCompleted = flag
             updateTask(task)
-        }
-    }
-
-    companion object {
-        fun factory() = object : ViewModelProvider.Factory {
-            @Suppress("unchecked_cast")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return TaskListViewModel(
-                    ServiceLocator.getTasksInteractor,
-                    ServiceLocator.getTaskById,
-                    ServiceLocator.deleteTask,
-                    ServiceLocator.addTask,
-                    ServiceLocator.updateTask,
-                ) as T
-            }
         }
     }
 }
