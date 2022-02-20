@@ -28,7 +28,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     private val args by navArgs<TaskFragmentArgs>()
     private val binding by viewBinding(FragmentTaskBinding::bind)
     private val viewModel by viewModels<TaskViewModel> {
-        TaskViewModel.provideFactory(args.taskId)
+        TaskViewModel.factory(args.taskId)
     }
 
     private val task: Task
@@ -41,13 +41,6 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         super.onViewCreated(view, savedInstanceState)
         binding.setupUI()
         observeTask()
-    }
-
-    private fun observeTask() {
-        viewModel.task
-            .observe(viewLifecycleOwner) {
-                binding.updateUI()
-            }
     }
 
     private fun FragmentTaskBinding.setupUI() {
@@ -79,6 +72,22 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         }
         periodicitySwitch.setOnCheckedChangeListener { _, isChecked ->
             setPeriodicityGroupVisible(isChecked)
+        }
+    }
+
+    private fun observeTask() {
+        viewModel.task.observe(viewLifecycleOwner) {
+            binding.updateUI()
+        }
+    }
+
+    private fun FragmentTaskBinding.updateUI() {
+        titleEt.setText(task.title)
+        noteEt.setText(task.note)
+        initDatetimeSection()
+        initPeriodicitySection()
+        if (viewModel.isTaskIdGiven) {
+            initTimestampTv()
         }
     }
 
@@ -200,16 +209,6 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         setTime(0, 0)
         task.isTimeSpecified = false
         binding.timeTv.text = ""
-    }
-
-    private fun FragmentTaskBinding.updateUI() {
-        titleEt.setText(task.title)
-        noteEt.setText(task.note)
-        initDatetimeSection()
-        initPeriodicitySection()
-        if (viewModel.isTaskIdGiven) {
-            initTimestampTv()
-        }
     }
 
     private fun FragmentTaskBinding.initTimestampTv() {

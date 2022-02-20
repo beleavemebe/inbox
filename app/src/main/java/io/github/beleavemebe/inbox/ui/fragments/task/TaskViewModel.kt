@@ -30,20 +30,22 @@ class TaskViewModel(
     private val taskSavingAction: (Task) -> Unit
         get() = if (isTaskIdGiven) ::updateTask else ::addTask
 
-    private fun addTask(task: Task) =
+    private fun addTask(task: Task) {
         viewModelScope.launch {
             addTask.invoke(task)
         }
+    }
 
-    private fun updateTask(task: Task) =
+    private fun updateTask(task: Task) {
         viewModelScope.launch {
             updateTask.invoke(task)
         }
+    }
 
     fun saveTask() = taskSavingAction(task.value!!)
 
     companion object {
-        fun provideFactory(
+        fun factory(
             taskId: UUID?,
         ) = object : ViewModelProvider.Factory {
             @Suppress("unchecked_cast")

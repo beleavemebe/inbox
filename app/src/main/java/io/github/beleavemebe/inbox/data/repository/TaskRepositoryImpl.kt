@@ -22,16 +22,16 @@ class TaskRepositoryImpl(context: Context) : TaskRepository {
 
     private val taskDao: TaskDao = database.taskDao()
 
-    override suspend fun getTaskById(id: UUID): Task {
-        return taskDao.getTask(id).toTask()
-    }
-
     override fun getTasks(): Flow<List<Task>> {
         return taskDao
             .getTasks()
             .map { dtoList ->
                 dtoList.map(TaskEntity::toTask)
             }
+    }
+
+    override suspend fun getTaskById(id: UUID): Task {
+        return taskDao.getTask(id).toTask()
     }
 
     override suspend fun addTask(task: Task) {
