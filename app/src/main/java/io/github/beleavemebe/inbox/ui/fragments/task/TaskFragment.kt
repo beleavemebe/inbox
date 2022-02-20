@@ -107,7 +107,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     }
 
     private fun FragmentTaskBinding.updateTimeTv() {
-        if (task.isTimeSpecified == true) {
+        if (task.isTimeSpecified) {
             val cal = calendar ?: return
             val hrs = cal.get(Calendar.HOUR_OF_DAY)
             val min = cal.get(Calendar.MINUTE)
@@ -159,7 +159,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         val min = calendar?.get(Calendar.MINUTE) ?: 0
         task.dueDate = Date(ms)
         binding.updateDateTv()
-        if (task.isTimeSpecified == true) {
+        if (task.isTimeSpecified) {
             setTime(hrs, min)
         }
     }
@@ -178,7 +178,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         val cal = calendar ?: return context.toast(R.string.date_not_set)
         var hrs = 12
         var min = 0
-        if (task.isTimeSpecified == true) {
+        if (task.isTimeSpecified) {
             hrs = cal.get(Calendar.HOUR_OF_DAY)
             min = cal.get(Calendar.MINUTE)
         }
