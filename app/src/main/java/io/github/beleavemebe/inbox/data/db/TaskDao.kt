@@ -7,7 +7,7 @@ import java.util.*
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM task ORDER BY is_completed ASC, date IS NULL ASC, date ASC, timestamp ASC")
+    @Query("SELECT * FROM task")
     fun getTasks(): Flow<List<TaskEntity>>
 
     @Query("SELECT * FROM task WHERE id=(:id)")

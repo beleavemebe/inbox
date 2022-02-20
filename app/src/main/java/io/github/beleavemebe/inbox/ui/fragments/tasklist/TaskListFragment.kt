@@ -20,7 +20,7 @@ import java.util.*
 class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCallback {
     private val binding by viewBinding(FragmentTaskListBinding::bind)
     private val viewModel by navGraphViewModels<TaskListViewModel>(R.id.nav_graph) {
-        TaskListViewModel.provideFactory()
+        TaskListViewModel.factory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

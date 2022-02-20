@@ -9,31 +9,44 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class TaskListViewModel(
-    private val getTasks: GetTasks,
-    private val getUndatedTasks: GetUndatedTasks,
-    private val getTasksDueThisWeek: GetTasksDueThisWeek,
-    private val getTasksDueThisOrNextWeek: GetTasksDueThisOrNextWeek,
+    private val getTasksInteractor: GetTasksInteractor,
     private val getTaskById: GetTaskById,
     private val deleteTask: DeleteTask,
     private val addTask: AddTask,
     private val updateTask: UpdateTask,
 ) : ViewModel() {
 
-    val taskFilterPreference = MutableStateFlow(TaskFilterPreference.UNFILTERED)
+    private val _taskFilterPreference = MutableStateFlow(TaskFilterPreference.UNFILTERED)
+    val taskFilterPreference: StateFlow<TaskFilterPreference> = _taskFilterPreference
 
     val tasks: LiveData<List<Task>> =
-        taskFilterPreference.flatMapLatest {
+        _taskFilterPreference.flatMapLatest {
             when (it) {
-                TaskFilterPreference.UNFILTERED -> getTasks()
-                TaskFilterPreference.UNDATED -> getUndatedTasks()
-                TaskFilterPreference.DUE_THIS_WEEK -> getTasksDueThisWeek()
-                TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK -> getTasksDueThisOrNextWeek()
+                TaskFilterPreference.UNFILTERED -> {
+                    getTasksInteractor.getTasks()
+                }
+
+                TaskFilterPreference.UNDATED -> {
+                    getTasksInteractor.getUndatedTasks()
+                }
+
+                TaskFilterPreference.DUE_THIS_WEEK -> {
+                    getTasksInteractor.getTasksDueThisWeek()
+                }
+
+                TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK -> {
+                    getTasksInteractor.getTasksDueThisOrNextWeek()
+                }
             }
         }
             .asLiveData()
 
     val taskFilterPreferenceLiveData: LiveData<TaskFilterPreference>
-        get() = taskFilterPreference.asLiveData()
+        get() = _taskFilterPreference.asLiveData()
+
+    fun onPreferenceSelected(preference: TaskFilterPreference) {
+        _taskFilterPreference.value = preference
+    }
 
     fun deleteTask(task: Task) {
         viewModelScope.launch {
@@ -56,14 +69,11 @@ class TaskListViewModel(
     }
 
     companion object {
-        fun provideFactory() = object : ViewModelProvider.Factory {
+        fun factory() = object : ViewModelProvider.Factory {
             @Suppress("unchecked_cast")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return TaskListViewModel(
-                    ServiceLocator.getTasks,
-                    ServiceLocator.getUndatedTasks,
-                    ServiceLocator.getTasksDueThisWeek,
-                    ServiceLocator.getTasksDueThisOrNextWeek,
+                    ServiceLocator.getTasksInteractor,
                     ServiceLocator.getTaskById,
                     ServiceLocator.deleteTask,
                     ServiceLocator.addTask,

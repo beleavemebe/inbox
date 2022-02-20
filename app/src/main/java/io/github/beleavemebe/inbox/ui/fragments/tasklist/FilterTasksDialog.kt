@@ -50,13 +50,15 @@ class FilterTasksDialog : BottomSheetDialogFragment() {
 
     private fun initRadioGroupListener(binding: DialogFilterTasksBinding) {
         binding.sortPreferencesRg.setOnCheckedChangeListener { _, checkedId ->
-            viewModel.taskFilterPreference.value = when (checkedId) {
+            val preference = when (checkedId) {
                 R.id.unsorted_rb -> TaskFilterPreference.UNFILTERED
                 R.id.undated_rb -> TaskFilterPreference.UNDATED
                 R.id.this_week_rb -> TaskFilterPreference.DUE_THIS_WEEK
                 R.id.this_or_next_week_rb -> TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK
                 else -> error("Unknown RadioButton id")
             }
+
+            viewModel.onPreferenceSelected(preference)
 
             dismiss()
         }
