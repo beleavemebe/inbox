@@ -39,51 +39,51 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.setupUI()
+        setupUI()
         observeTask()
     }
 
-    private fun FragmentTaskBinding.setupUI() {
+    private fun setupUI() {
         initListeners()
-        titleEt.enableDoneImeAction()
+        binding.titleEt.enableDoneImeAction()
         if (!viewModel.isTaskIdGiven) {
             hideTimestamp()
-            titleEt.forceEditing()
+            binding.titleEt.forceEditing()
         }
     }
 
-    private fun FragmentTaskBinding.initListeners() {
-        saveBtn.setOnClickListener(::saveTask)
-        timeCv.setOnClickListener(::showTimePicker)
-        dateCv.setOnClickListener(::showPickDatePopupMenu)
-        periodicityCv.setOnClickListener(::showPeriodicityDialog)
-        titleEt.doOnTextChanged { text, _, _, _ ->
-            titleTi.error = null
+    private fun initListeners() {
+        binding.saveBtn.setOnClickListener(::saveTask)
+        binding.timeCv.setOnClickListener(::showTimePicker)
+        binding.dateCv.setOnClickListener(::showPickDatePopupMenu)
+        binding.periodicityCv.setOnClickListener(::showPeriodicityDialog)
+        binding.titleEt.doOnTextChanged { text, _, _, _ ->
+            binding.titleTi.error = null
             task.title = text.toString().trim()
         }
-        noteEt.doOnTextChanged { text, _, _, _ ->
+        binding.noteEt.doOnTextChanged { text, _, _, _ ->
             task.note = text.toString().trim()
         }
-        datetimeSwitch.setOnCheckedChangeListener { _, isChecked ->
+        binding.datetimeSwitch.setOnCheckedChangeListener { _, isChecked ->
             setDatetimeGroupVisible(isChecked)
             if (!isChecked) {
                 clearDatetime()
             }
         }
-        periodicitySwitch.setOnCheckedChangeListener { _, isChecked ->
+        binding.periodicitySwitch.setOnCheckedChangeListener { _, isChecked ->
             setPeriodicityGroupVisible(isChecked)
         }
     }
 
     private fun observeTask() {
         viewModel.task.observe(viewLifecycleOwner) {
-            binding.updateUI()
+            updateUI()
         }
     }
 
-    private fun FragmentTaskBinding.updateUI() {
-        titleEt.setText(task.title)
-        noteEt.setText(task.note)
+    private fun updateUI() {
+        binding.titleEt.setText(task.title)
+        binding.noteEt.setText(task.note)
         initDatetimeSection()
         initPeriodicitySection()
         if (viewModel.isTaskIdGiven) {
@@ -95,24 +95,24 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         // TODO: Periodicity dialog
     }
 
-    private fun FragmentTaskBinding.hideTimestamp() {
-        timestampTv.visibility = View.INVISIBLE
+    private fun hideTimestamp() {
+        binding.timestampTv.visibility = View.INVISIBLE
     }
 
-    private fun FragmentTaskBinding.updateDateTv() {
-        dateTv.text =
+    private fun updateDateTv() {
+        binding.dateTv.text =
             task.dueDate?.let {
                 formatDueDate(it)
             } ?: ""
     }
 
-    private fun FragmentTaskBinding.updateTimeTv() {
+    private fun updateTimeTv() {
         if (task.isTimeSpecified) {
             val cal = calendar ?: return
             val hrs = cal.get(Calendar.HOUR_OF_DAY)
             val min = cal.get(Calendar.MINUTE)
             val time = "${hrs}:${if (min >= 10) "$min" else "0$min"}"
-            timeTv.text = time
+            binding.timeTv.text = time
         }
     }
 
@@ -158,7 +158,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         val hrs = calendar?.get(Calendar.HOUR_OF_DAY) ?: 12
         val min = calendar?.get(Calendar.MINUTE) ?: 0
         task.dueDate = Date(ms)
-        binding.updateDateTv()
+        updateDateTv()
         if (task.isTimeSpecified) {
             setTime(hrs, min)
         }
@@ -202,7 +202,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
             time
         } ?: return
         task.isTimeSpecified = true
-        binding.updateTimeTv()
+        updateTimeTv()
     }
 
     private fun clearTime() {
@@ -211,8 +211,8 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         binding.timeTv.text = ""
     }
 
-    private fun FragmentTaskBinding.initTimestampTv() {
-        timestampTv.apply {
+    private fun initTimestampTv() {
+        binding.timestampTv.apply {
             text = getString(
                 R.string.task_created_placeholder,
                 formatTimestamp(task.timestamp)
@@ -221,8 +221,8 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         }
     }
 
-    private fun FragmentTaskBinding.initDatetimeSection() {
-        datetimeSwitch.apply {
+    private fun initDatetimeSection() {
+        binding.datetimeSwitch.apply {
             isChecked = task.dueDate != null
             jumpDrawablesToCurrentState()
         }
@@ -231,16 +231,16 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         updateTimeTv()
     }
 
-    private fun FragmentTaskBinding.setDatetimeGroupVisible(flag: Boolean) {
-        datetimeGroup.setVisibleAnimated(flag)
+    private fun setDatetimeGroupVisible(flag: Boolean) {
+        binding.datetimeGroup.setVisibleAnimated(flag)
     }
 
-    private fun FragmentTaskBinding.initPeriodicitySection() {
+    private fun initPeriodicitySection() {
         setPeriodicityGroupVisible(false)
     }
 
-    private fun FragmentTaskBinding.setPeriodicityGroupVisible(flag: Boolean) {
-        periodicityGroup.setVisibleAnimated(flag)
+    private fun setPeriodicityGroupVisible(flag: Boolean) {
+        binding.periodicityGroup.setVisibleAnimated(flag)
     }
 
     private fun saveTask(view: View) {
