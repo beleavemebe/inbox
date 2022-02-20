@@ -9,5 +9,5 @@ data class Task(
     var isCompleted: Boolean = false,
     val timestamp: Date = Date(),
     var dueDate: Date? = null,
-    var isTimeSpecified: Boolean? = null,
+    var isTimeSpecified: Boolean = false,
 )

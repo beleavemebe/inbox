@@ -28,7 +28,7 @@ data class TaskEntity(
     var dueDate: Date? = null,
 
     @ColumnInfo(name = "is_time_specified")
-    var isTimeSpecified: Boolean? = null,
+    var isTimeSpecified: Boolean? = false,
 )
 
 fun TaskEntity.toTask(): Task {
@@ -39,7 +39,7 @@ fun TaskEntity.toTask(): Task {
         isCompleted = isCompleted,
         timestamp = timestamp,
         dueDate = dueDate,
-        isTimeSpecified = isTimeSpecified
+        isTimeSpecified = isTimeSpecified ?: false
     )
 }
 

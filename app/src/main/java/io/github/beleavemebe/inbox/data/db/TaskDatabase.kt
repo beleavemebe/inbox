@@ -5,8 +5,8 @@ import io.github.beleavemebe.inbox.data.model.TaskEntity
 
 @Database(
     entities = [TaskEntity::class],
-    version = 7,
-    autoMigrations = [AutoMigration(from = 6, to = 7)]
+    version = 8,
+    autoMigrations = [AutoMigration(from = 7, to = 8)]
 )
 @TypeConverters(TaskTypeConverters::class)
 abstract class TaskDatabase : RoomDatabase() {
