@@ -39,9 +39,4 @@ class TaskAdapter(
         val task = tasks[position]
         holder.bind(task)
     }
-
-    override fun onViewRecycled(holder: TaskViewHolder) {
-        super.onViewRecycled(holder)
-        holder.invalidateTask()
-    }
 }

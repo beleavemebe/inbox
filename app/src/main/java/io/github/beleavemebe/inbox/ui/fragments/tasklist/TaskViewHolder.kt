@@ -3,7 +3,6 @@ package io.github.beleavemebe.inbox.ui.fragments.tasklist
 import android.content.Context
 import android.content.res.Resources
 import android.text.format.DateFormat
-import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.view.isVisible
@@ -19,7 +18,7 @@ class TaskViewHolder(
     private val binding: ListItemTaskBinding,
     private val onTaskClicked: (UUID) -> Unit,
     private val onTaskChecked: (UUID, Boolean) -> Unit,
-) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+) : RecyclerView.ViewHolder(binding.root) {
     var task: Task? = null
         private set
 
@@ -31,6 +30,7 @@ class TaskViewHolder(
         initTitleTv(task)
         initCompletedCb(task)
         initDatetimeBar(task)
+        initListeners(task.id)
         alterViewIfTaskIsCompleted(task)
     }
 
@@ -39,12 +39,7 @@ class TaskViewHolder(
     }
 
     private fun initCompletedCb(task: Task) {
-        binding.completedCb.apply {
-            isChecked = task.isCompleted
-            setOnCheckedChangeListener { _, isChecked ->
-                setTaskCompleted(isChecked)
-            }
-        }
+        binding.completedCb.isChecked = task.isCompleted
     }
 
     private fun initDatetimeBar(task: Task) {
@@ -54,6 +49,16 @@ class TaskViewHolder(
         if (taskDate != null) {
             binding.taskTimeTv.text = getDatetimeText(task, resources)
             updateDatetimeBarColor(task, resources)
+        }
+    }
+
+    private fun initListeners(id: UUID) {
+        binding.completedCb.setOnCheckedChangeListener { _, isChecked ->
+            onTaskChecked(id, isChecked)
+        }
+
+        binding.root.setOnClickListener {
+            onTaskClicked(id)
         }
     }
 
@@ -75,29 +80,10 @@ class TaskViewHolder(
         }
     }
 
-    init {
-        binding.root.setOnClickListener(this)
-    }
-
-    private fun setTaskCompleted(flag: Boolean) {
-        val task = task ?: return
-        onTaskChecked(task.id, flag)
-        alterViewIfTaskIsCompleted(task)
-    }
-
-    override fun onClick(view: View) {
-        val uuid = task?.id ?: return
-        onTaskClicked(uuid)
-    }
-
     @ColorInt
     private fun getTitleColor(task: Task, res: Resources): Int {
         val textColorRes = if (task.isCompleted) R.color.secondary_text else R.color.primary_text
         return res.getColorCompat(context, textColorRes)
-    }
-
-    fun invalidateTask() {
-        task = null
     }
 }
 
