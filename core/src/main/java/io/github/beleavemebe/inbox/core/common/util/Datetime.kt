@@ -16,7 +16,7 @@ const val HOUR_MS = 60 * MINUTE_MS
 const val DAY_MS = 24 * HOUR_MS
 const val WEEK_MS = 7 * DAY_MS
 
-val lastMondayMs: Long
+val lastMonday: Long
     get() = Date().calendar().run {
         set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
         if (time.isFuture) {
@@ -26,7 +26,7 @@ val lastMondayMs: Long
         timeInMillis
     }
 
-val weekEndMs: Long
+val weekEnd: Long
     get() = Date().calendar().run {
         set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
         if (time.isPast) {
@@ -36,8 +36,8 @@ val weekEndMs: Long
         timeInMillis
     }
 
-val nextWeekEndMs: Long
-    get() = weekEndMs + WEEK_MS
+val nextWeekEnd: Long
+    get() = weekEnd + WEEK_MS
 
 val Date.isPast: Boolean
     get() = time < System.currentTimeMillis()

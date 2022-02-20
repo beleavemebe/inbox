@@ -13,7 +13,7 @@ internal sealed interface TaskFilterAlgorithm {
                 .filter { it.dueDate != null }
                 .filter {
                     val dueDateMs = it.dueDate!!.time
-                    dueDateMs in todayMs..weekEndMs
+                    dueDateMs in lastMonday..weekEnd
                 }
         }
     }
@@ -24,7 +24,7 @@ internal sealed interface TaskFilterAlgorithm {
                 .filter { it.dueDate != null }
                 .filter {
                     val dueDateMs = it.dueDate!!.time
-                    dueDateMs in todayMs..nextWeekEndMs
+                    dueDateMs in lastMonday..nextWeekEnd
                 }
         }
     }
