@@ -1,6 +1,7 @@
 package io.github.beleavemebe.inbox.ui.util
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Paint
 import android.text.InputType
 import android.util.Log
@@ -14,17 +15,18 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 
-internal fun log(msg: Any?) = Log.d("app-debug", msg.toString())
+fun log(msg: Any?) = Log.d("app-debug", msg.toString())
 
-internal fun Context?.toast(@StringRes stringRes: Int) {
+fun Context?.toast(@StringRes stringRes: Int) {
     if (this == null) return
     toast(getString(stringRes))
 }
 
-internal fun Context?.toast(text: String) {
+fun Context?.toast(text: String) {
     Toast.makeText(
         this ?: return,
         text,
@@ -32,33 +34,33 @@ internal fun Context?.toast(text: String) {
     ).show()
 }
 
-internal fun EditText.forceEditing() {
+fun EditText.forceEditing() {
     requestFocus()
     (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
         .showSoftInput(this, 0)
 }
 
 // https://stackoverflow.com/q/2986387
-internal fun EditText.enableDoneImeAction() {
+fun EditText.enableDoneImeAction() {
     imeOptions = EditorInfo.IME_ACTION_DONE
     setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or InputType.TYPE_CLASS_TEXT)
 }
 
-internal fun TextView.setCrossedOut(flag: Boolean) {
+fun TextView.setCrossedOut(flag: Boolean) {
     if (flag)
         crossOut()
     else
         uncross()
 }
 
-internal fun Group.setVisibleAnimated(flag: Boolean) {
+fun Group.setVisibleAnimated(flag: Boolean) {
     referencedIds.forEach { viewId ->
         rootView.findViewById<View>(viewId)
             ?.setVisibleAnimated(flag)
     }
 }
 
-internal fun View.setVisibleAnimated(flag: Boolean) {
+fun View.setVisibleAnimated(flag: Boolean) {
     if (flag) {
         isVisible = true
         alpha = 0f
@@ -68,7 +70,7 @@ internal fun View.setVisibleAnimated(flag: Boolean) {
     }
 }
 
-internal val Fragment.actionBar: ActionBar
+val Fragment.actionBar: ActionBar
     get() = (requireActivity() as AppCompatActivity)
         .supportActionBar!!
 
