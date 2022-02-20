@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import io.github.beleavemebe.inbox.R
+import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
 import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
 import io.github.beleavemebe.inbox.ui.util.actionBar
@@ -82,22 +83,20 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
         }
     }
 
-    private fun showUndoSnackbar(onUndoCallback: () -> Unit) {
+    private fun showUndoDeletionSnackbar(task: Task) {
         Snackbar.make(
             binding.fabAddTask,
             getString(R.string.task_removed),
             Snackbar.LENGTH_LONG
         )
-            .setAction(getString(R.string.undo)) { onUndoCallback() }
+            .setAction(getString(R.string.undo)) { viewModel.insertTask(task) }
             .show()
     }
 
     private fun deleteTask(holder: TaskViewHolder) {
         val task = holder.task ?: return
         viewModel.deleteTask(task)
-        showUndoSnackbar {
-            viewModel.insertTask(task)
-        }
+        showUndoDeletionSnackbar(task)
     }
 
     private fun goToNewTask() {
