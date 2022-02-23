@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginVertical="@dimen/margin_default"
     tools:context=".ui.task.TaskFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -21,158 +20,174 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/margin_default" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ti_title"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_save"
+        app:layout_constraintEnd_toEndOf="@id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_content_start"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_title"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content"
+            android:layout_marginVertical="@dimen/margin_default"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/task"
-            android:inputType="textMultiLine"
-            android:maxLength="@integer/task_title_max_length"
-            android:textSize="@dimen/task_title_text_size"
-            tools:text="Turquoise Hexagon Sun - make a cool remix" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ti_note"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_half"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/ti_title"
-        app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ti_title"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_note"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/note"
-            tools:text="Make something like Boredom (Death Note) but way crazier" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/task"
+                    android:inputType="textMultiLine"
+                    android:maxLength="@integer/task_title_max_length"
+                    android:textSize="@dimen/task_title_text_size"
+                    tools:text="Turquoise Hexagon Sun - make a cool remix" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_date_header"
-        style="@style/Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/date_and_time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/ti_note" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ti_note"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_half"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ti_title"
+                app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switch_datetime"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_date_header"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_date_header"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
-        app:layout_constraintTop_toTopOf="@+id/tv_date_header"
-        tools:checked="true" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/note"
+                    tools:text="Make something like Boredom (Death Note) but way crazier" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_datetime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="cv_date, cv_time" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_date_header"
+                style="@style/Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date_and_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ti_note" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_date"
-        style="@style/PreferenceCardView"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/preference_card_view_height"
-        android:layout_marginTop="@dimen/margin_half"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date_header">
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_date_header"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_date_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_date_header"
+                tools:checked="true" />
 
-        <TextView
-            android:id="@+id/tv_date"
-            style="@style/PreferenceTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/date"
-            app:drawableStartCompat="@drawable/ic_calendar"
-            tools:text="Tue, Oct 19 2021" />
-    </com.google.android.material.card.MaterialCardView>
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="cv_date, cv_time" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_time"
-        style="@style/PreferenceCardView"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/preference_card_view_height"
-        android:layout_marginTop="@dimen/margin_half"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@+id/cv_date">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_date"
+                style="@style/PreferenceCardView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/preference_card_view_height"
+                android:layout_marginTop="@dimen/margin_half"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_date_header">
 
-        <TextView
-            android:id="@+id/tv_time"
-            style="@style/PreferenceTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/time"
-            app:drawableStartCompat="@drawable/ic_time"
-            tools:text="10:27" />
-    </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/PreferenceTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/date"
+                    app:drawableStartCompat="@drawable/ic_calendar"
+                    tools:text="Tue, Oct 19 2021" />
+            </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_periodicity_header"
-        style="@style/Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/periodicity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/cv_time" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_time"
+                style="@style/PreferenceCardView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/preference_card_view_height"
+                android:layout_marginTop="@dimen/margin_half"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cv_date">
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switch_periodicity"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_periodicity_header"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_periodicity_header"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
-        app:layout_constraintTop_toTopOf="@+id/tv_periodicity_header"
-        app:layout_constraintVertical_bias="1.0" />
+                <TextView
+                    android:id="@+id/tv_time"
+                    style="@style/PreferenceTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/time"
+                    app:drawableStartCompat="@drawable/ic_time"
+                    tools:text="10:27" />
+            </com.google.android.material.card.MaterialCardView>
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_periodicity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="cv_periodicity" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_periodicity_header"
+                style="@style/Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/periodicity"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_time" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_periodicity"
-        style="@style/PreferenceCardView"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/preference_card_view_height"
-        android:layout_marginTop="@dimen/margin_half"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_content_start"
-        app:layout_constraintTop_toBottomOf="@id/tv_periodicity_header">
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_periodicity"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_periodicity_header"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_periodicity_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_periodicity_header"
+                app:layout_constraintVertical_bias="1.0" />
 
-        <TextView
-            android:id="@+id/tv_periodicity"
-            style="@style/PreferenceTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/repeat"
-            app:drawableStartCompat="@drawable/ic_baseline_repeat_24"
-            tools:text="Еженедельно: пн, вт, ср, пт" />
-    </com.google.android.material.card.MaterialCardView>
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_periodicity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="cv_periodicity" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_periodicity"
+                style="@style/PreferenceCardView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/preference_card_view_height"
+                android:layout_marginTop="@dimen/margin_half"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_periodicity_header">
+
+                <TextView
+                    android:id="@+id/tv_periodicity"
+                    style="@style/PreferenceTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/repeat"
+                    app:drawableStartCompat="@drawable/ic_baseline_repeat_24"
+                    tools:text="Еженедельно: пн, вт, ср, пт" />
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
