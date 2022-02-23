@@ -20,7 +20,6 @@ class TaskViewHolder(
     private val onTaskChecked: (UUID, Boolean) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
     var task: Task? = null
-        private set
 
     private val context: Context
         get() = binding.root.context.applicationContext
@@ -35,11 +34,16 @@ class TaskViewHolder(
     }
 
     private fun initTitleTv(task: Task) {
-        binding.titleTv.text = task.title
+        binding.tvTitle.text = task.title
     }
 
     private fun initCompletedCb(task: Task) {
-        binding.completedCb.isChecked = task.isCompleted
+        binding.cbCompleted.setOnCheckedChangeListener(null)
+        binding.cbCompleted.isChecked = task.isCompleted
+        binding.cbCompleted.setOnCheckedChangeListener { _, isChecked ->
+            log("Checked task ${task.title}")
+            onTaskChecked(task.id, isChecked)
+        }
     }
 
     private fun initDatetimeBar(task: Task) {
@@ -47,37 +51,29 @@ class TaskViewHolder(
         val resources = binding.datetimeBar.resources
         binding.datetimeBar.isVisible = taskDate != null
         if (taskDate != null) {
-            binding.taskTimeTv.text = getDatetimeText(task, resources)
+            binding.tvTaskDatetime.text = getDatetimeText(task, resources)
             updateDatetimeBarColor(task, resources)
         }
     }
 
     private fun initListeners(id: UUID) {
-        binding.completedCb.setOnCheckedChangeListener { _, isChecked ->
-            onTaskChecked(id, isChecked)
-        }
-
         binding.root.setOnClickListener {
             onTaskClicked(id)
         }
     }
 
     private fun alterViewIfTaskIsCompleted(task: Task) {
-        binding.titleTv.apply {
-            val titleTextColor = getTitleColor(task, resources)
-            setCrossedOut(task.isCompleted)
-            setTextColor(titleTextColor)
-            updateDatetimeBarColor(task, resources)
-        }
+        val titleTextColor = getTitleColor(task, binding.tvTitle.resources)
+        binding.tvTitle.setCrossedOut(task.isCompleted)
+        binding.tvTitle.setTextColor(titleTextColor)
+        updateDatetimeBarColor(task, binding.tvTitle.resources)
     }
 
     private fun updateDatetimeBarColor(task: Task, res: Resources) {
         val datetimeBarColor = getDatetimeBarColor(task, res, context)
-        binding.taskTimeIv.setColorFilter(datetimeBarColor)
-        binding.taskTimeTv.apply {
-            setTextColor(datetimeBarColor)
-            setCrossedOut(task.isCompleted)
-        }
+        binding.ivCalendar.setColorFilter(datetimeBarColor)
+        binding.tvTaskDatetime.setTextColor(datetimeBarColor)
+        binding.tvTaskDatetime.setCrossedOut(task.isCompleted)
     }
 
     @ColorInt

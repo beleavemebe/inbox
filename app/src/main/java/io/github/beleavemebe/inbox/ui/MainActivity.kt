@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.ActivityMainBinding
@@ -16,10 +17,11 @@ import io.github.beleavemebe.inbox.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private val binding by viewBinding(ActivityMainBinding::bind)
 
-    private val navController: NavController
-        get() = supportFragmentManager
+    private val navController: NavController by lazy {
+        supportFragmentManager
             .findFragmentById(R.id.fragment_container)!!
             .findNavController()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         setSupportActionBar(binding.mainToolbar)
-        NavigationUI.setupActionBarWithNavController(
-            this,
-            navController,
-            configureAppBar()
-        )
+        NavigationUI.setupActionBarWithNavController(this, navController, configureAppBar())
     }
 
     private fun configureAppBar(): AppBarConfiguration {
@@ -55,10 +53,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNavigation() {
         binding.mainBottomNavigationView.setOnItemReselectedListener {}
-        NavigationUI.setupWithNavController(
-            binding.mainBottomNavigationView,
-            navController
-        )
+        binding.mainBottomNavigationView.setupWithNavController(navController)
     }
 
     fun hideBottomNavMenu() = setBottomNavVisible(false)

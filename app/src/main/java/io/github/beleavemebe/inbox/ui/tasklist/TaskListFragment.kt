@@ -56,9 +56,27 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAddButton()
-        setupRecyclerView()
+        initRecyclerView()
         observeTaskList()
         observeActionBarSubtitle()
+    }
+
+    private fun initAddButton() {
+        binding.fabAddTask.setOnClickListener { goToNewTask() }
+    }
+
+    private fun initRecyclerView() {
+        binding.tasksRv.adapter = TaskAdapter(this, ::goToTask, viewModel::setTaskCompleted)
+        binding.tasksRv.layoutManager = LinearLayoutManager(context)
+        ItemTouchHelper(taskTouchHelperCallback).attachToRecyclerView(binding.tasksRv)
+    }
+
+    private fun observeTaskList() {
+        viewModel.tasks.observe(viewLifecycleOwner) { taskList ->
+            log("got list@${taskList.hashCode()}")
+            val adapter = binding.tasksRv.adapter as TaskAdapter
+            adapter.setContent(taskList.toList())
+        }
     }
 
     private fun observeActionBarSubtitle() {
@@ -69,24 +87,6 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
                 } else {
                     getString(pref.titleResId)
                 }
-        }
-    }
-
-    private fun initAddButton() {
-        binding.fabAddTask.setOnClickListener { goToNewTask() }
-    }
-
-    private fun setupRecyclerView() {
-        binding.tasksRv.adapter = TaskAdapter(this, ::goToTask, viewModel::setTaskCompleted)
-        binding.tasksRv.layoutManager = LinearLayoutManager(context)
-        ItemTouchHelper(taskTouchHelperCallback).attachToRecyclerView(binding.tasksRv)
-    }
-
-    private fun observeTaskList() {
-        viewModel.tasks.observe(viewLifecycleOwner) { taskList ->
-            log("got list of ${taskList.size} tasks: ${taskList.joinToString { it.title }}")
-            val adapter = binding.tasksRv.adapter as TaskAdapter
-            adapter.setContent(taskList.toList())
         }
     }
 

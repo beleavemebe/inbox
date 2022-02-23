@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Inbox</string>
+    <string name="task">Задача</string>
+    <string name="new_task">Новая задача</string>
+    <string name="tasks">Задачи</string>
+    <string name="my_tasks">Мои задачи</string>
+    <string name="no_tasks">Задачи отсутствуют</string>
+    <string name="add_task_hint">Добавить задачу…</string>
+    <string name="save">Сохранить</string>
+    <string name="note">Заметка</string>
+    <string name="task_created_placeholder">Задача добавлена %1$s</string>
+    <string name="task_is_blank">Задача пустая</string>
+    <string name="task_not_created">Задача не создана</string>
+    <string name="task_removed">Задача удалена</string>
+    <string name="undo">Отменить</string>
+
+    <string name="projects">Проекты</string>
+    <string name="my_projects">Мои проекты</string>
+    <string name="information">Информация</string>
+    <string name="meetings">Встречи</string>
+    <string name="my_meetings">Мои встречи</string>
+
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string name="date_and_time">Дата и время</string>
+    <string name="select_date">Выбрать дату</string>
+    <string name="select_time">Выбрать время</string>
+    <string name="date_not_set">Дата не задана</string>
+    <string name="yesterday">Вчера</string>
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
+    <string name="periodicity">Периодичность</string>
+    <string name="repeat">Повторять</string>
+    <string name="all">Все</string>
+    <string name="this_week">Эта неделя</string>
+    <string name="this_or_next_week">Эта и следующая неделя</string>
+    <string name="undated">Без даты</string>
+</resources>

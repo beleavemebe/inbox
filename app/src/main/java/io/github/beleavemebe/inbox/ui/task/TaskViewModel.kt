@@ -25,24 +25,17 @@ class TaskViewModel @Inject constructor(
         }.asLiveData()
     }
 
-
     val isTaskIdGiven: Boolean
         get() = taskId.value != null
 
-    private val taskSavingAction: (Task) -> Unit
-        get() = if (isTaskIdGiven) ::updateTask else ::addTask
-
-    private fun addTask(task: Task) {
+    fun saveTask() {
+        val task = task.value ?: return
         viewModelScope.launch {
-            addTask.invoke(task)
+            if (isTaskIdGiven) {
+                updateTask(task)
+            } else {
+                addTask(task)
+            }
         }
     }
-
-    private fun updateTask(task: Task) {
-        viewModelScope.launch {
-            updateTask.invoke(task)
-        }
-    }
-
-    fun saveTask() = taskSavingAction(task.value!!)
 }

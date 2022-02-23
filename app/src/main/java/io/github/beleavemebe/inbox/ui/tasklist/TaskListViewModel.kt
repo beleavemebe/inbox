@@ -3,6 +3,7 @@ package io.github.beleavemebe.inbox.ui.tasklist
 import androidx.lifecycle.*
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.core.usecase.*
+import io.github.beleavemebe.inbox.ui.util.log
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -21,6 +22,7 @@ class TaskListViewModel @Inject constructor(
 
     val tasks: LiveData<List<Task>> =
         _taskFilterPreference.flatMapLatest {
+            log(it)
             when (it) {
                 TaskFilterPreference.UNFILTERED -> {
                     getTasksInteractor.getTasks()

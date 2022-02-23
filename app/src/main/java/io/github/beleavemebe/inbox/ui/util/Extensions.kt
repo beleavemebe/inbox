@@ -15,11 +15,12 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 
-fun log(msg: Any?) = Log.d("app-debug", msg.toString())
+fun log(msg: Any?) = Log.d("inbox-debug", msg.toString())
 
 fun Context?.toast(@StringRes stringRes: Int) {
     if (this == null) return
@@ -34,10 +35,14 @@ fun Context?.toast(text: String) {
     ).show()
 }
 
+inline fun <reified T> Context.getSystemService(): T? {
+    return ContextCompat.getSystemService(this, T::class.java)
+}
+
 fun EditText.forceEditing() {
     requestFocus()
-    (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-        .showSoftInput(this, 0)
+    context.getSystemService<InputMethodManager>()
+        ?.showSoftInput(this, 0)
 }
 
 // https://stackoverflow.com/q/2986387
@@ -47,10 +52,8 @@ fun EditText.enableDoneImeAction() {
 }
 
 fun TextView.setCrossedOut(flag: Boolean) {
-    if (flag)
-        crossOut()
-    else
-        uncross()
+    if (flag) crossOut()
+    else uncross()
 }
 
 fun Group.setVisibleAnimated(flag: Boolean) {
@@ -97,3 +100,5 @@ fun <E> MutableList<E>.refillWith(content: List<E>) {
     clear()
     addAll(content)
 }
+
+fun Int.toDoubleFiguredString() = if (this >= 10) "$this" else "0${this}"
