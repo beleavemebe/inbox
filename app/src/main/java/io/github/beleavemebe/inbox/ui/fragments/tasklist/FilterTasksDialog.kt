@@ -32,20 +32,14 @@ class FilterTasksDialog : BottomSheetDialogFragment() {
     }
 
     private fun initRadioGroup(binding: DialogFilterTasksBinding) {
-        when (viewModel.taskFilterPreference.value) {
-            TaskFilterPreference.UNFILTERED -> {
-                binding.unsortedRb.isChecked = true
-            }
-            TaskFilterPreference.UNDATED -> {
-                binding.undatedRb.isChecked = true
-            }
-            TaskFilterPreference.DUE_THIS_WEEK -> {
-                binding.thisWeekRb.isChecked = true
-            }
-            TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK -> {
-                binding.thisOrNextWeekRb.isChecked = true
-            }
+        val correspondingRb = when (viewModel.taskFilterPreference.value) {
+            TaskFilterPreference.UNFILTERED -> binding.unsortedRb
+            TaskFilterPreference.UNDATED -> binding.undatedRb
+            TaskFilterPreference.DUE_THIS_WEEK -> binding.thisWeekRb
+            TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK -> binding.thisOrNextWeekRb
         }
+
+        correspondingRb.isChecked = true
     }
 
     private fun initRadioGroupListener(binding: DialogFilterTasksBinding) {
@@ -59,7 +53,6 @@ class FilterTasksDialog : BottomSheetDialogFragment() {
             }
 
             viewModel.onPreferenceSelected(preference)
-
             dismiss()
         }
     }
