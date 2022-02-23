@@ -3,8 +3,8 @@ package io.github.beleavemebe.inbox.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import io.github.beleavemebe.inbox.ui.fragments.task.TaskFragment
-import io.github.beleavemebe.inbox.ui.fragments.tasklist.TaskListFragment
+import io.github.beleavemebe.inbox.ui.task.TaskFragment
+import io.github.beleavemebe.inbox.ui.tasklist.TaskListFragment
 import javax.inject.Singleton
 
 @Singleton

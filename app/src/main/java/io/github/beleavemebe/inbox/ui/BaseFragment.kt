@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.fragments
+package io.github.beleavemebe.inbox.ui
 
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment

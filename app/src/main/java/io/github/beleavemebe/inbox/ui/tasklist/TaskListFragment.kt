@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.fragments.tasklist
+package io.github.beleavemebe.inbox.ui.tasklist
 
 import android.content.Context
 import android.os.Bundle
@@ -15,9 +15,8 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
-import io.github.beleavemebe.inbox.di.MultiViewModelFactory
 import io.github.beleavemebe.inbox.ui.appComponent
-import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
+import io.github.beleavemebe.inbox.ui.BaseFragment
 import io.github.beleavemebe.inbox.ui.util.actionBar
 import io.github.beleavemebe.inbox.ui.util.log
 import java.util.*
@@ -109,8 +108,10 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
 
     private fun goToNewTask() {
         findNavController().navigate(
-            TaskListFragmentDirections
-                .actionTaskListFragmentToTaskFragment(null, getString(R.string.new_task))
+            TaskListFragmentDirections.actionTaskListFragmentToTaskFragment(
+                null,
+                getString(R.string.new_task)
+            )
         )
     }
 
@@ -124,8 +125,7 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
 
     private fun showFilterTasksDialog() {
         findNavController().navigate(
-            TaskListFragmentDirections
-                .actionTaskListFragmentToFilterTasksDialog()
+            TaskListFragmentDirections.actionTaskListFragmentToFilterTasksDialog()
         )
     }
 

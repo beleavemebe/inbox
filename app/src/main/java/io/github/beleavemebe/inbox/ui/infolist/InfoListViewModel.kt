@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.fragments.infolist
+package io.github.beleavemebe.inbox.ui.infolist
 
 import androidx.lifecycle.ViewModel
 

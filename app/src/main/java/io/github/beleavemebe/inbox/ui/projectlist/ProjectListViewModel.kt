@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.fragments.projectlist
+package io.github.beleavemebe.inbox.ui.projectlist
 
 import androidx.lifecycle.ViewModel
 

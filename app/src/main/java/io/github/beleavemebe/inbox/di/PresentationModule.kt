@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import io.github.beleavemebe.inbox.ui.fragments.task.TaskViewModel
-import io.github.beleavemebe.inbox.ui.fragments.tasklist.TaskListViewModel
+import io.github.beleavemebe.inbox.ui.task.TaskViewModel
+import io.github.beleavemebe.inbox.ui.tasklist.TaskListViewModel
 
 @Module
 abstract class PresentationModule {

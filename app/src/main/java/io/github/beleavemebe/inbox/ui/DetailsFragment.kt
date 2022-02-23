@@ -1,7 +1,6 @@
-package io.github.beleavemebe.inbox.ui.fragments
+package io.github.beleavemebe.inbox.ui
 
 import androidx.annotation.LayoutRes
-import io.github.beleavemebe.inbox.ui.MainActivity
 
 abstract class DetailsFragment(@LayoutRes layoutResId: Int) : BaseFragment(layoutResId) {
     override fun onStart() {

@@ -1,10 +1,10 @@
-package io.github.beleavemebe.inbox.ui.fragments.projectlist
+package io.github.beleavemebe.inbox.ui.projectlist
 
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.FragmentProjectListBinding
-import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
+import io.github.beleavemebe.inbox.ui.BaseFragment
 
 class ProjectListFragment :
     BaseFragment(R.layout.fragment_project_list)

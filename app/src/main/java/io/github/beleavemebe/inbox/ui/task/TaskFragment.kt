@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.fragments.task
+package io.github.beleavemebe.inbox.ui.task
 
 import android.content.Context
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -20,9 +19,8 @@ import io.github.beleavemebe.inbox.core.common.util.HOUR_MS
 import io.github.beleavemebe.inbox.core.common.util.calendar
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
-import io.github.beleavemebe.inbox.di.MultiViewModelFactory
 import io.github.beleavemebe.inbox.ui.appComponent
-import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
+import io.github.beleavemebe.inbox.ui.DetailsFragment
 import io.github.beleavemebe.inbox.ui.util.enableDoneImeAction
 import io.github.beleavemebe.inbox.ui.util.forceEditing
 import io.github.beleavemebe.inbox.ui.util.setVisibleAnimated

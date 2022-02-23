@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
-    tools:context=".ui.fragments.task.TaskFragment">
+    tools:context=".ui.task.TaskFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/main_guideline"

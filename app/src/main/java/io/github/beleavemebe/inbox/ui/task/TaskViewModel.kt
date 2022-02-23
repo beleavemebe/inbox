@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.fragments.task
+package io.github.beleavemebe.inbox.ui.task
 
 import androidx.lifecycle.*
 import io.github.beleavemebe.inbox.core.model.Task

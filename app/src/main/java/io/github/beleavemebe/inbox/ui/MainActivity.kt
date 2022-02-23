@@ -12,8 +12,6 @@ import androidx.navigation.ui.NavigationUI
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.databinding.ActivityMainBinding
-import io.github.beleavemebe.inbox.ui.fragments.BaseFragment
-import io.github.beleavemebe.inbox.ui.fragments.DetailsFragment
 
 class MainActivity : AppCompatActivity() {
     private val binding by viewBinding(ActivityMainBinding::bind)

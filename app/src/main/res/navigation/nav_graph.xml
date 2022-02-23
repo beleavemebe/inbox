@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/taskListFragment"
-        android:name="io.github.beleavemebe.inbox.ui.fragments.tasklist.TaskListFragment"
+        android:name="io.github.beleavemebe.inbox.ui.tasklist.TaskListFragment"
         android:label="@string/my_tasks"
         tools:layout="@layout/fragment_task_list">
         <action
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/taskFragment"
-        android:name="io.github.beleavemebe.inbox.ui.fragments.task.TaskFragment"
+        android:name="io.github.beleavemebe.inbox.ui.task.TaskFragment"
         android:label="{title}"
         tools:layout="@layout/fragment_task">
         <argument
@@ -36,28 +36,28 @@
 
     <fragment
         android:id="@+id/projectListFragment"
-        android:name="io.github.beleavemebe.inbox.ui.fragments.projectlist.ProjectListFragment"
+        android:name="io.github.beleavemebe.inbox.ui.projectlist.ProjectListFragment"
         android:label="@string/my_projects"
         tools:layout="@layout/fragment_project_list" >
     </fragment>
 
     <fragment
         android:id="@+id/infoListFragment"
-        android:name="io.github.beleavemebe.inbox.ui.fragments.infolist.InfoListFragment"
+        android:name="io.github.beleavemebe.inbox.ui.infolist.InfoListFragment"
         android:label="@string/information"
         tools:layout="@layout/fragment_info_list" >
     </fragment>
 
     <fragment
         android:id="@+id/meetingListFragment"
-        android:name="io.github.beleavemebe.inbox.ui.fragments.meetinglist.MeetingListFragment"
+        android:name="io.github.beleavemebe.inbox.ui.meetinglist.MeetingListFragment"
         android:label="@string/my_meetings"
         tools:layout="@layout/fragment_meeting_list" >
     </fragment>
 
     <dialog
         android:id="@+id/filterTasksDialog"
-        android:name="io.github.beleavemebe.inbox.ui.fragments.tasklist.FilterTasksDialog"
+        android:name="io.github.beleavemebe.inbox.ui.tasklist.FilterTasksDialog"
         tools:layout="@layout/dialog_filter_tasks"/>
 
 </navigation>
