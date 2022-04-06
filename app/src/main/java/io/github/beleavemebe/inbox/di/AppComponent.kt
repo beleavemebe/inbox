@@ -8,7 +8,12 @@ import io.github.beleavemebe.inbox.ui.tasklist.TaskListFragment
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [DataModule::class, DomainModule::class, PresentationModule::class])
+@Component(modules = [
+    DataModule::class,
+    DataModuleBindings::class,
+    DomainModule::class,
+    PresentationModule::class]
+)
 interface AppComponent {
     fun inject(fragment: TaskListFragment)
     fun inject(fragment: TaskFragment)

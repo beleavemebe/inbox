@@ -20,7 +20,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 
-fun log(msg: Any?) = Log.d("inbox-debug", msg.toString())
+@Suppress("unused")
+fun Any.log(msg: Any?) = Log.d("inbox-debug", msg.toString())
 
 fun Context?.toast(@StringRes stringRes: Int) {
     if (this == null) return
@@ -43,6 +44,11 @@ fun EditText.forceEditing() {
     requestFocus()
     context.getSystemService<InputMethodManager>()
         ?.showSoftInput(this, 0)
+}
+
+fun EditText.hideKeyboard() {
+    context.getSystemService<InputMethodManager>()
+        ?.hideSoftInputFromWindow(this.windowToken, 0)
 }
 
 // https://stackoverflow.com/q/2986387

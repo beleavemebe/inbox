@@ -65,8 +65,7 @@ class TaskListViewModel @Inject constructor(
     fun setTaskCompleted(id: UUID, flag: Boolean) {
         viewModelScope.launch {
             val task = getTaskById(id)
-            task.isCompleted = flag
-            updateTask(task)
+            updateTask(task.copy(isCompleted = flag))
         }
     }
 }

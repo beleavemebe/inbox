@@ -3,6 +3,7 @@ package io.github.beleavemebe.inbox.di
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import io.github.beleavemebe.inbox.core.repository.ChecklistRepository
 import io.github.beleavemebe.inbox.core.repository.TaskRepository
 import io.github.beleavemebe.inbox.core.usecase.*
 
@@ -28,16 +29,18 @@ class DomainModule {
     @Reusable
     fun provideAddTask(
         taskRepository: TaskRepository,
+        checklistRepository: ChecklistRepository,
     ): AddTask {
-        return AddTask(taskRepository)
+        return AddTask(taskRepository, checklistRepository)
     }
 
     @Provides
     @Reusable
     fun provideUpdateTask(
         taskRepository: TaskRepository,
+        checklistRepository: ChecklistRepository,
     ): UpdateTask {
-        return UpdateTask(taskRepository)
+        return UpdateTask(taskRepository, checklistRepository)
     }
 
     @Provides

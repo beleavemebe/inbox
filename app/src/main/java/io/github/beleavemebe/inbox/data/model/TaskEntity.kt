@@ -1,19 +1,36 @@
 package io.github.beleavemebe.inbox.data.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import io.github.beleavemebe.inbox.core.model.Task
 import java.util.*
 
-@Entity(tableName = "task")
+@Entity(
+    tableName = "task",
+    indices = [
+        Index("checklist_id"),
+        Index("info_id")
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = TaskChecklistEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["checklist_id"],
+//            onDelete = ForeignKey.CASCADE,
+//            onUpdate = ForeignKey.CASCADE,
+        ),
+        ForeignKey(
+            entity = TaskInfoEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["info_id"],
+//            onDelete = ForeignKey.CASCADE,
+//            onUpdate = ForeignKey.CASCADE,
+        )
+    ],
+)
 data class TaskEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: UUID = UUID.randomUUID(),
-
-    @ColumnInfo(name = "timestamp")
-    val timestamp: Date = Date(),
 
     @ColumnInfo(name = "title")
     var title: String = "",
@@ -22,35 +39,31 @@ data class TaskEntity(
     var isCompleted: Boolean = false,
 
     @ColumnInfo(name = "note")
-    var note: String? = null,
+    var note: String = "",
 
     @ColumnInfo(name = "date")
     var dueDate: Date? = null,
 
     @ColumnInfo(name = "is_time_specified")
-    var isTimeSpecified: Boolean? = false,
+    var isTimeSpecified: Boolean = false,
+
+    @ColumnInfo(name = "checklist_id")
+    var checklistId: Long? = null,
+
+    @ColumnInfo(name = "info_id")
+    var infoId: Long? = null,
 )
 
-fun TaskEntity.toTask(): Task {
-    return Task(
-        id = id,
-        title = title,
-        note = note,
-        isCompleted = isCompleted,
-        timestamp = timestamp,
-        dueDate = dueDate,
-        isTimeSpecified = isTimeSpecified ?: false
-    )
-}
 
 fun Task.toTaskEntity(): TaskEntity {
     return TaskEntity(
         id = id,
-        timestamp = timestamp,
         title = title,
         isCompleted = isCompleted,
         note = note,
         dueDate = dueDate,
-        isTimeSpecified = isTimeSpecified
+        isTimeSpecified = isTimeSpecified,
+        checklistId = checklist?.id,
+        infoId = info?.id
     )
 }

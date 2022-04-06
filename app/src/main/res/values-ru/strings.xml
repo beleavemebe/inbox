@@ -36,4 +36,6 @@
     <string name="this_week">Эта неделя</string>
     <string name="this_or_next_week">Эта и следующая неделя</string>
     <string name="undated">Без даты</string>
+    <string name="checklist">Чеклист</string>
+    <string name="add_item">Add item</string>
 </resources>

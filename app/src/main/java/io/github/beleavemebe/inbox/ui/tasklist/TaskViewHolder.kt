@@ -56,6 +56,13 @@ class TaskViewHolder(
         }
     }
 
+    private fun updateDatetimeBarColor(task: Task, res: Resources) {
+        val datetimeBarColor = getDatetimeBarColor(task, res, context)
+        binding.ivCalendar.setColorFilter(datetimeBarColor)
+        binding.tvTaskDatetime.setTextColor(datetimeBarColor)
+        binding.tvTaskDatetime.setCrossedOut(task.isCompleted)
+    }
+
     private fun initListeners(id: UUID) {
         binding.root.setOnClickListener {
             onTaskClicked(id)
@@ -66,14 +73,6 @@ class TaskViewHolder(
         val titleTextColor = getTitleColor(task, binding.tvTitle.resources)
         binding.tvTitle.setCrossedOut(task.isCompleted)
         binding.tvTitle.setTextColor(titleTextColor)
-        updateDatetimeBarColor(task, binding.tvTitle.resources)
-    }
-
-    private fun updateDatetimeBarColor(task: Task, res: Resources) {
-        val datetimeBarColor = getDatetimeBarColor(task, res, context)
-        binding.ivCalendar.setColorFilter(datetimeBarColor)
-        binding.tvTaskDatetime.setTextColor(datetimeBarColor)
-        binding.tvTaskDatetime.setCrossedOut(task.isCompleted)
     }
 
     @ColorInt

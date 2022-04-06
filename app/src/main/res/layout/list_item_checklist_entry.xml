@@ -33,17 +33,25 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:checked="true" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_checklist_item_text"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_checklist_item_text"
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_default"
-        android:paddingVertical="@dimen/margin_default"
-        android:text="Step 1"
+        android:background="@null"
+        android:paddingVertical="@dimen/margin_intermediate"
+        tools:text="Step 1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cb_completed"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/et_checklist_item_text"
+        app:layout_constraintStart_toStartOf="@id/et_checklist_item_text"
+        app:layout_constraintTop_toBottomOf="@id/et_checklist_item_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

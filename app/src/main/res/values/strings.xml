@@ -36,4 +36,6 @@
     <string name="this_week">This week</string>
     <string name="this_or_next_week">This or next week</string>
     <string name="undated">Undated</string>
+    <string name="checklist">Checklist</string>
+    <string name="add_item">Add item</string>
 </resources>
