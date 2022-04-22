@@ -109,6 +109,7 @@ class TaskViewModel @AssistedInject constructor(
     }
 
     // Used when an immediate update of state is ruining the UX
+    // Pending modifications will be applied on the next `refreshTask` call.
     private fun refreshTaskLater(
         refreshTask: (task: Task) -> Task
     ) {
