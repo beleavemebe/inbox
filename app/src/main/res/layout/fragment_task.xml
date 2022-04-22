@@ -213,14 +213,20 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_checklist_header"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_checklist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="nsvChecklist" />
+
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/nsvChecklist"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_checklist_header">
-
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_checklist"

@@ -69,13 +69,16 @@ fun Group.setVisibleAnimated(flag: Boolean) {
     }
 }
 
-fun View.setVisibleAnimated(flag: Boolean) {
-    if (flag) {
-        isVisible = true
+fun View.setVisibleAnimated(visible: Boolean) {
+    if (visible) {
         alpha = 0f
-        animate().alpha(1f)
+        animate().withStartAction {
+            isVisible = true
+        }.alpha(1f)
     } else {
-        isVisible = false
+        animate().withEndAction {
+            isVisible = false
+        }.alpha(0f)
     }
 }
 

@@ -1,5 +1,6 @@
 package io.github.beleavemebe.inbox.ui.task
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
@@ -11,14 +12,14 @@ import io.github.beleavemebe.inbox.core.usecase.AddTask
 import io.github.beleavemebe.inbox.core.usecase.GetTaskById
 import io.github.beleavemebe.inbox.core.usecase.UpdateTask
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 import java.util.function.Function
 
 class TaskViewModel @AssistedInject constructor(
     @Assisted private val taskId: UUID? = null,
+    @Assisted private val handle: SavedStateHandle,
     private val getTaskById: GetTaskById,
     private val addTask: AddTask,
     private val updateTask: UpdateTask,
@@ -26,17 +27,38 @@ class TaskViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(taskId: UUID?): TaskViewModel
+        fun create(handle: SavedStateHandle, taskId: UUID?): TaskViewModel
     }
 
     private val _taskFlow = MutableStateFlow<CallResult<Task>>(CallResult.Loading)
     val taskFlow = _taskFlow.asStateFlow()
+
+    private val _isDatetimeSectionVisible = MutableStateFlow(false)
+    val isDatetimeSectionVisible = _isDatetimeSectionVisible.asStateFlow()
+
+    private val _isPeriodicitySectionVisible = MutableStateFlow(false)
+    val isPeriodicitySectionVisible = _isPeriodicitySectionVisible.asStateFlow()
+
+    private val _isChecklistSectionVisible = MutableStateFlow(false)
+    val isChecklistSectionVisible = _isChecklistSectionVisible.asStateFlow()
 
     val task: Task?
         get() = taskFlow.value.getOrNull()
 
     val calendar: Calendar?
         get() = task?.dueDate?.calendar()
+
+    private val _eventShowPickDateMenu = MutableSharedFlow<Boolean>()
+    val eventShowPickDateMenu = _eventShowPickDateMenu.asSharedFlow()
+
+    private val _eventShowDatePickerDialog = MutableSharedFlow<Date>()
+    val eventShowDatePickerDialog = _eventShowDatePickerDialog.asSharedFlow()
+
+    private val _eventShowDateNotSetToast = MutableSharedFlow<Boolean>()
+    val eventShowDateNotSetToast = _eventShowDateNotSetToast.asSharedFlow()
+
+    private val _eventShowTimePickerDialog = MutableSharedFlow<HourAndMinute>()
+    val eventShowTimePickerDialog = _eventShowTimePickerDialog.asSharedFlow()
 
     init {
         loadTask()
@@ -46,9 +68,13 @@ class TaskViewModel @AssistedInject constructor(
         viewModelScope.launch {
             _taskFlow.value = runCatching {
                 val task = taskId?.let { getTaskById(it) } ?: Task()
+
+                _isDatetimeSectionVisible.emit(task.dueDate != null)
+                _isChecklistSectionVisible.emit(task.checklist != null)
+
                 CallResult.Success(task)
             }.getOrElse { throwable ->
-                CallResult.Error(throwable.toCallError())
+                CallResult.Error(throwable)
             }
         }
     }
@@ -56,103 +82,22 @@ class TaskViewModel @AssistedInject constructor(
     val isTaskIdGiven: Boolean
         get() = taskId != null
 
-    fun saveTask() {
-        viewModelScope.launch {
-            val prevTask = task ?: return@launch
-            val task = applyPendingModifications(prevTask)
-
-            if (isTaskIdGiven) {
-                updateTask(task)
-            } else {
-                addTask(task)
-            }
-        }
-    }
-
     fun setTitle(text: String) {
         if (task?.title == text) return
-        refreshTaskLater {
-            it.copy(title = text)
+        refreshTaskLater { task ->
+            task.copy(title = text)
         }
     }
 
     fun setNote(text: String) {
         if (task?.note == text) return
-        refreshTaskLater {
-            it.copy(note = text)
-        }
-    }
-
-    fun setDate(ms: Long) {
-        refreshTask { it.copy(dueDate = Date(ms)) }
-
-        if (task?.isTimeSpecified == true) {
-            val hrs = calendar?.get(Calendar.HOUR_OF_DAY) ?: 12
-            val min = calendar?.get(Calendar.MINUTE) ?: 0
-            setTime(hrs, min)
-        }
-    }
-
-    fun setTime(hour: Int, minute: Int) {
-        val task = task ?: return
-        val newDueDate = task.dueDate?.calendar()
-            ?.run {
-                set(Calendar.HOUR_OF_DAY, hour)
-                set(Calendar.MINUTE, minute)
-                time
-            }
-
-        refreshTask {
-            task.copy(dueDate = newDueDate, isTimeSpecified = true)
-        }
-    }
-
-    fun clearDatetime() {
-        clearDate()
-        clearTime()
-    }
-
-    private fun clearDate() {
-        refreshTask { it.copy(dueDate = null) }
-    }
-
-    fun clearTime() = setTime(0, 0)
-
-    fun addChecklistEntry() {
-        refreshTask { task ->
-            val oldChecklist = task.checklist
-                ?: TaskChecklist(
-                    task.id.hashCode().toLong(),
-                    task.id,
-                    emptyList()
-                )
-
-            val newChecklist = oldChecklist + ChecklistItem(text = "Checklist step")
-
-            task.copy(checklist = newChecklist)
-        }
-    }
-
-    fun onChecklistItemTextChanged(index: Int, text: String) {
-        refreshTaskLater {
-            val checklist = it.checklist!!
-            val newContent = checklist.content.toMutableList()
-            newContent[index] = newContent[index].copy(text = text)
-            it.copy(checklist = checklist.copy(content = newContent.toList()))
-        }
-    }
-
-    fun onChecklistItemChecked(index: Int, isChecked: Boolean) {
-        refreshTask {
-            val checklist = it.checklist!!
-            val newContent = checklist.content.toMutableList()
-            newContent[index] = newContent[index].copy(isDone = isChecked)
-            it.copy(checklist = checklist.copy(content = newContent.toList()))
+        refreshTaskLater { task ->
+            task.copy(note = text)
         }
     }
 
     private inline fun refreshTask(
-        crossinline newTask: (Task) -> Task
+        crossinline newTask: (task: Task) -> Task
     ) {
         viewModelScope.launch(Dispatchers.Default) {
             val prevTask = task ?: return@launch
@@ -165,7 +110,7 @@ class TaskViewModel @AssistedInject constructor(
 
     // Used when an immediate update of state is ruining the UX
     private fun refreshTaskLater(
-        refreshTask: (Task) -> Task
+        refreshTask: (task: Task) -> Task
     ) {
         pendingModifications.add(refreshTask)
     }
@@ -183,5 +128,153 @@ class TaskViewModel @AssistedInject constructor(
         pendingModifications.clear()
 
         return modifyTask.apply(task)
+    }
+
+    fun setDatetimeEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            _isDatetimeSectionVisible.emit(enabled)
+            if (!enabled) {
+                clearDatetime()
+            }
+        }
+    }
+
+    private fun clearDatetime() {
+        refreshTask { task ->
+            task.copy(dueDate = null, isTimeSpecified = false)
+        }
+    }
+
+    fun setDate(ms: Long) {
+        if (task?.isTimeSpecified == true) {
+            val hrs = calendar?.get(Calendar.HOUR_OF_DAY) ?: 12
+            val min = calendar?.get(Calendar.MINUTE) ?: 0
+            refreshTask { task ->
+                task.copy(dueDate = Date(ms))
+            }
+            setTime(hrs, min)
+        } else {
+            refreshTask { task ->
+                task.copy(dueDate = Date(ms))
+            }
+        }
+    }
+
+    fun setTime(hour: Int, minute: Int) {
+        refreshTask { task ->
+            val newDueDate = task.dueDate?.calendar()
+                ?.run {
+                    set(Calendar.HOUR_OF_DAY, hour)
+                    set(Calendar.MINUTE, minute)
+                    time
+                }
+
+            task.copy(dueDate = newDueDate, isTimeSpecified = true)
+        }
+    }
+
+    fun clearTime() {
+        refreshTask { task ->
+            task.copy(isTimeSpecified = false)
+        }
+    }
+
+    fun setPeriodicityEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            _isPeriodicitySectionVisible.emit(enabled)
+        }
+    }
+
+    fun setChecklistEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            _isChecklistSectionVisible.emit(enabled)
+            refreshTask { task ->
+                val newChecklist = if (!enabled) {
+                    null
+                } else {
+                    blankChecklist(task)
+                }
+
+                task.copy(
+                    checklist = newChecklist
+                )
+            }
+        }
+    }
+
+    private fun blankChecklist(task: Task) =
+        TaskChecklist(
+            id = task.id.hashCode().toLong(), taskId = task.id, content = emptyList()
+        )
+
+    fun addChecklistEntry() {
+        refreshTask { task ->
+            val oldChecklist = task.checklist
+                ?: blankChecklist(task)
+
+            val newChecklist = oldChecklist + ChecklistItem(text = "Checklist step")
+
+            task.copy(checklist = newChecklist)
+        }
+    }
+
+    fun onChecklistItemTextChanged(index: Int, text: String) {
+        refreshTaskLater { task ->
+            val checklist = task.checklist ?: errorNoChecklist()
+            val newContent = checklist.content.toMutableList()
+            newContent[index] = newContent[index].copy(text = text)
+            task.copy(checklist = checklist.copy(content = newContent.toList()))
+        }
+    }
+
+    fun onChecklistItemChecked(index: Int, isChecked: Boolean) {
+        refreshTask { task ->
+            val checklist = task.checklist ?: errorNoChecklist()
+            val newContent = checklist.content.toMutableList()
+            newContent[index] = newContent[index].copy(isDone = isChecked)
+            task.copy(checklist = checklist.copy(content = newContent.toList()))
+        }
+    }
+
+    private fun errorNoChecklist(): Nothing =
+        error("Checklist item received an update but no checklist found")
+
+    fun pickDate() {
+        viewModelScope.launch {
+            _eventShowPickDateMenu.emit(true)
+        }
+    }
+
+    fun showDatePicker() {
+        viewModelScope.launch {
+            _eventShowDatePickerDialog.emit(task?.dueDate ?: Date())
+        }
+    }
+
+    fun pickTime() {
+        viewModelScope.launch {
+            var hrs = 12
+            var min = 0
+            val cal = calendar
+            if (task?.isTimeSpecified == true && cal != null) {
+                hrs = cal.get(Calendar.HOUR_OF_DAY)
+                min = cal.get(Calendar.MINUTE)
+            }
+
+            _eventShowTimePickerDialog.emit(HourAndMinute(hrs to min))
+        }
+    }
+
+    fun saveTask() {
+        viewModelScope.launch {
+            val prevTask = task ?: return@launch
+            val task = applyPendingModifications(prevTask)
+
+            if (isTaskIdGiven) {
+                updateTask(task)
+            } else {
+                addTask(task)
+            }
+        }
     }
 }
