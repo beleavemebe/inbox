@@ -1,11 +1,13 @@
 package io.github.beleavemebe.inbox.ui.task
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.core.common.util.calendar
 import io.github.beleavemebe.inbox.core.model.*
 import io.github.beleavemebe.inbox.core.usecase.AddTask
@@ -208,12 +210,17 @@ class TaskViewModel @AssistedInject constructor(
             id = task.id.hashCode().toLong(), taskId = task.id, content = emptyList()
         )
 
-    fun addChecklistEntry() {
+    fun addChecklistEntry(context: Context) {
         refreshTask { task ->
             val oldChecklist = task.checklist
                 ?: blankChecklist(task)
 
-            val newChecklist = oldChecklist + ChecklistItem(text = "Checklist step")
+            val newChecklist = oldChecklist + ChecklistItem(
+                context.getString(
+                    R.string.step_placeholder,
+                    oldChecklist.content.size + 1
+                )
+            )
 
             task.copy(checklist = newChecklist)
         }

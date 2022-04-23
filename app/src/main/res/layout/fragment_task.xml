@@ -105,6 +105,8 @@
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_datetime"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="cv_date, cv_time" />
@@ -172,6 +174,8 @@
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_periodicity"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="cv_periodicity" />
@@ -215,6 +219,8 @@
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_checklist"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="nsvChecklist" />

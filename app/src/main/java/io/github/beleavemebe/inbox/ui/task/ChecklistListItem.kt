@@ -1,5 +1,6 @@
 package io.github.beleavemebe.inbox.ui.task
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
@@ -41,7 +42,7 @@ sealed class ChecklistListItem {
         }
     }
 
-    data class AddChecklistEntry(val onClick: () -> Unit) : ChecklistListItem() {
+    data class AddChecklistEntry(val onClick: (Context) -> Unit) : ChecklistListItem() {
         companion object {
             @JvmStatic
             private fun inflateBinding(
@@ -55,7 +56,7 @@ sealed class ChecklistListItem {
                 ) {
                     bind {
                         binding.root.setOnClickListener {
-                            item.onClick()
+                            item.onClick(context.applicationContext)
                         }
                     }
                 }

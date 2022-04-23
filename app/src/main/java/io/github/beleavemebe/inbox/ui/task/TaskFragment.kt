@@ -110,7 +110,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     private fun observeTask() {
         viewModel.taskFlow
             .onEach(::renderUi)
-            .launchWhenStarted(viewLifecycleOwner.lifecycleScope)
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
     }
 
     private fun renderUi(result: CallResult<Task>) {
@@ -172,15 +172,21 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
         }
     }
 
-    private fun renderPeriodicitySection(task: Task) {}
+    private fun renderPeriodicitySection(task: Task) {
+    }
 
     private fun renderChecklistSection(task: Task) {
-        val oldChecklist = task.checklist?.content?.map {
-            ChecklistListItem.ChecklistEntry(it)
-        }.orEmpty()
-        val newItems =
-            oldChecklist + ChecklistListItem.AddChecklistEntry(viewModel::addChecklistEntry)
-        checklistAdapter.items = newItems
+        checklistAdapter.items = createChecklist(task)
+    }
+
+    private fun createChecklist(task: Task): List<ChecklistListItem> {
+        val checklist = task.checklist
+            ?.content
+            ?.map { item ->
+                ChecklistListItem.ChecklistEntry(item)
+            }.orEmpty()
+
+        return checklist + ChecklistListItem.AddChecklistEntry(viewModel::addChecklistEntry)
     }
 
     private fun initSwitchListeners() {
@@ -199,16 +205,16 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
 
     private fun observeSectionVisibility() {
         viewModel.isDatetimeSectionVisible
-            .onEach(::setDatetimeSectionVisible)
-            .launchWhenStarted(viewLifecycleOwner.lifecycleScope)
+            .onEach { setDatetimeSectionVisible(it) }
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
 
         viewModel.isPeriodicitySectionVisible
-            .onEach(::setPeriodicitySectionVisible)
-            .launchWhenStarted(viewLifecycleOwner.lifecycleScope)
+            .onEach { setPeriodicitySectionVisible(it) }
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
 
         viewModel.isChecklistSectionVisible
-            .onEach(::setChecklistSectionVisible)
-            .launchWhenStarted(viewLifecycleOwner.lifecycleScope)
+            .onEach { setChecklistSectionVisible(it) }
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
     }
 
     private fun setDatetimeSectionVisible(flag: Boolean) {
@@ -229,19 +235,19 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
     private fun observeEvents() {
         viewModel.eventShowPickDateMenu
             .onEach { showPickDatePopupMenu() }
-            .launchWhenStarted(viewLifecycleOwner.lifecycleScope)
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
 
         viewModel.eventShowDatePickerDialog
             .onEach { showDatePicker(it) }
-            .launchWhenStarted(viewLifecycleOwner.lifecycleScope)
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
 
         viewModel.eventShowTimePickerDialog
             .onEach { showTimePicker(it) }
-            .launchWhenStarted(viewLifecycleOwner.lifecycleScope)
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
 
         viewModel.eventShowDateNotSetToast
             .onEach { context.toast(R.string.date_not_set) }
-            .launchWhenStarted(viewLifecycleOwner.lifecycleScope)
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
     }
 
     private fun showPickDatePopupMenu() {
