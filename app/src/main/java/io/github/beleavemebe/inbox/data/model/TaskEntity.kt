@@ -15,15 +15,11 @@ import java.util.*
             entity = TaskChecklistEntity::class,
             parentColumns = ["id"],
             childColumns = ["checklist_id"],
-//            onDelete = ForeignKey.CASCADE,
-//            onUpdate = ForeignKey.CASCADE,
         ),
         ForeignKey(
             entity = TaskInfoEntity::class,
             parentColumns = ["id"],
             childColumns = ["info_id"],
-//            onDelete = ForeignKey.CASCADE,
-//            onUpdate = ForeignKey.CASCADE,
         )
     ],
 )
