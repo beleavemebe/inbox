@@ -2,7 +2,10 @@ package io.github.beleavemebe.inbox.ui.tasklist
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
@@ -15,10 +18,11 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.beleavemebe.inbox.R
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
-import io.github.beleavemebe.inbox.ui.appComponent
 import io.github.beleavemebe.inbox.ui.BaseFragment
+import io.github.beleavemebe.inbox.ui.appComponent
 import io.github.beleavemebe.inbox.ui.util.actionBar
-import io.github.beleavemebe.inbox.ui.util.log
+import io.github.beleavemebe.inbox.ui.util.repeatWhenStarted
+import kotlinx.coroutines.flow.onEach
 import java.util.*
 import javax.inject.Inject
 
@@ -26,7 +30,7 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
     private val binding by viewBinding(FragmentTaskListBinding::bind)
 
     @Inject lateinit var factory: ViewModelProvider.Factory
-    private val viewModel by navGraphViewModels<TaskListViewModel>(R.id.nav_graph) { factory }
+    private val viewModel: TaskListViewModel by navGraphViewModels(R.id.nav_graph) { factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,22 +76,29 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
     }
 
     private fun observeTaskList() {
-        viewModel.tasks.observe(viewLifecycleOwner) { taskList ->
-            log("got list@${taskList.hashCode()}")
-            val adapter = binding.tasksRv.adapter as TaskAdapter
-            adapter.setContent(taskList.toList())
-        }
+        viewModel.tasks
+            .onEach { updateTaskList(it) }
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
+    }
+
+    private fun updateTaskList(taskList: List<Task>) {
+        val adapter = binding.tasksRv.adapter as TaskAdapter
+        adapter.setContent(taskList.toList())
     }
 
     private fun observeActionBarSubtitle() {
-        viewModel.taskFilterPreferenceLiveData.observe(viewLifecycleOwner) { pref ->
-            actionBar.subtitle =
-                if (pref.titleResId == R.string.all) {
-                    ""
-                } else {
-                    getString(pref.titleResId)
-                }
-        }
+        viewModel.taskFilterPreference
+            .onEach { updateActionBarSubtitle(it) }
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
+    }
+
+    private fun updateActionBarSubtitle(pref: TaskFilterPreference) {
+        actionBar.subtitle =
+            if (pref.titleResId == R.string.all) {
+                ""
+            } else {
+                getString(pref.titleResId)
+            }
     }
 
     private fun showUndoDeletionSnackbar(task: Task) {

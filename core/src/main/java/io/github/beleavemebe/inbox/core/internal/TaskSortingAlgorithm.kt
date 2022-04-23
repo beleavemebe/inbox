@@ -13,7 +13,7 @@ object TaskSortingAlgorithm {
             }.thenBy {
                 it.dueDate
             }.thenBy {
-                it.timestamp
+                it.info?.created
             }
 
         return list.sortedWith(comparator)

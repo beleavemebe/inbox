@@ -16,8 +16,4 @@ abstract class PresentationModule {
     @Binds
     @[IntoMap ViewModelKey(TaskListViewModel::class)]
     abstract fun bindTaskListViewModel(viewModel: TaskListViewModel): ViewModel
-
-    @Binds
-    @[IntoMap ViewModelKey(TaskViewModel::class)]
-    abstract fun bindTaskViewModel(viewModel: TaskViewModel): ViewModel
 }

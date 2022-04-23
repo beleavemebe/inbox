@@ -1,10 +1,12 @@
 package io.github.beleavemebe.inbox.ui.tasklist
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.core.usecase.*
-import io.github.beleavemebe.inbox.ui.util.log
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -18,33 +20,27 @@ class TaskListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _taskFilterPreference = MutableStateFlow(TaskFilterPreference.UNFILTERED)
-    val taskFilterPreference: StateFlow<TaskFilterPreference> = _taskFilterPreference
+    val taskFilterPreference = _taskFilterPreference.asStateFlow()
 
-    val tasks: LiveData<List<Task>> =
-        _taskFilterPreference.flatMapLatest {
-            log(it)
-            when (it) {
-                TaskFilterPreference.UNFILTERED -> {
-                    getTasksInteractor.getTasks()
-                }
+    val tasks = _taskFilterPreference.flatMapLatest { pref ->
+        when (pref) {
+            TaskFilterPreference.UNFILTERED -> {
+                getTasksInteractor.getTasks()
+            }
 
-                TaskFilterPreference.UNDATED -> {
-                    getTasksInteractor.getUndatedTasks()
-                }
+            TaskFilterPreference.UNDATED -> {
+                getTasksInteractor.getUndatedTasks()
+            }
 
-                TaskFilterPreference.DUE_THIS_WEEK -> {
-                    getTasksInteractor.getTasksDueThisWeek()
-                }
+            TaskFilterPreference.DUE_THIS_WEEK -> {
+                getTasksInteractor.getTasksDueThisWeek()
+            }
 
-                TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK -> {
-                    getTasksInteractor.getTasksDueThisOrNextWeek()
-                }
+            TaskFilterPreference.DUE_THIS_OR_NEXT_WEEK -> {
+                getTasksInteractor.getTasksDueThisOrNextWeek()
             }
         }
-            .asLiveData()
-
-    val taskFilterPreferenceLiveData: LiveData<TaskFilterPreference>
-        get() = _taskFilterPreference.asLiveData()
+    }
 
     fun onPreferenceSelected(preference: TaskFilterPreference) {
         _taskFilterPreference.value = preference
@@ -65,8 +61,7 @@ class TaskListViewModel @Inject constructor(
     fun setTaskCompleted(id: UUID, flag: Boolean) {
         viewModelScope.launch {
             val task = getTaskById(id)
-            task.isCompleted = flag
-            updateTask(task)
+            updateTask(task.copy(isCompleted = flag))
         }
     }
 }

@@ -4,10 +4,11 @@ import java.util.*
 
 data class Task(
     val id: UUID = UUID.randomUUID(),
-    var title: String = "",
-    var note: String? = null,
-    var isCompleted: Boolean = false,
-    val timestamp: Date = Date(),
-    var dueDate: Date? = null,
-    var isTimeSpecified: Boolean = false,
+    val title: String = "",
+    val note: String = "",
+    val isCompleted: Boolean = false,
+    val dueDate: Date? = null,
+    val isTimeSpecified: Boolean = false,
+    val checklist: TaskChecklist? = null,
+    val info: TaskInfo? = null,
 )

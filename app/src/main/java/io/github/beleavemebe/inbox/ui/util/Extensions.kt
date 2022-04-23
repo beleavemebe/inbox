@@ -20,7 +20,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 
-fun log(msg: Any?) = Log.d("inbox-debug", msg.toString())
+@Suppress("unused")
+fun Any.log(msg: Any?) = Log.d("inbox-debug", msg.toString())
 
 fun Context?.toast(@StringRes stringRes: Int) {
     if (this == null) return
@@ -45,6 +46,11 @@ fun EditText.forceEditing() {
         ?.showSoftInput(this, 0)
 }
 
+fun EditText.hideKeyboard() {
+    context.getSystemService<InputMethodManager>()
+        ?.hideSoftInputFromWindow(this.windowToken, 0)
+}
+
 // https://stackoverflow.com/q/2986387
 fun EditText.enableDoneImeAction() {
     imeOptions = EditorInfo.IME_ACTION_DONE
@@ -63,13 +69,16 @@ fun Group.setVisibleAnimated(flag: Boolean) {
     }
 }
 
-fun View.setVisibleAnimated(flag: Boolean) {
-    if (flag) {
-        isVisible = true
+fun View.setVisibleAnimated(visible: Boolean) {
+    if (visible) {
         alpha = 0f
-        animate().alpha(1f)
+        animate().withStartAction {
+            isVisible = true
+        }.alpha(1f)
     } else {
-        isVisible = false
+        animate().withEndAction {
+            isVisible = false
+        }.alpha(0f)
     }
 }
 
