@@ -75,7 +75,6 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
             binding.tiTitle.error = getString(R.string.task_is_blank)
         } else {
             viewModel.saveTask()
-            findNavController().navigateUp()
         }
     }
 
@@ -298,5 +297,10 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
                 addOnNegativeButtonClickListener { viewModel.clearTime() }
                 addOnPositiveButtonClickListener { viewModel.setTime(hour, minute) }
             }.show(childFragmentManager, "MaterialTimePicker")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.onStop()
     }
 }

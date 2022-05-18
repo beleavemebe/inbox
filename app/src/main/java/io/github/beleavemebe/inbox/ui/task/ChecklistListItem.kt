@@ -42,7 +42,7 @@ sealed class ChecklistListItem {
         }
     }
 
-    data class AddChecklistEntry(val onClick: (Context) -> Unit) : ChecklistListItem() {
+    class AddChecklistEntry : ChecklistListItem() {
         companion object {
             @JvmStatic
             private fun inflateBinding(
@@ -50,13 +50,13 @@ sealed class ChecklistListItem {
                 container: ViewGroup,
             ) = ListItemAddChecklistEntryBinding.inflate(inflater, container, false)
 
-            fun delegate() =
+            fun delegate(onClick: (Context) -> Unit) =
                 adapterDelegateViewBinding<AddChecklistEntry, ChecklistListItem, ListItemAddChecklistEntryBinding>(
                     ::inflateBinding,
                 ) {
                     bind {
                         binding.root.setOnClickListener {
-                            item.onClick(context.applicationContext)
+                            onClick(context.applicationContext)
                         }
                     }
                 }

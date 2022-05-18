@@ -99,7 +99,7 @@ class TaskViewModel @AssistedInject constructor(
     }
 
     private inline fun refreshTask(
-        crossinline newTask: (task: Task) -> Task
+        crossinline newTask: (task: Task) -> Task = { it }
     ) {
         viewModelScope.launch(Dispatchers.Default) {
             val prevTask = task ?: return@launch
@@ -285,4 +285,6 @@ class TaskViewModel @AssistedInject constructor(
             }
         }
     }
+
+    fun onStop() = refreshTask()
 }
