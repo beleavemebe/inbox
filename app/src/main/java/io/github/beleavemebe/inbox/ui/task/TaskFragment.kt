@@ -85,7 +85,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
                 viewModel::onChecklistItemTextChanged,
                 viewModel::onChecklistItemChecked
             ),
-            ChecklistListItem.AddChecklistEntry.delegate(),
+            ChecklistListItem.AddChecklistEntry.delegate(viewModel::addChecklistEntry),
         )
     }
 
@@ -185,7 +185,7 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
                 ChecklistListItem.ChecklistEntry(item)
             }.orEmpty()
 
-        return checklist + ChecklistListItem.AddChecklistEntry(viewModel::addChecklistEntry)
+        return checklist + ChecklistListItem.AddChecklistEntry()
     }
 
     private fun initSwitchListeners() {
@@ -246,6 +246,10 @@ class TaskFragment : DetailsFragment(R.layout.fragment_task) {
 
         viewModel.eventShowDateNotSetToast
             .onEach { context.toast(R.string.date_not_set) }
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
+
+        viewModel.eventNavigateUp
+            .onEach { findNavController().navigateUp() }
             .repeatWhenStarted(viewLifecycleOwner.lifecycle)
     }
 
