@@ -12,7 +12,7 @@ object TaskSortingAlgorithm {
                 it.dueDate == null
             }.thenBy {
                 it.dueDate
-            }.thenBy {
+            }.thenByDescending {
                 it.info?.created
             }
 
