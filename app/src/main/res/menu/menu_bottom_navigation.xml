@@ -3,19 +3,19 @@
     <item
         android:id="@+id/taskListFragment"
         android:icon="@drawable/ic_note_24"
-        android:title="@null" />
+        android:title="@string/tasks" />
 
     <item
         android:id="@+id/projectListFragment"
         android:icon="@drawable/ic_project_24"
-        android:title="@null" />
+        android:title="@string/projects" />
 
     <item
         android:id="@+id/infoListFragment"
         android:icon="@drawable/ic_info_24"
-        android:title="@null" />
+        android:title="@string/information" />
     <item
         android:id="@+id/meetingListFragment"
         android:icon="@drawable/ic_meetings_24"
-        android:title="@null" />
+        android:title="@string/meetings" />
 </menu>

@@ -14,11 +14,15 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.MaterialToolbar
+import io.github.beleavemebe.inbox.ui.MainActivity
+import io.github.beleavemebe.inbox.ui.ToolbarOwner
 
 @Suppress("unused")
 fun Any.log(msg: Any?) = Log.d("inbox-debug", msg.toString())
@@ -82,9 +86,6 @@ fun View.setVisibleAnimated(visible: Boolean) {
     }
 }
 
-val Fragment.actionBar: ActionBar
-    get() = (requireActivity() as AppCompatActivity)
-        .supportActionBar!!
 
 private fun TextView.crossOut() {
     paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

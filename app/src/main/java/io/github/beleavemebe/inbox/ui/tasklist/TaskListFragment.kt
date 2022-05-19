@@ -20,7 +20,7 @@ import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskListBinding
 import io.github.beleavemebe.inbox.ui.BaseFragment
 import io.github.beleavemebe.inbox.ui.appComponent
-import io.github.beleavemebe.inbox.ui.util.actionBar
+import io.github.beleavemebe.inbox.ui.toolbar
 import io.github.beleavemebe.inbox.ui.util.repeatWhenStarted
 import kotlinx.coroutines.flow.onEach
 import java.util.*
@@ -93,7 +93,7 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
     }
 
     private fun updateActionBarSubtitle(pref: TaskFilterPreference) {
-        actionBar.subtitle =
+        toolbar.subtitle =
             if (pref.titleResId == R.string.all) {
                 ""
             } else {
@@ -142,7 +142,7 @@ class TaskListFragment : BaseFragment(R.layout.fragment_task_list), ListUpdateCa
 
     override fun onDestroyView() {
         super.onDestroyView()
-        actionBar.subtitle = ""
+        toolbar.subtitle = ""
     }
 
     private val taskTouchHelperCallback =

@@ -8,7 +8,6 @@ import android.widget.PopupMenu
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -21,14 +20,14 @@ import io.github.beleavemebe.inbox.core.common.util.HOUR_MS
 import io.github.beleavemebe.inbox.core.model.CallResult
 import io.github.beleavemebe.inbox.core.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
-import io.github.beleavemebe.inbox.ui.DetailsFragment
+import io.github.beleavemebe.inbox.ui.BaseFragment
 import io.github.beleavemebe.inbox.ui.appComponent
 import io.github.beleavemebe.inbox.ui.util.*
 import kotlinx.coroutines.flow.onEach
 import java.util.*
 import javax.inject.Inject
 
-class TaskFragment : DetailsFragment(R.layout.fragment_task) {
+class TaskFragment : BaseFragment(R.layout.fragment_task) {
     private val args by navArgs<TaskFragmentArgs>()
     private val binding by viewBinding(FragmentTaskBinding::bind)
 
