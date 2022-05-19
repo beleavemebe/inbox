@@ -41,11 +41,12 @@
         android:layout_marginHorizontal="@dimen/margin_default"
         android:background="@null"
         android:paddingVertical="@dimen/margin_intermediate"
-        tools:text="Step 1"
+        android:selectAllOnFocus="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cb_completed"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Step 1" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="0dp"
