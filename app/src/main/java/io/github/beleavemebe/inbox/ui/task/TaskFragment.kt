@@ -16,9 +16,9 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import io.github.beleavemebe.inbox.R
-import io.github.beleavemebe.inbox.core.common.util.HOUR_MS
-import io.github.beleavemebe.inbox.core.model.CallResult
-import io.github.beleavemebe.inbox.core.model.Task
+import io.github.beleavemebe.inbox.domain.common.util.HOUR_MS
+import io.github.beleavemebe.inbox.domain.model.CallResult
+import io.github.beleavemebe.inbox.domain.model.Task
 import io.github.beleavemebe.inbox.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.ui.BaseFragment
 import io.github.beleavemebe.inbox.ui.appComponent

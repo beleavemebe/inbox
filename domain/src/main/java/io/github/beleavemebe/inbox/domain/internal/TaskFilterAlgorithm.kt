@@ -1,7 +1,7 @@
-package io.github.beleavemebe.inbox.core.internal
+package io.github.beleavemebe.inbox.domain.internal
 
-import io.github.beleavemebe.inbox.core.common.util.*
-import io.github.beleavemebe.inbox.core.model.Task
+import io.github.beleavemebe.inbox.domain.common.util.*
+import io.github.beleavemebe.inbox.domain.model.Task
 
 internal sealed interface TaskFilterAlgorithm {
 

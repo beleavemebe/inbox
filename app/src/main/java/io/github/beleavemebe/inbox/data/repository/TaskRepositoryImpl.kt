@@ -1,9 +1,9 @@
 package io.github.beleavemebe.inbox.data.repository
 
-import io.github.beleavemebe.inbox.core.model.Task
-import io.github.beleavemebe.inbox.core.model.TaskChecklist
-import io.github.beleavemebe.inbox.core.repository.ChecklistRepository
-import io.github.beleavemebe.inbox.core.repository.TaskRepository
+import io.github.beleavemebe.inbox.domain.model.Task
+import io.github.beleavemebe.inbox.domain.model.TaskChecklist
+import io.github.beleavemebe.inbox.domain.repository.ChecklistRepository
+import io.github.beleavemebe.inbox.domain.repository.TaskRepository
 import io.github.beleavemebe.inbox.data.db.ChecklistDao
 import io.github.beleavemebe.inbox.data.db.TaskDao
 import io.github.beleavemebe.inbox.data.db.TaskDatabase

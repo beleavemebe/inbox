@@ -2,13 +2,9 @@ package io.github.beleavemebe.inbox.data.db
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import androidx.room.TypeConverters
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import com.squareup.moshi.adapter
-import io.github.beleavemebe.inbox.core.model.ChecklistItem
-import io.github.beleavemebe.inbox.ui.task.ChecklistListItem
+import io.github.beleavemebe.inbox.domain.model.ChecklistItem
 import java.util.*
 import javax.inject.Inject
 

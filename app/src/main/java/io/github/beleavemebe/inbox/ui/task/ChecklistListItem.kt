@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.DiffUtil
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
-import io.github.beleavemebe.inbox.core.model.ChecklistItem
+import io.github.beleavemebe.inbox.domain.model.ChecklistItem
 import io.github.beleavemebe.inbox.databinding.ListItemAddChecklistEntryBinding
 import io.github.beleavemebe.inbox.databinding.ListItemChecklistEntryBinding
 import io.github.beleavemebe.inbox.ui.util.enableDoneImeAction

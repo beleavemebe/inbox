@@ -1,6 +1,6 @@
 package io.github.beleavemebe.inbox.data.model.mapper
 
-import io.github.beleavemebe.inbox.core.model.TaskChecklist
+import io.github.beleavemebe.inbox.domain.model.TaskChecklist
 import io.github.beleavemebe.inbox.data.model.TaskChecklistEntity
 
 

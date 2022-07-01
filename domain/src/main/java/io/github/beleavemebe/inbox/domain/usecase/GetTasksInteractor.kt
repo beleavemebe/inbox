@@ -1,9 +1,9 @@
-package io.github.beleavemebe.inbox.core.usecase
+package io.github.beleavemebe.inbox.domain.usecase
 
-import io.github.beleavemebe.inbox.core.internal.TaskFilterAlgorithm
-import io.github.beleavemebe.inbox.core.internal.TaskSortingAlgorithm
-import io.github.beleavemebe.inbox.core.model.Task
-import io.github.beleavemebe.inbox.core.repository.TaskRepository
+import io.github.beleavemebe.inbox.domain.internal.TaskFilterAlgorithm
+import io.github.beleavemebe.inbox.domain.internal.TaskSortingAlgorithm
+import io.github.beleavemebe.inbox.domain.model.Task
+import io.github.beleavemebe.inbox.domain.repository.TaskRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

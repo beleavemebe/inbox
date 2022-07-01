@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.core.model
+package io.github.beleavemebe.inbox.domain.model
 
 import java.util.*
 

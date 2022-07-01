@@ -3,9 +3,9 @@ package io.github.beleavemebe.inbox.di
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import io.github.beleavemebe.inbox.core.repository.ChecklistRepository
-import io.github.beleavemebe.inbox.core.repository.TaskRepository
-import io.github.beleavemebe.inbox.core.usecase.*
+import io.github.beleavemebe.inbox.domain.repository.ChecklistRepository
+import io.github.beleavemebe.inbox.domain.repository.TaskRepository
+import io.github.beleavemebe.inbox.domain.usecase.*
 
 @Module
 class DomainModule {

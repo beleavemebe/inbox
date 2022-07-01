@@ -1,6 +1,6 @@
-package io.github.beleavemebe.inbox.core.internal
+package io.github.beleavemebe.inbox.domain.internal
 
-import io.github.beleavemebe.inbox.core.model.Task
+import io.github.beleavemebe.inbox.domain.model.Task
 import java.util.Comparator
 
 object TaskSortingAlgorithm {

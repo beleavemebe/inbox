@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.core.common.util
+package io.github.beleavemebe.inbox.domain.common.util
 
 import java.util.*
 

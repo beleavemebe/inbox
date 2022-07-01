@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
-import io.github.beleavemebe.inbox.core.model.Task
+import io.github.beleavemebe.inbox.domain.model.Task
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
 import io.github.beleavemebe.inbox.ui.util.refillWith
 import java.util.*

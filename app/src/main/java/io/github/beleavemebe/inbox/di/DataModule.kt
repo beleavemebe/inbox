@@ -4,12 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import io.github.beleavemebe.inbox.core.repository.ChecklistRepository
-import io.github.beleavemebe.inbox.core.repository.TaskRepository
 import io.github.beleavemebe.inbox.data.db.Converters
 import io.github.beleavemebe.inbox.data.db.TaskDatabase
 import io.github.beleavemebe.inbox.data.db.TaskDatabase.Companion.DATABASE_NAME

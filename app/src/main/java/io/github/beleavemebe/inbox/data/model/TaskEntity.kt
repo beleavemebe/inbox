@@ -1,7 +1,7 @@
 package io.github.beleavemebe.inbox.data.model
 
 import androidx.room.*
-import io.github.beleavemebe.inbox.core.model.Task
+import io.github.beleavemebe.inbox.domain.model.Task
 import java.util.*
 
 @Entity(

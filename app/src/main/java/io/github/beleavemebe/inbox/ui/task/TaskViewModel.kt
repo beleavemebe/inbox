@@ -8,11 +8,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.github.beleavemebe.inbox.R
-import io.github.beleavemebe.inbox.core.common.util.calendar
-import io.github.beleavemebe.inbox.core.model.*
-import io.github.beleavemebe.inbox.core.usecase.AddTask
-import io.github.beleavemebe.inbox.core.usecase.GetTaskById
-import io.github.beleavemebe.inbox.core.usecase.UpdateTask
+import io.github.beleavemebe.inbox.domain.common.util.calendar
+import io.github.beleavemebe.inbox.domain.model.*
+import io.github.beleavemebe.inbox.domain.usecase.AddTask
+import io.github.beleavemebe.inbox.domain.usecase.GetTaskById
+import io.github.beleavemebe.inbox.domain.usecase.UpdateTask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

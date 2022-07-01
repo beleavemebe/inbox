@@ -1,7 +1,6 @@
-package io.github.beleavemebe.inbox.core.repository
+package io.github.beleavemebe.inbox.domain.repository
 
-import io.github.beleavemebe.inbox.core.model.Task
-import io.github.beleavemebe.inbox.core.model.TaskChecklist
+import io.github.beleavemebe.inbox.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 

@@ -1,8 +1,8 @@
-package io.github.beleavemebe.inbox.core.usecase
+package io.github.beleavemebe.inbox.domain.usecase
 
-import io.github.beleavemebe.inbox.core.model.Task
-import io.github.beleavemebe.inbox.core.repository.ChecklistRepository
-import io.github.beleavemebe.inbox.core.repository.TaskRepository
+import io.github.beleavemebe.inbox.domain.model.Task
+import io.github.beleavemebe.inbox.domain.repository.ChecklistRepository
+import io.github.beleavemebe.inbox.domain.repository.TaskRepository
 
 class UpdateTask(
     private val taskRepository: TaskRepository,

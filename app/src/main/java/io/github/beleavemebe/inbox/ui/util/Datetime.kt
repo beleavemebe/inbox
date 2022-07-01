@@ -1,7 +1,7 @@
 package io.github.beleavemebe.inbox.ui.util
 
 import android.text.format.DateUtils
-import io.github.beleavemebe.inbox.core.common.util.DAY_MS
+import io.github.beleavemebe.inbox.domain.common.util.DAY_MS
 import java.util.*
 
 internal val Date?.isToday get() =
