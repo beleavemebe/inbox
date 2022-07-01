@@ -113,7 +113,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_date"
-                style="@style/PreferenceCardView"
+                style="@style/CardView.Inbox.Preference"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/preference_card_view_height"
                 android:layout_marginTop="@dimen/margin_half"
@@ -123,7 +123,7 @@
 
                 <TextView
                     android:id="@+id/tv_date"
-                    style="@style/PreferenceTextView"
+                    style="@style/TextAppearance.Inbox.Preference"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/date"
@@ -133,7 +133,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_time"
-                style="@style/PreferenceCardView"
+                style="@style/CardView.Inbox.Preference"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/preference_card_view_height"
                 android:layout_marginTop="@dimen/margin_half"
@@ -143,7 +143,7 @@
 
                 <TextView
                     android:id="@+id/tv_time"
-                    style="@style/PreferenceTextView"
+                    style="@style/TextAppearance.Inbox.Preference"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/time"
@@ -182,7 +182,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_periodicity"
-                style="@style/PreferenceCardView"
+                style="@style/CardView.Inbox.Preference"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/preference_card_view_height"
                 android:layout_marginTop="@dimen/margin_half"
@@ -192,7 +192,7 @@
 
                 <TextView
                     android:id="@+id/tv_periodicity"
-                    style="@style/PreferenceTextView"
+                    style="@style/TextAppearance.Inbox.Preference"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/repeat"

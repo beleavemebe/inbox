@@ -24,7 +24,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_title"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+            style="@style/TextAppearance.Inbox.Regular1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
