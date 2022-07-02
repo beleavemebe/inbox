@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.DiffUtil
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
+import io.github.beleavemebe.inbox.core.utils.enableDoneImeAction
 import io.github.beleavemebe.inbox.domain.model.ChecklistItem
 import io.github.beleavemebe.inbox.databinding.ListItemAddChecklistEntryBinding
 import io.github.beleavemebe.inbox.databinding.ListItemChecklistEntryBinding
-import io.github.beleavemebe.inbox.ui.util.enableDoneImeAction
 
 sealed class ChecklistListItem {
     data class ChecklistEntry(val checklistItem: ChecklistItem) : ChecklistListItem() {
@@ -32,10 +32,10 @@ sealed class ChecklistListItem {
                         binding.etChecklistItemText.setText(item.checklistItem.text)
                         binding.etChecklistItemText.enableDoneImeAction()
                         binding.etChecklistItemText.doOnTextChanged { text, _, _, _ ->
-                            onTextChanged(absoluteAdapterPosition, text.toString())
+                            onTextChanged(adapterPosition, text.toString())
                         }
                         binding.cbCompleted.setOnCheckedChangeListener { _, isChecked ->
-                            onItemChecked(absoluteAdapterPosition, isChecked)
+                            onItemChecked(adapterPosition, isChecked)
                         }
                     }
                 }

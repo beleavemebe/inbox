@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.util
+package io.github.beleavemebe.inbox.core.utils
 
 import android.content.Context
 import android.content.res.Resources
@@ -12,17 +12,10 @@ import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import com.google.android.material.appbar.MaterialToolbar
-import io.github.beleavemebe.inbox.ui.MainActivity
-import io.github.beleavemebe.inbox.ui.ToolbarOwner
 
 @Suppress("unused")
 fun Any.log(msg: Any?) = Log.d("inbox-debug", msg.toString())
@@ -66,6 +59,14 @@ fun TextView.setCrossedOut(flag: Boolean) {
     else uncross()
 }
 
+private fun TextView.crossOut() {
+    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+}
+
+private fun TextView.uncross() {
+    paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+}
+
 fun Group.setVisibleAnimated(flag: Boolean) {
     referencedIds.forEach { viewId ->
         rootView.findViewById<View>(viewId)
@@ -84,15 +85,6 @@ fun View.setVisibleAnimated(visible: Boolean) {
             isVisible = false
         }.alpha(0f)
     }
-}
-
-
-private fun TextView.crossOut() {
-    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-}
-
-private fun TextView.uncross() {
-    paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 }
 
 @ColorInt

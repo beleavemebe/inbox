@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 24
+        minSdk 21
         targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -30,6 +30,13 @@ android {
 }
 
 dependencies {
+    implementation project(':domain')
+
+    implementation(Coroutines.coroutinesCore)
+    implementation(Coroutines.coroutinesAndroid)
+    implementation(Androidx.lifecycleViewmodel)
+    implementation(Navigation.navigationFragment)
+
     implementation(Androidx.core)
     implementation(Androidx.appCompat)
     implementation(Google.material)

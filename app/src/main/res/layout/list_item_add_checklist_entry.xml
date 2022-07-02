@@ -28,7 +28,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_checklist_item_text"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+        style="@style/TextAppearance.Inbox.Regular1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_default"

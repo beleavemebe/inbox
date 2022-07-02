@@ -1,4 +1,4 @@
-package io.github.beleavemebe.inbox.ui.util
+package io.github.beleavemebe.inbox.core.utils
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope

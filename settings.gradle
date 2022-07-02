@@ -9,3 +9,4 @@ rootProject.name = "inbox"
 include ':app'
 include ':domain'
 include ':core:ui'
+include ':core:utils'

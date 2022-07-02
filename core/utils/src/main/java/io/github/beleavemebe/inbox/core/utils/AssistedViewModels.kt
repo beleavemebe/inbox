@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package io.github.beleavemebe.inbox.ui.util
+package io.github.beleavemebe.inbox.core.utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

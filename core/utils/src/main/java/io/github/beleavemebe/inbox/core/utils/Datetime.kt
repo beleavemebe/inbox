@@ -1,14 +1,14 @@
-package io.github.beleavemebe.inbox.ui.util
+package io.github.beleavemebe.inbox.core.utils
 
 import android.text.format.DateUtils
 import io.github.beleavemebe.inbox.domain.common.util.DAY_MS
 import java.util.*
 
-internal val Date?.isToday get() =
+val Date?.isToday get() =
     this?.let { DateUtils.isToday(it.time) } ?: false
 
-internal val Date?.isYesterday get() =
+val Date?.isYesterday get() =
     this?.let { Date(it.time + DAY_MS).isToday } ?: false
 
-internal val Date?.isTomorrow get() =
+val Date?.isTomorrow get() =
     this?.let { Date(it.time - DAY_MS).isToday } ?: false
