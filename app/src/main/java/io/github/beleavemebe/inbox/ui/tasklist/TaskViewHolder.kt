@@ -12,7 +12,6 @@ import io.github.beleavemebe.inbox.core.utils.*
 import io.github.beleavemebe.inbox.domain.common.util.isPast
 import io.github.beleavemebe.inbox.domain.model.Task
 import io.github.beleavemebe.inbox.databinding.ListItemTaskBinding
-import io.github.beleavemebe.inbox.ui.util.*
 import java.util.*
 
 class TaskViewHolder(

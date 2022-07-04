@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.github.beleavemebe.inbox.R
+import io.github.beleavemebe.inbox.core.ui.ToolbarOwner
 import io.github.beleavemebe.inbox.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), ToolbarOwner {
