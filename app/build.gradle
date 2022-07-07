@@ -47,6 +47,7 @@ dependencies {
     implementation project(':domain')
     implementation project(Modules.coreUi)
     implementation project(Modules.coreUtils)
+    implementation project(Modules.coreNavigation)
 
     implementation(AdapterDelegates.adapterDelegates)
 
