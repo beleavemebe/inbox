@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/schedule_fragment"
-        android:name="io.github.beleavemebe.inbox.ui.meetinglist.MeetingListFragment"
-        android:label="@string/my_meetings" />
+        android:name="io.github.beleavemebe.inbox.ui.schedule.ScheduleFragment"
+        android:label="@string/my_schedule" />
 
 </navigation>
