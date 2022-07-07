@@ -17,9 +17,8 @@
 
     <string name="projects">Проекты</string>
     <string name="my_projects">Мои проекты</string>
-    <string name="information">Информация</string>
-    <string name="meetings">Встречи</string>
-    <string name="my_meetings">Мои встречи</string>
+    <string name="schedule">Расписание</string>
+    <string name="my_schedule">Мое расписание</string>
 
     <string name="date">Дата</string>
     <string name="time">Время</string>

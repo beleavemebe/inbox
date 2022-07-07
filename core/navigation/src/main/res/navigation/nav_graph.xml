@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/tasks_nav_graph"
+    android:id="@+id/nav_graph">
+
+    <include app:graph="@navigation/tasks_nav_graph" />
+    <include app:graph="@navigation/projects_nav_graph" />
+    <include app:graph="@navigation/schedule_nav_graph" />
+
+    <action
+        android:id="@+id/action_global_to_tasks"
+        app:destination="@id/tasks_nav_graph"
+        app:popUpTo="@id/nav_graph" />
+
+    <action
+        android:id="@+id/action_global_to_projects"
+        app:destination="@id/projects_nav_graph"
+        app:popUpTo="@id/nav_graph" />
+
+    <action
+        android:id="@+id/action_global_to_schedule"
+        app:destination="@id/schedule_nav_graph"
+        app:popUpTo="@id/nav_graph" />
+
+</navigation>

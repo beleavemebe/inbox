@@ -17,9 +17,8 @@
 
     <string name="projects">Projects</string>
     <string name="my_projects">My projects</string>
-    <string name="information">Information</string>
-    <string name="meetings">Meetings</string>
-    <string name="my_meetings">My meetings</string>
+    <string name="schedule">Schedule</string>
+    <string name="my_schedule">My schedule</string>
 
     <string name="date">Date</string>
     <string name="time">Time</string>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/tasks_nav_graph"
+    app:startDestination="@id/task_list_fragment">
+
+    <fragment
+        android:id="@+id/task_list_fragment"
+        android:name="io.github.beleavemebe.inbox.ui.tasklist.TaskListFragment"
+        android:label="@string/my_tasks"
+        tools:layout="@layout/fragment_task_list">
+        <action
+            android:id="@+id/action_task_list_fragment_to_taskFragment"
+            app:destination="@id/taskFragment">
+        </action>
+        <action
+            android:id="@+id/action_task_list_fragment_to_filter_tasks_dialog"
+            app:destination="@id/filter_tasks_dialog" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/taskFragment"
+        android:name="io.github.beleavemebe.inbox.ui.task.TaskFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_task">
+        <argument
+            android:name="taskId"
+            app:argType="java.util.UUID"
+            app:nullable="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/filter_tasks_dialog"
+        android:name="io.github.beleavemebe.inbox.ui.tasklist.FilterTasksDialog"
+        tools:layout="@layout/dialog_filter_tasks"/>
+
+</navigation>

@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/taskListFragment"
+        android:id="@id/tasks_nav_graph"
         android:icon="@drawable/ic_note_24"
         android:title="@string/tasks" />
 
     <item
-        android:id="@+id/projectListFragment"
+        android:id="@id/projects_nav_graph"
         android:icon="@drawable/ic_project_24"
         android:title="@string/projects" />
 
     <item
-        android:id="@+id/infoListFragment"
-        android:icon="@drawable/ic_info_24"
-        android:title="@string/information" />
-    <item
-        android:id="@+id/meetingListFragment"
+        android:id="@id/schedule_nav_graph"
         android:icon="@drawable/ic_meetings_24"
-        android:title="@string/meetings" />
+        android:title="@string/schedule" />
 </menu>
