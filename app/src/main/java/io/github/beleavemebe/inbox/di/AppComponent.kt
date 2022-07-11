@@ -3,8 +3,12 @@ package io.github.beleavemebe.inbox.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import io.github.beleavemebe.inbox.ui.task.TaskFragment
-import io.github.beleavemebe.inbox.ui.tasklist.TaskListFragment
+import io.github.beleavemebe.inbox.tasks.ui.task_details.TaskFragment
+import io.github.beleavemebe.inbox.tasks.ui.task_details.di.TaskDetailsDependencies
+import io.github.beleavemebe.inbox.tasks.ui.task_list.TaskListFragment
+import io.github.beleavemebe.inbox.tasks.ui.task_list.di.TaskListDependencies
+import io.github.beleavemebe.inbox.ui.App
+import io.github.beleavemebe.inbox.ui.MainActivity
 import javax.inject.Singleton
 
 @Singleton
@@ -12,11 +16,11 @@ import javax.inject.Singleton
     DataModule::class,
     DataModuleBindings::class,
     DomainModule::class,
-    PresentationModule::class]
-)
-interface AppComponent {
-    fun inject(fragment: TaskListFragment)
-    fun inject(fragment: TaskFragment)
+    PresentationModule::class,
+    TaskListFeatureBindings::class,
+    TaskDetailsFeatureBindings::class])
+interface AppComponent : TaskListDependencies, TaskDetailsDependencies {
+    fun inject(app: App)
 
     @Component.Factory
     interface Factory {

@@ -8,11 +8,18 @@ import io.github.beleavemebe.inbox.core.navigation.NavGraphDirections
 class NavComponentCrossFeatureNavigator(
     private val navController: NavController
 ) : CrossFeatureNavigator {
+    override fun navigateBack() {
+        navController.navigateUp()
+    }
+
     override fun navigateToFeature(feature: InboxFeature) {
-        when (feature) {
-            InboxFeature.Tasks -> navController.navigate(NavGraphDirections.actionGlobalToTasks())
-            InboxFeature.Projects -> navController.navigate(NavGraphDirections.actionGlobalToProjects())
-            InboxFeature.Schedule -> navController.navigate(NavGraphDirections.actionGlobalToSchedule())
+        return when (feature) {
+            is InboxFeature.TaskList -> navController.navigate(NavGraphDirections.actionGlobalToTaskList())
+            is InboxFeature.TaskDetails -> {
+                navController.navigate(NavGraphDirections.actionGlobalToTaskDetails(feature.id, feature.title))
+            }
+            is InboxFeature.Projects -> navController.navigate(NavGraphDirections.actionGlobalToProjects())
+            is InboxFeature.Schedule -> navController.navigate(NavGraphDirections.actionGlobalToSchedule())
         }
     }
 }

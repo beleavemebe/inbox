@@ -3,9 +3,9 @@ package io.github.beleavemebe.inbox.di
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import io.github.beleavemebe.inbox.domain.repository.ChecklistRepository
-import io.github.beleavemebe.inbox.domain.repository.TaskRepository
-import io.github.beleavemebe.inbox.domain.usecase.*
+import io.github.beleavemebe.inbox.tasks.domain.repository.ChecklistRepository
+import io.github.beleavemebe.inbox.tasks.domain.repository.TaskRepository
+import io.github.beleavemebe.inbox.tasks.domain.usecase.*
 
 @Module
 class DomainModule {
@@ -19,10 +19,10 @@ class DomainModule {
 
     @Provides
     @Reusable
-    fun provideGetTasksInteractor(
-        taskRepository:TaskRepository,
-    ): GetTasksInteractor {
-        return GetTasksInteractor(taskRepository)
+    fun provideGetTasks(
+        taskRepository: TaskRepository,
+    ): GetTasks {
+        return GetTasks(taskRepository)
     }
 
     @Provides

@@ -7,10 +7,10 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import io.github.beleavemebe.inbox.data.db.Converters
-import io.github.beleavemebe.inbox.data.db.TaskDatabase
-import io.github.beleavemebe.inbox.data.db.TaskDatabase.Companion.DATABASE_NAME
-import io.github.beleavemebe.inbox.data.repository.TaskRepositoryImpl
+import io.github.beleavemebe.inbox.tasks.data.db.Converters
+import io.github.beleavemebe.inbox.tasks.data.db.TaskDatabase
+import io.github.beleavemebe.inbox.tasks.data.db.TaskDatabase.Companion.DATABASE_NAME
+import io.github.beleavemebe.inbox.tasks.data.repository.TaskRepositoryImpl
 import javax.inject.Singleton
 
 @Module

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/task_details_nav_graph"
+    app:startDestination="@id/fragment_task_details">
+
+    <fragment android:id="@+id/fragment_task_details"
+        android:name="io.github.beleavemebe.inbox.tasks.ui.task_details.TaskFragment"
+        android:label="{title}">
+
+        <argument
+            android:name="taskId"
+            app:argType="java.util.UUID"
+            app:nullable="true" />
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

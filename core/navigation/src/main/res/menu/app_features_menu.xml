@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@id/tasks_nav_graph"
+        android:id="@id/task_list_nav_graph"
         android:icon="@drawable/ic_note_24"
         android:title="@string/tasks" />
 

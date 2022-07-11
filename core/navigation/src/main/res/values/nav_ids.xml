@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="tasks_nav_graph" type="id" />
+    <item name="task_list_nav_graph" type="id" />
+    <item name="task_details_nav_graph" type="id" />
     <item name="projects_nav_graph" type="id" />
     <item name="schedule_nav_graph" type="id" />
 </resources>

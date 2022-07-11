@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/tasks_nav_graph"
+    app:startDestination="@id/task_list_nav_graph"
     android:id="@+id/nav_graph">
 
-    <include app:graph="@navigation/tasks_nav_graph" />
+    <include app:graph="@navigation/task_list_nav_graph" />
+    <include app:graph="@navigation/task_details_nav_graph" />
     <include app:graph="@navigation/projects_nav_graph" />
     <include app:graph="@navigation/schedule_nav_graph" />
 
     <action
-        android:id="@+id/action_global_to_tasks"
-        app:destination="@id/tasks_nav_graph"
+        android:id="@+id/action_global_to_task_list"
+        app:destination="@id/task_list_nav_graph"
         app:popUpTo="@id/nav_graph" />
+
+    <action
+        android:id="@+id/action_global_to_task_details"
+        app:destination="@id/task_details_nav_graph"
+        app:popUpTo="@id/task_details_nav_graph">
+        <argument
+            android:name="taskId"
+            app:argType="java.util.UUID"
+            app:nullable="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </action>
 
     <action
         android:id="@+id/action_global_to_projects"

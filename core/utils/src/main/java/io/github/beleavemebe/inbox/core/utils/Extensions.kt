@@ -1,5 +1,7 @@
 package io.github.beleavemebe.inbox.core.utils
 
+import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Paint
@@ -16,6 +18,7 @@ import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 
 @Suppress("unused")
 fun Any.log(msg: Any?) = Log.d("inbox-debug", msg.toString())
@@ -104,3 +107,41 @@ fun <E> MutableList<E>.refillWith(content: List<E>) {
 }
 
 fun Int.toDoubleFiguredString() = if (this >= 10) "$this" else "0${this}"
+
+inline fun <reified C> Fragment.findInstanceInHierarchy(): C =
+    requireNotNull(
+        allParents.firstOrNull { it is C } as C
+    ) {
+        "No ${C::class.java} instance found in the hierarchy"
+    }
+
+val Fragment.allParents: Iterable<Any>
+    get() = object : Iterable<Any> {
+        override fun iterator() = object : Iterator<Any> {
+            private var currentParentFragment: Fragment? = parentFragment
+            private var parentActivity: Activity? = activity
+            private var parentApplication: Application? = parentActivity?.application
+
+            override fun hasNext() =
+                currentParentFragment != null || parentActivity != null || parentApplication != null
+
+            override fun next(): Any {
+                currentParentFragment?.let { parent ->
+                    currentParentFragment = parent.parentFragment
+                    return parent
+                }
+
+                parentActivity?.let { parent ->
+                    parentActivity = null
+                    return parent
+                }
+
+                parentApplication?.let { parent ->
+                    parentApplication = null
+                    return parent
+                }
+
+                throw NoSuchElementException()
+            }
+        }
+    }
