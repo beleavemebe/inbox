@@ -83,18 +83,21 @@ class TaskViewHolder(
     }
 }
 
+const val DUE_DATE_FORMAT = "EEE, dd MMM"
+const val TIME_FORMAT = "HH:mm"
+
 fun getDatetimeText(task: Task, resources: Resources): String {
     val dateText = when {
         task.dueDate.isYesterday -> resources.getString(R.string.yesterday)
         task.dueDate.isToday -> resources.getString(R.string.today)
         task.dueDate.isTomorrow -> resources.getString(R.string.tomorrow)
         else -> DateFormat
-            .format("EEE, dd MMM", task.dueDate).toString()
-            .replaceFirstChar { it.uppercase() }
+            .format(DUE_DATE_FORMAT, task.dueDate).toString()
+            .replaceFirstChar(Char::uppercase)
     }
 
     val timeText = if (task.isTimeSpecified) {
-        DateFormat.format("HH:mm", task.dueDate).toString()
+        DateFormat.format(TIME_FORMAT, task.dueDate).toString()
     } else ""
 
     return resources.getString(R.string.task_datetime_placeholder, dateText, timeText)
@@ -104,10 +107,10 @@ fun getDatetimeText(task: Task, resources: Resources): String {
 fun getDatetimeBarColor(task: Task, res: Resources, context: Context): Int {
     fun color(@ColorRes id: Int) = res.getColorCompat(context, id)
 
-    val activeColor = color(R.color.primary_dark)
-    val inactiveColor = color(R.color.secondary_text)
-    val todayColor = color(R.color.accent_text_blue)
-    val failedColor = color(R.color.red)
+    val activeColor by lazy { color(R.color.primary_dark) }
+    val inactiveColor by lazy { color(R.color.secondary_text) }
+    val todayColor by lazy { color(R.color.accent_text_blue) }
+    val failedColor by lazy { color(R.color.red) }
     val dueDate = task.dueDate
     return when {
         task.isCompleted -> inactiveColor

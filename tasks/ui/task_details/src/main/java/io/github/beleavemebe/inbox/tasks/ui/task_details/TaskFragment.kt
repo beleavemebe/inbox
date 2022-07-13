@@ -33,6 +33,10 @@ import java.util.*
 import javax.inject.Inject
 
 class TaskFragment : Fragment(R.layout.fragment_task) {
+    companion object {
+        const val DUE_DATE_FORMAT = "EEE, d MMM yyyy"
+    }
+
     private val args by navArgs<TaskFragmentArgs>()
     private val binding by viewBinding(FragmentTaskBinding::bind)
 
@@ -163,7 +167,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun formatDueDate(date: Date) =
-        DateFormat.format("EEE, d MMM yyyy", date).toString()
+        DateFormat.format(DUE_DATE_FORMAT, date).toString()
             .replaceFirstChar(Char::uppercase)
 
     private fun updateTimeTv(task: Task) {
@@ -178,6 +182,7 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         }
     }
 
+    @Suppress("unused_parameter")
     private fun renderPeriodicitySection(task: Task) {
     }
 
