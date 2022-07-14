@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/task_list_nav_graph"
+    app:startDestination="@id/task_list_fragment">
+
+    <fragment
+        android:id="@+id/task_list_fragment"
+        android:name="io.github.beleavemebe.inbox.tasks.ui.task_list.TaskListFragment"
+        android:label="@string/my_tasks"
+        tools:layout="@layout/fragment_task_list">
+        <action
+            android:id="@+id/action_task_list_fragment_to_filter_tasks_dialog"
+            app:destination="@id/filter_tasks_dialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/filter_tasks_dialog"
+        android:name="io.github.beleavemebe.inbox.tasks.ui.task_list.FilterTasksDialog"
+        tools:layout="@layout/dialog_filter_tasks"/>
+
+</navigation>

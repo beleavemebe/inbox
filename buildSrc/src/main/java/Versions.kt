@@ -4,6 +4,7 @@ object Versions {
     const val navigationVersion = "2.5.0"
     const val coreVersion = "1.8.0"
     const val appCompatVersion = "1.4.2"
+    const val fragmentKtxVersion = "1.5.0"
     const val materialVersion = "1.6.1"
     const val constraintLayoutVersion = "2.1.4"
     const val junitVersion = "4.13.2"
@@ -13,5 +14,5 @@ object Versions {
     const val roomVersion = "2.4.2"
     const val daggerVersion = "2.41"
     const val moshiVersion = "1.13.0"
-
+    const val viewBindingDelegateVersion = "1.5.2"
 }

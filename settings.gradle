@@ -3,11 +3,19 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "inbox"
 include ':app'
-include ':domain'
 include ':core:ui'
 include ':core:utils'
 include ':core:navigation'
+include ':tasks:data'
+include ':tasks:domain'
+include ':tasks:ui:task_list'
+include ':tasks:ui:task_details'
+include ':tasks:ui:library'
+include ':core:di'
+include ':core:di_dagger'
+include ':common'

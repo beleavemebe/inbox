@@ -1,21 +1,18 @@
 package io.github.beleavemebe.inbox.ui
 
 import android.app.Application
-import android.content.Context
-import io.github.beleavemebe.inbox.di.AppComponent
+import io.github.beleavemebe.inbox.core.di.DepsMap
+import io.github.beleavemebe.inbox.core.di.HasDependencies
 import io.github.beleavemebe.inbox.di.DaggerAppComponent
+import javax.inject.Inject
 
-class App : Application() {
-    lateinit var appComponent: AppComponent
+class App : Application(), HasDependencies {
+    @Inject override lateinit var depsMap: DepsMap
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.factory().create(context = this)
+        DaggerAppComponent.factory()
+            .create(context = this)
+            .inject(this)
     }
 }
-
-val Context.appComponent: AppComponent
-    get() = when (this) {
-        is App -> appComponent
-        else -> applicationContext.appComponent
-    }
