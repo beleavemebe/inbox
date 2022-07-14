@@ -7,6 +7,4 @@ object Build {
     const val JVM_TARGET_VERSION = "1.8"
     val SOURCE_COMPATIBILITY_JAVA_VERSION = JavaVersion.VERSION_1_8
     val TARGET_COMPATIBILITY_JAVA_VERSION = JavaVersion.VERSION_1_8
-
-
 }

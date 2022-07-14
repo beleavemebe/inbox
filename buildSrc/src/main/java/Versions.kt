@@ -15,5 +15,4 @@ object Versions {
     const val daggerVersion = "2.41"
     const val moshiVersion = "1.13.0"
     const val viewBindingDelegateVersion = "1.5.2"
-    const val componentsManagerVersion = "2.1.1"
 }
