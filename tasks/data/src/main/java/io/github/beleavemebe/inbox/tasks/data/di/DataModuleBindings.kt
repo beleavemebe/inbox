@@ -1,10 +1,10 @@
-package io.github.beleavemebe.inbox.di
+package io.github.beleavemebe.inbox.tasks.data.di
 
 import dagger.Binds
 import dagger.Module
+import io.github.beleavemebe.inbox.tasks.data.repository.TaskRepositoryImpl
 import io.github.beleavemebe.inbox.tasks.domain.repository.ChecklistRepository
 import io.github.beleavemebe.inbox.tasks.domain.repository.TaskRepository
-import io.github.beleavemebe.inbox.tasks.data.repository.TaskRepositoryImpl
 
 @Module
 interface DataModuleBindings {

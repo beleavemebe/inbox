@@ -8,7 +8,7 @@ import io.github.beleavemebe.inbox.tasks.domain.repository.TaskRepository
 import io.github.beleavemebe.inbox.tasks.domain.usecase.*
 
 @Module
-class DomainModule {
+object DomainModule {
     @Provides
     @Reusable
     fun provideGetTaskById(

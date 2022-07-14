@@ -1,30 +1,17 @@
-package io.github.beleavemebe.inbox.di
+package io.github.beleavemebe.inbox.tasks.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import io.github.beleavemebe.inbox.tasks.data.db.Converters
 import io.github.beleavemebe.inbox.tasks.data.db.TaskDatabase
 import io.github.beleavemebe.inbox.tasks.data.db.TaskDatabase.Companion.DATABASE_NAME
 import io.github.beleavemebe.inbox.tasks.data.repository.TaskRepositoryImpl
-import javax.inject.Singleton
 
 @Module
-class DataModule {
+object DataModule {
     @Provides
-    @Reusable
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-    }
-
-    @Provides
-    @Singleton
     fun provideTaskDatabase(
         context: Context,
         converters: Converters,
@@ -39,7 +26,6 @@ class DataModule {
     }
 
     @Provides
-    @Reusable
     fun provideTaskRepositoryImpl(
         database: TaskDatabase,
     ): TaskRepositoryImpl {

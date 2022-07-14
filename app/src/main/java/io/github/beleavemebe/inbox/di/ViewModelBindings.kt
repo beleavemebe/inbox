@@ -8,11 +8,12 @@ import dagger.multibindings.IntoMap
 import io.github.beleavemebe.inbox.tasks.ui.task_list.TaskListViewModel
 
 @Module
-abstract class PresentationModule {
+interface ViewModelBindings {
     @Binds
-    abstract fun bindViewModelFactory(factory: MultiViewModelFactory): ViewModelProvider.Factory
+    fun bindViewModelFactory(factory: MultiViewModelFactory): ViewModelProvider.Factory
 
     @Binds
-    @[IntoMap ViewModelKey(TaskListViewModel::class)]
-    abstract fun bindTaskListViewModel(viewModel: TaskListViewModel): ViewModel
+    @IntoMap
+    @ViewModelKey(TaskListViewModel::class)
+    fun bindTaskListViewModel(viewModel: TaskListViewModel): ViewModel
 }

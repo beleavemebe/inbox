@@ -3,7 +3,9 @@ package io.github.beleavemebe.inbox.tasks.ui.task_list.di
 import dagger.Component
 import io.github.beleavemebe.inbox.tasks.ui.task_list.TaskListFragment
 
-@Component(dependencies = [TaskListDependencies::class])
+@Component(
+    dependencies = [TaskListDependencies::class]
+)
 interface TaskListComponent {
     fun inject(fragment: TaskListFragment)
 

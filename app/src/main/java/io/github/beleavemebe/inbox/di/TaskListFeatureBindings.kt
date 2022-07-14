@@ -9,7 +9,8 @@ import io.github.beleavemebe.inbox.tasks.ui.task_list.di.TaskListDependencies
 
 @Module
 interface TaskListFeatureBindings {
-    @[Binds IntoMap]
+    @Binds
+    @IntoMap
     @DependenciesKey(TaskListDependencies::class)
     fun bindTaskListDependencies(impl: AppComponent): Dependencies
 }
