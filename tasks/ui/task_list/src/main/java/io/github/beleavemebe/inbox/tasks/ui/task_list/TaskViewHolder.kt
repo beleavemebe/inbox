@@ -23,7 +23,7 @@ class TaskViewHolder(
     var task: Task? = null
 
     private val context: Context
-        get() = binding.root.context.applicationContext
+        get() = binding.root.context
 
     fun bind(task: Task) {
         this.task = task
@@ -78,7 +78,11 @@ class TaskViewHolder(
 
     @ColorInt
     private fun getTitleColor(task: Task, res: Resources): Int {
-        val textColorRes = if (task.isCompleted) R.color.secondary_text else R.color.primary_text
+        val textColorRes = if (task.isCompleted) {
+            R.color.task_item_title_completed
+        } else {
+            R.color.task_item_title
+        }
         return res.getColorCompat(context, textColorRes)
     }
 }
@@ -107,10 +111,10 @@ fun getDatetimeText(task: Task, resources: Resources): String {
 fun getDatetimeBarColor(task: Task, res: Resources, context: Context): Int {
     fun color(@ColorRes id: Int) = res.getColorCompat(context, id)
 
-    val activeColor by lazy { color(R.color.primary_dark) }
-    val inactiveColor by lazy { color(R.color.secondary_text) }
-    val todayColor by lazy { color(R.color.accent_text_blue) }
-    val failedColor by lazy { color(R.color.red) }
+    val activeColor by lazy { color(R.color.task_item_datetime_active) }
+    val inactiveColor by lazy { color(R.color.task_item_datetime_inactive) }
+    val todayColor by lazy { color(R.color.task_item_datetime_today) }
+    val failedColor by lazy { color(R.color.error) }
     val dueDate = task.dueDate
     return when {
         task.isCompleted -> inactiveColor

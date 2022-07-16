@@ -18,11 +18,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin_default"
-        android:backgroundTint="@color/white"
         android:src="@drawable/ic_baseline_add_24"
-        android:tint="@color/primary"
+        app:backgroundTint="@color/fab_background_tint"
         app:borderWidth="0dp"
         app:fabSize="normal"
-        app:tint="@null" />
+        app:tint="@color/fab_tint" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -255,7 +255,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_content_start"
-        app:strokeColor="@color/accent" />
+        app:strokeColor="@color/blue_primary" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

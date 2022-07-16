@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="text_primary">#212121</color>
-    <color name="toolbar_background">@color/dark_blue</color>
+    <color name="text_primary">@color/white</color>
+    <color name="toolbar_background">#202022</color>
     <color name="toolbar_title_text">@color/white</color>
     <color name="toolbar_subtitle">@color/on_dark_blue</color>
     <color name="radio_button_tint">@color/blue_primary</color>
@@ -13,5 +13,5 @@
     <color name="error">@color/red</color>
     <color name="fab_background_tint">@color/blue_primary</color>
     <color name="fab_tint">@color/white</color>
-    <color name="task_item_divider">#D9D9D9</color>
+    <color name="task_item_divider">@color/black</color>
 </resources>

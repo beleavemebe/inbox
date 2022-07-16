@@ -5,15 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="2dp"
-        android:layout_height="0dp"
-        android:background="@color/accent"
-        app:layout_constraintBottom_toTopOf="@+id/iv_add"
-        app:layout_constraintEnd_toEndOf="@+id/iv_add"
-        app:layout_constraintStart_toStartOf="@+id/iv_add"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/iv_add"
         android:layout_width="32dp"
@@ -23,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/accent"
+        app:tint="@color/grey"
         tools:checked="true" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -35,7 +26,7 @@
         android:paddingVertical="@dimen/margin_default"
         android:text="@string/add_item"
         android:textStyle="bold"
-        android:textColor="@color/accent"
+        android:textColor="@color/grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_add"
