@@ -7,6 +7,7 @@
 
     <style name="CardView.Inbox.Preference" parent="">
         <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="cardBackgroundColor">@color/background</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="cardCornerRadius">4dp</item>
@@ -32,5 +33,9 @@
         <item name="android:background">@color/toolbar_background</item>
         <item name="titleTextColor">@color/toolbar_title_text</item>
         <item name="subtitleTextColor">@color/toolbar_subtitle</item>
+    </style>
+
+    <style name="PopupMenu.Inbox" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@color/popup_menu</item>
     </style>
 </resources>

@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:popupMenuStyle">@style/PopupMenu.Inbox</item>
     </style>
 
     <style name="Base.Theme.Inbox" parent="Base.V24.Theme.Inbox"/>

@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="background">#1D2733</color>
     <color name="text_primary">@color/white</color>
-    <color name="toolbar_background">#202022</color>
+    <color name="toolbar_background">#212D3B</color>
     <color name="toolbar_title_text">@color/white</color>
     <color name="toolbar_subtitle">@color/on_dark_blue</color>
     <color name="radio_button_tint">@color/blue_primary</color>
     <color name="task_item_title">@color/text_primary</color>
     <color name="task_item_title_completed">@color/grey</color>
     <color name="task_item_datetime_inactive">@color/grey</color>
-    <color name="task_item_datetime_active">@color/dark_grey</color>
-    <color name="task_item_datetime_today">@color/light_blue</color>
-    <color name="error">@color/red</color>
+    <color name="task_item_datetime_active">#7D8B98</color>
+    <color name="task_item_datetime_today">@color/blue_primary</color>
+    <color name="error">#C14C54</color>
     <color name="fab_background_tint">@color/blue_primary</color>
     <color name="fab_tint">@color/white</color>
     <color name="task_item_divider">@color/black</color>
+    <color name="popup_menu">#283848</color>
 </resources>
