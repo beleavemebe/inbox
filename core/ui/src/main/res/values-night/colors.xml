@@ -21,4 +21,5 @@
     <color name="switch_thumb_tint_inactive">#3D3D3D</color>
     <color name="switch_track_tint_active">@color/light_blue</color>
     <color name="switch_track_tint_inactive">#5D7484</color>
+    <color name="progress_bar_background">@color/grey</color>
 </resources>

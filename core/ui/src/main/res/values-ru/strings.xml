@@ -36,6 +36,6 @@
     <string name="this_or_next_week">Эта и следующая неделя</string>
     <string name="undated">Без даты</string>
     <string name="checklist">Чеклист</string>
-    <string name="add_item">Добавить</string>
+    <string name="add_next_step">Добавить следующий шаг…</string>
     <string name="step_placeholder">Шаг %1$d</string>
 </resources>

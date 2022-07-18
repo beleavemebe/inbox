@@ -7,6 +7,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.DiffUtil
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import io.github.beleavemebe.inbox.core.utils.enableDoneImeAction
+import io.github.beleavemebe.inbox.core.utils.getColorCompat
+import io.github.beleavemebe.inbox.core.utils.setCrossedOut
 import io.github.beleavemebe.inbox.tasks.domain.model.ChecklistItem
 import io.github.beleavemebe.inbox.tasks.ui.task_details.databinding.ListItemAddChecklistEntryBinding
 import io.github.beleavemebe.inbox.tasks.ui.task_details.databinding.ListItemChecklistEntryBinding
@@ -34,6 +36,18 @@ sealed class ChecklistListItem {
                         binding.etChecklistItemText.doOnTextChanged { text, _, _, _ ->
                             onTextChanged(adapterPosition, text.toString())
                         }
+                        binding.etChecklistItemText.setCrossedOut(item.checklistItem.isDone)
+                        val res = binding.root.resources
+                        binding.etChecklistItemText.setTextColor(
+                            res.getColorCompat(
+                                context,
+                                if (item.checklistItem.isDone) {
+                                    R.color.task_item_title_completed
+                                } else {
+                                    R.color.task_item_title
+                                }
+                            )
+                        )
                         binding.cbCompleted.setOnCheckedChangeListener { _, isChecked ->
                             onItemChecked(adapterPosition, isChecked)
                         }

@@ -25,7 +25,9 @@ import io.github.beleavemebe.inbox.core.utils.setVisibleAnimated
 import io.github.beleavemebe.inbox.core.utils.toDoubleFiguredString
 import io.github.beleavemebe.inbox.core.utils.toast
 import io.github.beleavemebe.inbox.tasks.domain.model.CallResult
+import io.github.beleavemebe.inbox.tasks.domain.model.ChecklistItem
 import io.github.beleavemebe.inbox.tasks.domain.model.Task
+import io.github.beleavemebe.inbox.tasks.domain.model.TaskChecklist
 import io.github.beleavemebe.inbox.tasks.ui.task_details.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.tasks.ui.task_details.di.DaggerTaskDetailsComponent
 import kotlinx.coroutines.flow.onEach
@@ -101,7 +103,9 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun initChecklistRecycler() {
+        binding.progressBarChecklist.animation
         binding.rvChecklist.adapter = checklistAdapter
+        binding.rvChecklist.itemAnimator = null
     }
 
     private fun initTitleEditText() {
@@ -187,17 +191,27 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun renderChecklistSection(task: Task) {
-        checklistAdapter.items = createChecklist(task)
+        checklistAdapter.items = createChecklist(task.checklist)
+        binding.tvChecklistProgress.isVisible = task.checklist != null
+        binding.progressBarChecklist.isVisible = task.checklist != null
+        task.checklist?.let {
+            val progress = calcProgress(it.content)
+            binding.tvChecklistProgress.text = "$progress%"
+            binding.progressBarChecklist.progress = progress
+        }
     }
 
-    private fun createChecklist(task: Task): List<ChecklistListItem> {
-        val checklist = task.checklist
-            ?.content
+    private fun calcProgress(checklistContent: List<ChecklistItem>): Int {
+        return ((checklistContent.count { it.isDone }.toDouble() / checklistContent.size) * 100).toInt()
+    }
+
+    private fun createChecklist(checklist: TaskChecklist?): List<ChecklistListItem> {
+        val listItems = checklist?.content
             ?.map { item ->
                 ChecklistListItem.ChecklistEntry(item)
             }.orEmpty()
 
-        return checklist + ChecklistListItem.AddChecklistEntry()
+        return listItems + ChecklistListItem.AddChecklistEntry()
     }
 
     private fun initSwitchListeners() {

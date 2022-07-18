@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Title" parent="TextAppearance.MaterialComponents.Headline6">
+    <style name="TextAppearance.Inbox.Title1.IntermediateVerticalPadding">
         <item name="android:paddingTop">@dimen/margin_intermediate</item>
         <item name="android:paddingBottom">@dimen/margin_intermediate</item>
     </style>

@@ -17,12 +17,15 @@ import io.github.beleavemebe.inbox.tasks.domain.usecase.AddTask
 import io.github.beleavemebe.inbox.tasks.domain.usecase.GetTaskById
 import io.github.beleavemebe.inbox.tasks.domain.usecase.UpdateTask
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.Executors
 import java.util.function.Function
 
 class TaskViewModel @AssistedInject constructor(
@@ -127,7 +130,7 @@ class TaskViewModel @AssistedInject constructor(
         pendingModifications.add(refreshTask)
     }
 
-    private val pendingModifications: Queue<Function<Task, Task>> = LinkedList()
+    private val pendingModifications: Queue<Function<Task, Task>> = ConcurrentLinkedQueue()
 
     private fun applyPendingModifications(task: Task): Task {
         if (pendingModifications.isEmpty()) return task

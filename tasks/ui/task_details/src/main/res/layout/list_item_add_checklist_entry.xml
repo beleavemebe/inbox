@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,8 +13,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/grey"
-        tools:checked="true" />
+        app:tint="@color/text_hint" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_checklist_item_text"
@@ -24,9 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_default"
         android:paddingVertical="@dimen/margin_default"
-        android:text="@string/add_item"
-        android:textStyle="bold"
-        android:textColor="@color/grey"
+        android:text="@string/add_next_step"
+        android:textColor="@color/text_hint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_add"

@@ -84,7 +84,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_date_header"
-                style="@style/Title"
+                style="@style/TextAppearance.Inbox.Title1.IntermediateVerticalPadding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/date_and_time"
@@ -95,9 +95,9 @@
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switch_datetime"
+                style="@style/Switch.Inbox"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                style="@style/Switch.Inbox"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_date_header"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_date_header"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -106,11 +106,11 @@
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_datetime"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="cv_date, cv_time" />
+                android:visibility="gone"
+                app:constraint_referenced_ids="cv_date, cv_time"
+                tools:visibility="visible" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_date"
@@ -154,7 +154,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_periodicity_header"
-                style="@style/Title"
+                style="@style/TextAppearance.Inbox.Title1.IntermediateVerticalPadding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/periodicity"
@@ -165,9 +165,9 @@
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switch_periodicity"
+                style="@style/Switch.Inbox"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                style="@style/Switch.Inbox"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_periodicity_header"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_periodicity_header"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -176,11 +176,11 @@
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_periodicity"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="cv_periodicity" />
+                android:visibility="gone"
+                app:constraint_referenced_ids="cv_periodicity"
+                tools:visibility="visible" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_periodicity"
@@ -204,7 +204,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_checklist_header"
-                style="@style/Title"
+                style="@style/TextAppearance.Inbox.Title1.IntermediateVerticalPadding"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/checklist"
@@ -214,28 +214,50 @@
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switch_checklist"
+                style="@style/Switch.Inbox"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                style="@style/Switch.Inbox"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_checklist_header"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_checklist"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="nsvChecklist" />
+                android:visibility="gone"
+                app:constraint_referenced_ids="nsvChecklist, tv_checklist_progress, progress_bar_checklist"
+                tools:visibility="visible" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_checklist_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_checklist_header"
+                tools:text="50%" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_bar_checklist"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_default"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_checklist_progress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_checklist_progress"
+                app:layout_constraintTop_toTopOf="@+id/tv_checklist_progress"
+                app:trackColor="@color/progress_bar_background"
+                app:trackCornerRadius="16dp"
+                tools:progress="50" />
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nsvChecklist"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_intermediate"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_checklist_header">
+                app:layout_constraintTop_toBottomOf="@+id/progress_bar_checklist">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_checklist"
