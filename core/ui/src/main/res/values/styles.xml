@@ -29,6 +29,11 @@
         <item name="android:buttonTint">@color/radio_button_tint</item>
     </style>
 
+    <style name="Switch.Inbox" parent="">
+        <item name="thumbTint">@drawable/switch_thumb_tint_selector</item>
+        <item name="trackTint">@drawable/switch_track_tint_selector</item>
+    </style>
+
     <style name="Toolbar.Inbox" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:background">@color/toolbar_background</item>
         <item name="titleTextColor">@color/toolbar_title_text</item>

@@ -97,6 +97,7 @@
                 android:id="@+id/switch_datetime"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                style="@style/Switch.Inbox"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_date_header"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_date_header"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -166,6 +167,7 @@
                 android:id="@+id/switch_periodicity"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                style="@style/Switch.Inbox"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_periodicity_header"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_periodicity_header"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -214,6 +216,7 @@
                 android:id="@+id/switch_checklist"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                style="@style/Switch.Inbox"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_checklist_header"
                 app:layout_constraintEnd_toEndOf="parent" />
 
