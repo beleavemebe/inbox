@@ -2,6 +2,7 @@
 <resources>
     <color name="background">@color/white</color>
     <color name="text_primary">#212121</color>
+    <color name="text_hint">#666666</color>
     <color name="toolbar_background">@color/dark_blue</color>
     <color name="toolbar_title_text">@color/white</color>
     <color name="toolbar_subtitle">@color/on_dark_blue</color>
