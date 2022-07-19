@@ -30,14 +30,23 @@ sealed class ChecklistListItem {
                     ::inflateBinding,
                 ) {
                     bind {
-                        binding.cbCompleted.isChecked = item.checklistItem.isDone
-                        binding.etChecklistItemText.setText(item.checklistItem.text)
+                        val isItemDone = item.checklistItem.isDone
+                        val res = binding.root.resources
+
+                        binding.cbCompleted.isChecked = isItemDone
+                        binding.cbCompleted.setOnCheckedChangeListener { _, isChecked ->
+                            onItemChecked(adapterPosition, isChecked)
+                        }
+
+                        binding.etChecklistItemText.isClickable = !isItemDone
+                        binding.etChecklistItemText.isFocusable = !isItemDone
+                        binding.etChecklistItemText.setCrossedOut(isItemDone)
                         binding.etChecklistItemText.enableDoneImeAction()
+                        binding.etChecklistItemText.setText(item.checklistItem.text)
                         binding.etChecklistItemText.doOnTextChanged { text, _, _, _ ->
                             onTextChanged(adapterPosition, text.toString())
                         }
                         binding.etChecklistItemText.setCrossedOut(item.checklistItem.isDone)
-                        val res = binding.root.resources
                         binding.etChecklistItemText.setTextColor(
                             res.getColorCompat(
                                 context,
@@ -48,9 +57,6 @@ sealed class ChecklistListItem {
                                 }
                             )
                         )
-                        binding.cbCompleted.setOnCheckedChangeListener { _, isChecked ->
-                            onItemChecked(adapterPosition, isChecked)
-                        }
                     }
                 }
         }
@@ -81,7 +87,7 @@ sealed class ChecklistListItem {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ChecklistListItem>() {
             override fun areItemsTheSame(
                 oldItem: ChecklistListItem,
-                newItem: ChecklistListItem
+                newItem: ChecklistListItem,
             ): Boolean {
                 return when (oldItem) {
                     is ChecklistEntry -> newItem is ChecklistEntry && oldItem.checklistItem === newItem.checklistItem
@@ -91,7 +97,7 @@ sealed class ChecklistListItem {
 
             override fun areContentsTheSame(
                 oldItem: ChecklistListItem,
-                newItem: ChecklistListItem
+                newItem: ChecklistListItem,
             ): Boolean {
                 return newItem == oldItem
             }
