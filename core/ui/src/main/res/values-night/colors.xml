@@ -18,7 +18,7 @@
     <color name="task_item_divider">@color/black</color>
     <color name="popup_menu">#283848</color>
     <color name="switch_thumb_tint_active">@color/blue_primary</color>
-    <color name="switch_thumb_tint_inactive">#3D3D3D</color>
+    <color name="switch_thumb_tint_inactive">#A4A4A4</color>
     <color name="switch_track_tint_active">@color/light_blue</color>
     <color name="switch_track_tint_inactive">#5D7484</color>
     <color name="progress_bar_background">@color/grey</color>
