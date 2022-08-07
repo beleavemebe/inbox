@@ -70,14 +70,11 @@ private fun TextView.uncross() {
     paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 }
 
-fun Group.setVisibleAnimated(flag: Boolean) {
-    referencedIds.forEach { viewId ->
-        rootView.findViewById<View>(viewId)
-            ?.setVisibleAnimated(flag)
-    }
-}
-
 fun View.setVisibleAnimated(visible: Boolean) {
+    if (this is Group) {
+        setVisibleAnimated(visible)
+    }
+
     if (visible) {
         alpha = 0f
         animate().withStartAction {
@@ -87,6 +84,13 @@ fun View.setVisibleAnimated(visible: Boolean) {
         animate().withEndAction {
             isVisible = false
         }.alpha(0f)
+    }
+}
+
+fun Group.setVisibleAnimated(visible: Boolean) {
+    referencedIds.forEach { viewId ->
+        rootView.findViewById<View>(viewId)
+            ?.setVisibleAnimated(visible)
     }
 }
 

@@ -38,4 +38,8 @@
     <string name="checklist">Checklist</string>
     <string name="add_next_step">Add next step…</string>
     <string name="step_placeholder">Step %1$d</string>
+
+    <string name="daily">Daily</string>
+    <string name="exclude_weekends">Exclude weekends</string>
+    <string name="weekly">Weekly</string>
 </resources>

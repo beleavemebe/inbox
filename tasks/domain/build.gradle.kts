@@ -11,4 +11,5 @@ java {
 dependencies {
     implementation(project(Modules.common))
     implementation(Coroutines.coroutinesCore)
+    testImplementation(Junit.junit)
 }

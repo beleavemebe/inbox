@@ -7,17 +7,22 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.github.beleavemebe.inbox.common.HourAndMinute
 import io.github.beleavemebe.inbox.common.calendar
+import io.github.beleavemebe.inbox.common.lastMonday
 import io.github.beleavemebe.inbox.tasks.domain.model.Task
 import io.github.beleavemebe.inbox.tasks.domain.model.TaskChecklist
 import io.github.beleavemebe.inbox.tasks.domain.model.ChecklistItem
 import io.github.beleavemebe.inbox.tasks.domain.model.CallResult
+import io.github.beleavemebe.inbox.tasks.domain.model.Periodicity
 import io.github.beleavemebe.inbox.tasks.domain.model.getOrNull
 import io.github.beleavemebe.inbox.tasks.domain.usecase.AddTask
 import io.github.beleavemebe.inbox.tasks.domain.usecase.GetTaskById
 import io.github.beleavemebe.inbox.tasks.domain.usecase.UpdateTask
+import io.github.beleavemebe.inbox.tasks.ui.task_details.checklist.TaskChecklistViewModel
+import io.github.beleavemebe.inbox.tasks.ui.task_details.datetime.TaskDatetimeViewModel
+import io.github.beleavemebe.inbox.tasks.ui.task_details.periodicity.TaskPeriodicityViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -25,7 +30,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.Executors
 import java.util.function.Function
 
 class TaskViewModel @AssistedInject constructor(
@@ -34,7 +38,7 @@ class TaskViewModel @AssistedInject constructor(
     private val getTaskById: GetTaskById,
     private val addTask: AddTask,
     private val updateTask: UpdateTask,
-) : ViewModel() {
+) : ViewModel(), TaskPeriodicityViewModel, TaskDatetimeViewModel, TaskChecklistViewModel {
 
     @AssistedFactory
     interface Factory {
@@ -45,13 +49,13 @@ class TaskViewModel @AssistedInject constructor(
     val taskFlow = _taskFlow.asStateFlow()
 
     private val _isDatetimeSectionVisible = MutableStateFlow(false)
-    val isDatetimeSectionVisible = _isDatetimeSectionVisible.asStateFlow()
+    override val isDatetimeSectionVisible = _isDatetimeSectionVisible.asStateFlow()
 
     private val _isPeriodicitySectionVisible = MutableStateFlow(false)
-    val isPeriodicitySectionVisible = _isPeriodicitySectionVisible.asStateFlow()
+    override val isPeriodicitySectionVisible = _isPeriodicitySectionVisible.asStateFlow()
 
     private val _isChecklistSectionVisible = MutableStateFlow(false)
-    val isChecklistSectionVisible = _isChecklistSectionVisible.asStateFlow()
+    override val isChecklistSectionVisible = _isChecklistSectionVisible.asStateFlow()
 
     val task: Task?
         get() = taskFlow.value.getOrNull()
@@ -60,16 +64,19 @@ class TaskViewModel @AssistedInject constructor(
         get() = task?.dueDate?.calendar()
 
     private val _eventShowPickDateMenu = MutableSharedFlow<Boolean>()
-    val eventShowPickDateMenu = _eventShowPickDateMenu.asSharedFlow()
+    override val eventShowPickDateMenu = _eventShowPickDateMenu.asSharedFlow()
 
     private val _eventShowDatePickerDialog = MutableSharedFlow<Date>()
-    val eventShowDatePickerDialog = _eventShowDatePickerDialog.asSharedFlow()
+    override val eventShowDatePickerDialog = _eventShowDatePickerDialog.asSharedFlow()
 
     private val _eventShowDateNotSetToast = MutableSharedFlow<Boolean>()
-    val eventShowDateNotSetToast = _eventShowDateNotSetToast.asSharedFlow()
+    override val eventShowDateNotSetToast = _eventShowDateNotSetToast.asSharedFlow()
 
     private val _eventShowTimePickerDialog = MutableSharedFlow<HourAndMinute>()
-    val eventShowTimePickerDialog = _eventShowTimePickerDialog.asSharedFlow()
+    override val eventShowTimePickerDialog = _eventShowTimePickerDialog.asSharedFlow()
+
+    private val _eventShowPickPeriodicityMenu = MutableSharedFlow<Boolean>()
+    val eventShowPickPeriodicityMenu = _eventShowPickPeriodicityMenu.asSharedFlow()
 
     private val _eventNavigateUp = MutableSharedFlow<Unit>()
     val eventNavigateUp = _eventNavigateUp.asSharedFlow()
@@ -145,7 +152,7 @@ class TaskViewModel @AssistedInject constructor(
         return modifyTask.apply(task)
     }
 
-    fun setDatetimeEnabled(enabled: Boolean) {
+    override fun setDatetimeEnabled(enabled: Boolean) {
         viewModelScope.launch {
             _isDatetimeSectionVisible.emit(enabled)
             if (!enabled) {
@@ -160,7 +167,7 @@ class TaskViewModel @AssistedInject constructor(
         }
     }
 
-    fun setDate(ms: Long) {
+    override fun setDate(ms: Long) {
         if (task?.isTimeSpecified == true) {
             val hrs = calendar?.get(Calendar.HOUR_OF_DAY) ?: 12
             val min = calendar?.get(Calendar.MINUTE) ?: 0
@@ -175,7 +182,7 @@ class TaskViewModel @AssistedInject constructor(
         }
     }
 
-    fun setTime(hour: Int, minute: Int) {
+    override fun setTime(hour: Int, minute: Int) {
         refreshTask { task ->
             val newDueDate = task.dueDate?.calendar()
                 ?.run {
@@ -188,19 +195,19 @@ class TaskViewModel @AssistedInject constructor(
         }
     }
 
-    fun clearTime() {
+    override fun clearTime() {
         refreshTask { task ->
             task.copy(isTimeSpecified = false)
         }
     }
 
-    fun setPeriodicityEnabled(enabled: Boolean) {
+    override fun setPeriodicityEnabled(enabled: Boolean) {
         viewModelScope.launch {
             _isPeriodicitySectionVisible.emit(enabled)
         }
     }
 
-    fun setChecklistEnabled(enabled: Boolean) {
+    override fun setChecklistEnabled(enabled: Boolean) {
         viewModelScope.launch {
             _isChecklistSectionVisible.emit(enabled)
             refreshTask { task ->
@@ -222,7 +229,7 @@ class TaskViewModel @AssistedInject constructor(
             id = task.id.hashCode().toLong(), taskId = task.id, content = emptyList()
         )
 
-    fun addChecklistEntry(context: Context) {
+    override fun addChecklistEntry(context: Context) {
         refreshTask { task ->
             val oldChecklist = task.checklist
                 ?: blankChecklist(task)
@@ -238,7 +245,7 @@ class TaskViewModel @AssistedInject constructor(
         }
     }
 
-    fun onChecklistItemTextChanged(index: Int, text: String) {
+    override fun onChecklistItemTextChanged(index: Int, text: String) {
         refreshTaskLater { task ->
             val checklist = task.checklist ?: errorNoChecklist()
             val newContent = checklist.content.toMutableList()
@@ -247,7 +254,7 @@ class TaskViewModel @AssistedInject constructor(
         }
     }
 
-    fun onChecklistItemChecked(index: Int, isChecked: Boolean) {
+    override fun onChecklistItemChecked(index: Int, isChecked: Boolean) {
         refreshTask { task ->
             val checklist = task.checklist ?: errorNoChecklist()
             val newContent = checklist.content.toMutableList()
@@ -259,29 +266,63 @@ class TaskViewModel @AssistedInject constructor(
     private fun errorNoChecklist(): Nothing =
         error("Checklist item received an update but no checklist found")
 
-    fun pickDate() {
+    override fun pickDate() {
         viewModelScope.launch {
             _eventShowPickDateMenu.emit(true)
         }
     }
 
-    fun showDatePicker() {
+    override fun showDatePicker() {
         viewModelScope.launch {
             _eventShowDatePickerDialog.emit(task?.dueDate ?: Date())
         }
     }
 
-    fun pickTime() {
+    override fun pickTime() {
         viewModelScope.launch {
-            var hrs = 12
-            var min = 0
-            val cal = calendar
-            if (task?.isTimeSpecified == true && cal != null) {
-                hrs = cal.get(Calendar.HOUR_OF_DAY)
-                min = cal.get(Calendar.MINUTE)
-            }
+            val hourAndMinute = getDueDateHourAndMinute()
+            _eventShowTimePickerDialog.emit(hourAndMinute)
+        }
+    }
 
-            _eventShowTimePickerDialog.emit(HourAndMinute(hrs to min))
+    private fun getDueDateHourAndMinute(): HourAndMinute {
+        var hrs = 12
+        var min = 0
+        val cal = calendar
+        if (task?.isTimeSpecified == true && cal != null) {
+            hrs = cal.get(Calendar.HOUR_OF_DAY)
+            min = cal.get(Calendar.MINUTE)
+        }
+
+        return HourAndMinute(hrs to min)
+    }
+
+    override fun configurePeriodicity() {
+        viewModelScope.launch {
+            _eventShowPickPeriodicityMenu.emit(true)
+        }
+    }
+
+    override fun setDailyPeriodicity() {
+        refreshTask { task ->
+            task.copy(
+                periodicity = Periodicity.Factory.newDailyPeriod(
+                    start = System.currentTimeMillis(),
+                    getDueDateHourAndMinute()
+                )
+            )
+        }
+    }
+
+    override fun setWeeklyPeriodicity() {
+        refreshTask { task ->
+            task.copy(periodicity = Periodicity.Factory.newWeeklyPeriodicity(start = lastMonday))
+        }
+    }
+
+    override fun setPeriodicity(periodicity: Periodicity) {
+        refreshTask { task ->
+            task.copy(periodicity = periodicity)
         }
     }
 

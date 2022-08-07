@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Inbox</string>
     <string name="task">Задача</string>
     <string name="new_task">Новая задача</string>
     <string name="tasks">Задачи</string>
@@ -38,4 +37,8 @@
     <string name="checklist">Чеклист</string>
     <string name="add_next_step">Добавить следующий шаг…</string>
     <string name="step_placeholder">Шаг %1$d</string>
+
+    <string name="daily">Ежедневно</string>
+    <string name="weekly">Еженедельно</string>
+    <string name="exclude_weekends">Не по выходным</string>
 </resources>

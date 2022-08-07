@@ -15,6 +15,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import io.github.beleavemebe.inbox.common.HOUR_MS
+import io.github.beleavemebe.inbox.common.HourAndMinute
 import io.github.beleavemebe.inbox.core.di.findDependencies
 import io.github.beleavemebe.inbox.core.navigation.crossFeatureNavigator
 import io.github.beleavemebe.inbox.core.utils.assistedViewModel
@@ -30,6 +31,8 @@ import io.github.beleavemebe.inbox.tasks.domain.model.Task
 import io.github.beleavemebe.inbox.tasks.domain.model.TaskChecklist
 import io.github.beleavemebe.inbox.tasks.ui.task_details.databinding.FragmentTaskBinding
 import io.github.beleavemebe.inbox.tasks.ui.task_details.di.DaggerTaskDetailsComponent
+import io.github.beleavemebe.inbox.tasks.ui.task_details.periodicity.PeriodicityUi
+import io.github.beleavemebe.inbox.tasks.ui.task_details.periodicity.PeriodicityUiStateFactory
 import kotlinx.coroutines.flow.onEach
 import java.util.*
 import javax.inject.Inject
@@ -47,11 +50,13 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         factory.create(handle, args.taskId)
     }
 
+    @Inject lateinit var periodicityUiStateFactory: PeriodicityUiStateFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         DaggerTaskDetailsComponent.factory()
-            .create(findDependencies())
+            .create(findDependencies(), lazy { viewLifecycleOwner.lifecycle } )
             .inject(this)
     }
 
@@ -68,10 +73,6 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
     }
 
     private fun initListeners() {
-        binding.btnSave.setOnClickListener { saveTask() }
-        binding.cvDate.setOnClickListener { viewModel.pickDate() }
-        binding.cvTime.setOnClickListener { viewModel.pickTime() }
-
         binding.etTitle.doOnTextChanged { text, _, _, _ ->
             binding.tiTitle.error = null
             viewModel.setTitle(text.toString())
@@ -80,6 +81,13 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         binding.etNote.doOnTextChanged { text, _, _, _ ->
             viewModel.setNote(text.toString())
         }
+
+        binding.cvDate.setOnClickListener { viewModel.pickDate() }
+        binding.cvTime.setOnClickListener { viewModel.pickTime() }
+
+        binding.cvPeriodicity.setOnClickListener { viewModel.configurePeriodicity() }
+
+        binding.btnSave.setOnClickListener { saveTask() }
     }
 
     private fun saveTask() {
@@ -186,8 +194,24 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
         }
     }
 
-    @Suppress("unused_parameter")
+    private val periodicityUi = PeriodicityUi(
+        binding.switchPeriodicity,
+        binding.tvPeriodicity,
+        binding.cvPeriodicity,
+        binding.groupWeeklyPeriodicityCheckboxes,
+        binding.cbPeriodicityMon,
+        binding.cbPeriodicityTue,
+        binding.cbPeriodicityWed,
+        binding.cbPeriodicityThu,
+        binding.cbPeriodicityFri,
+        binding.cbPeriodicitySat,
+        binding.cbPeriodicitySun
+    )
+
     private fun renderPeriodicitySection(task: Task) {
+        periodicityUiStateFactory
+            .createInitialState(task.periodicity)
+            .render(periodicityUi)
     }
 
     private fun renderChecklistSection(task: Task) {
@@ -274,6 +298,10 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
             .onEach { context.toast(R.string.date_not_set) }
             .repeatWhenStarted(viewLifecycleOwner.lifecycle)
 
+        viewModel.eventShowPickPeriodicityMenu
+            .onEach { showPickPeriodicityPopupMenu() }
+            .repeatWhenStarted(viewLifecycleOwner.lifecycle)
+
         viewModel.eventNavigateUp
             .onEach { crossFeatureNavigator.navigateBack() }
             .repeatWhenStarted(viewLifecycleOwner.lifecycle)
@@ -327,6 +355,28 @@ class TaskFragment : Fragment(R.layout.fragment_task) {
                 addOnNegativeButtonClickListener { viewModel.clearTime() }
                 addOnPositiveButtonClickListener { viewModel.setTime(hour, minute) }
             }.show(childFragmentManager, "MaterialTimePicker")
+    }
+
+    private fun showPickPeriodicityPopupMenu() {
+        PopupMenu(requireContext(), binding.cvPeriodicity)
+            .apply {
+                menuInflater.inflate(R.menu.menu_pick_periodicity, menu)
+                setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.option_pick_periodicity_daily -> onDailyPicked()
+                        R.id.option_pick_periodicity_weekly -> onWeeklyPicked()
+                        else -> false
+                    }
+                }
+            }.show()
+    }
+
+    private fun onDailyPicked() = true.also {
+        viewModel.setDailyPeriodicity()
+    }
+
+    private fun onWeeklyPicked() = true.also {
+        viewModel.setWeeklyPeriodicity()
     }
 
     override fun onStop() {

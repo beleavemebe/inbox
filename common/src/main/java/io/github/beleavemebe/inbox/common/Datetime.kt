@@ -19,20 +19,20 @@ const val WEEK_MS = 7 * DAY_MS
 val lastMonday: Long
     get() = Date().calendar().run {
         set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        setStartOfTheDay()
         if (time.isFuture) {
             timeInMillis -= WEEK_MS
         }
-        setStartOfTheDay()
         timeInMillis
     }
 
 val weekEnd: Long
     get() = Date().calendar().run {
         set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+        setEndOfTheDay()
         if (time.isPast) {
             timeInMillis += WEEK_MS
         }
-        setEndOfTheDay()
         timeInMillis
     }
 
@@ -44,6 +44,9 @@ val Date.isPast: Boolean
 
 val Date.isFuture: Boolean
     get() = !isPast
+
+val Date.dayOfWeek: Int
+    get() = calendar().get(Calendar.DAY_OF_WEEK)
 
 fun Calendar.setEndOfTheDay() {
     set(Calendar.HOUR_OF_DAY, 23)

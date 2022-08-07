@@ -9,6 +9,7 @@ data class Task(
     val isCompleted: Boolean = false,
     val dueDate: Date? = null,
     val isTimeSpecified: Boolean = false,
+    val periodicity: Periodicity? = null,
     val checklist: TaskChecklist? = null,
     val info: TaskInfo? = null,
 )
